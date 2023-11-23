@@ -19,11 +19,11 @@ public class ResultEntity {
     //@Column(nullable = false)
     private String feedback;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "resultEntity",fetch = FetchType.LAZY)
     private InterviewEntity interviewEntity;
     @OneToOne(fetch = FetchType.LAZY)
     private PositionTestEntity positionTestEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "resultEntity",fetch = FetchType.LAZY)
     private LanguageTestEntity languageTestEntity;
 }

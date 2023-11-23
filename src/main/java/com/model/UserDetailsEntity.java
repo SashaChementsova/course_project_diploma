@@ -56,6 +56,6 @@ public class UserDetailsEntity {
     @OneToMany(mappedBy = "userDetailsEntity")
     private List<UserDetailsHasChatsEntity> userDetailsHasChatsEntities;
 
-    @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private ImageEntity imageEntity;
 }

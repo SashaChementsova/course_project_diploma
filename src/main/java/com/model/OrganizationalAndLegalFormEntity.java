@@ -16,6 +16,9 @@ public class OrganizationalAndLegalFormEntity {
     private String shortName;
     @Column(nullable = false, unique = true)
     private String longName;
-    @OneToOne(fetch = FetchType.LAZY)
+
+
+
+    @OneToOne(mappedBy = "organizationalAndLegalForm", fetch = FetchType.LAZY)
     private AdminEntity adminEntity;
 }

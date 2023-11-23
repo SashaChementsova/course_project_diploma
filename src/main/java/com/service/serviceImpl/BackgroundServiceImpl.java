@@ -1,4 +1,4 @@
-package com.service;
+package com.service.serviceImpl;
 
 
 import com.model.BackgroundEntity;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class BackgroundService {
+public class BackgroundServiceImpl {
     private final BackgroundRepository backgroundRepository;
     @Autowired
-    public BackgroundService(BackgroundRepository backgroundRepository){
+    public BackgroundServiceImpl(BackgroundRepository backgroundRepository){
         this.backgroundRepository = backgroundRepository;
     }
 

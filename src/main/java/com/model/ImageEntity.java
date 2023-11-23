@@ -20,6 +20,6 @@ public class ImageEntity {
     @Lob
     private byte[] bytes;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "imageEntity", fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
 }

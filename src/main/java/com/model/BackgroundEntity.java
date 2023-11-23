@@ -27,13 +27,13 @@ public class BackgroundEntity {
             inverseJoinColumns={@JoinColumn(name="SKILL_ID", referencedColumnName="idSkill")})
     private List<SkillEntity> skills = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "backgroundEntity",fetch = FetchType.LAZY)
     private CandidateEntity candidateEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "backgroundEntity",fetch = FetchType.LAZY)
     private EmployeeEntity employeeEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "backgroundEntity",fetch = FetchType.LAZY)
     private VacancyEntity vacancyEntity;
 
 }

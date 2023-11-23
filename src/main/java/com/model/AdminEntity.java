@@ -18,8 +18,8 @@ public class AdminEntity {
     private String nameCompany;
     @Column(nullable = false,unique = true)
     private String nameDirector;
-    @OneToOne(mappedBy = "adminEntity", fetch = FetchType.LAZY)
-    private OrganizationalAndLegalFormEntity organizationalAndLegalFormEntity;
+    @OneToOne(fetch = FetchType.LAZY)
+    private OrganizationalAndLegalFormEntity organizationalAndLegalForm;
 
     @OneToOne(fetch = FetchType.LAZY)     ///////////////////////////////////////////////////////////////
     private UserDetailsEntity userDetailsEntity;

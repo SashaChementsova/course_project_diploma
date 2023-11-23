@@ -27,7 +27,7 @@ public class EmployeeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
 
-    @OneToOne(mappedBy = "employeeEntity", fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
     private BackgroundEntity backgroundEntity;
 
     @ManyToMany(fetch = FetchType.EAGER)

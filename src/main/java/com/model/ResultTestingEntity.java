@@ -14,7 +14,7 @@ public class ResultTestingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idResultTesting;
-    @OneToOne(mappedBy = "resultTestingEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private PositionTestEntity positionTestEntity;
     @OneToMany(mappedBy = "resultTestingEntity")
     private List<LanguageTestEntity> languageTestEntities;

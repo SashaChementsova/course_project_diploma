@@ -18,7 +18,7 @@ public class LanguageTestEntity {
     private int idLanguageTest;
     //@Column(nullable = false)
     private Date date;
-    @OneToOne(mappedBy = "languageTestEntity", fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
     private ResultEntity resultEntity;
 
     @OneToMany(mappedBy = "languageTestEntity")

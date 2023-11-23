@@ -26,7 +26,7 @@ public class InterviewEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private EmployeeEntity employeeEntity;
 
-    @OneToOne(mappedBy = "interviewEntity", fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
     private ResultEntity resultEntity;
 
 }

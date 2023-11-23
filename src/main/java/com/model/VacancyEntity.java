@@ -33,7 +33,7 @@ public class VacancyEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CityCompanyEntity cityCompanyEntity;
 
-    @OneToOne(mappedBy = "vacancyEntity", fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
     private BackgroundEntity backgroundEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)

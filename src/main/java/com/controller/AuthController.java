@@ -2,7 +2,7 @@ package com.controller;
 
 import com.dto.UserDto;
 import com.model.UserDetailsEntity;
-import com.service.UserDetailService;
+import com.service.serviceImpl.UserDetailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,17 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Controller
 public class AuthController {
-    private UserDetailService userDetailService;
+    private UserDetailServiceImpl userDetailServiceImpl;
     private PasswordEncoder passwordEncoder;
 
-    public AuthController(UserDetailService userDetailService, PasswordEncoder passwordEncoder) {
-        this.userDetailService = userDetailService;
+    public AuthController(UserDetailServiceImpl userDetailServiceImpl, PasswordEncoder passwordEncoder) {
+        this.userDetailServiceImpl = userDetailServiceImpl;
         this.passwordEncoder=passwordEncoder;
     }
 
@@ -42,13 +39,7 @@ public class AuthController {
         return role;
     }
 
-    @GetMapping("/index")
-    public String home() {
-//        UserEntity user=userService.findUserById(1);
-//        user.setPassword(passwordEncoder.encode("123456"));
-//        userService.updateUser(user);
-        return "index";
-    }
+
 
     @GetMapping("/login")
     public String login(){
@@ -65,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model)  {
-        UserDetailsEntity existingUser = userDetailService.findUserByEmail(userDto.getEmail());
+        UserDetailsEntity existingUser = userDetailServiceImpl.findUserByEmail(userDto.getEmail());
 
         if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
             result.rejectValue("email", null,
@@ -103,7 +94,7 @@ public class AuthController {
             model.addAttribute("password", password);
             return "registerEnd.html";
         }
-        int age=userDetailService.calculateAge(dateOfBirth);
+        int age= userDetailServiceImpl.calculateAge(dateOfBirth);
         if(age<18){
             model.addAttribute("age","age");
             model.addAttribute("user",user);
@@ -120,7 +111,7 @@ public class AuthController {
         if(user.getInfo().isEmpty()){user.setInfo("-");}
         user.setEmail(email);
         user.setPassword(password);
-        userDetailService.saveUser(user,"ROLE_CANDIDATE");
+        userDetailServiceImpl.saveUser(user,"ROLE_CANDIDATE");
 
         return "redirect:/login";
     }
@@ -128,9 +119,7 @@ public class AuthController {
 
     @GetMapping("/roles")
     public String users(Model model){
-        System.out.println(getCurrentUsernameRoles());
         if(getCurrentUsernameRoles().equals("ROLE_CANDIDATE")){
-            System.out.println("BEGIN");
             return "redirect:/candidate/candidateHome";
         }
         else if(getCurrentUsernameRoles().equals("ROLE_ADMIN")){
@@ -139,53 +128,10 @@ public class AuthController {
         else if(getCurrentUsernameRoles().equals("ROLE_EMPLOYEE")){
             return "redirect:/employee/employeeHome";
         }
-        else{
+        else {
             return "redirect:/hr/hrHome";
         }
     }
 
-
-    @GetMapping("/hr/hrHome")
-    public String hrHome(Model model){
-         return "hr.html";
-    }
-
-    @GetMapping("/candidate/candidateHome")
-    public String candidateHome(Model model){
-        System.out.println("CONTR CAND");
-        return "candidate.html";
-    }
-
-    @GetMapping("/employee/employeeHome")
-    public String employeeHome(Model model){
-        return "employee.html";
-    }
-
-    @GetMapping("/admin/adminHome")
-    public String adminHome(Model model){
-        return "admin.html";
-    }
-
 }
 
-//        String uploadDir="./src/main/resources/photo-user/"+email;
-//        Path uploadPath = Paths.get(uploadDir);
-//        if(!Files.exists(uploadPath)){
-//            Files.createDirectories(uploadPath);
-//        }
-//        if(image==null){
-//            Path pathDefolt=Paths.get("D:\\bsuir\\6 семестр\\кп ситаирис\\course_project\\defolt_photo.jpg");
-//            userDTO.setPhoto("defolt_photo.jpg");
-//            Path filePath=uploadPath.resolve("defolt_photo.jpg");
-//            Files.copy(pathDefolt,filePath, StandardCopyOption.REPLACE_EXISTING);
-//        }
-//        else{
-//            String fileName= StringUtils.cleanPath(image.getOriginalFilename());
-//            userDTO.setPhoto(fileName);
-//            try(InputStream inputStream=image.getInputStream()){
-//                Path filePath=uploadPath.resolve(fileName);
-//                Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
-//            } catch (Exception e){
-//                throw new IOException("Не может сохранить файл "+fileName);
-//            }
-//        }

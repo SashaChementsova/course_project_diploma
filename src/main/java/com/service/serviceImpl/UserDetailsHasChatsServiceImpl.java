@@ -1,4 +1,4 @@
-package com.service;
+package com.service.serviceImpl;
 
 import com.model.UserDetailsHasChatsEntity;
 import com.repository.UserDetailsHasChatsRepository;
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class UserDetailsHasChatsService {
+public class UserDetailsHasChatsServiceImpl {
     private final UserDetailsHasChatsRepository userDetailsHasChatsRepository;
     @Autowired
-    public UserDetailsHasChatsService(UserDetailsHasChatsRepository userDetailsHasChatsRepository){
+    public UserDetailsHasChatsServiceImpl(UserDetailsHasChatsRepository userDetailsHasChatsRepository){
         this.userDetailsHasChatsRepository = userDetailsHasChatsRepository;
     }
 

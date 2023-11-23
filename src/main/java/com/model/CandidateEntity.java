@@ -21,7 +21,7 @@ public class CandidateEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
 
-    @OneToOne(mappedBy = "candidateEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private BackgroundEntity backgroundEntity;
 
     @ManyToMany(fetch = FetchType.EAGER)
