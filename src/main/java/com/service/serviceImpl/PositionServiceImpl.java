@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.PositionEntity;
+import com.model.Position;
 import com.repository.PositionRepository;
+import com.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class PositionServiceImpl {
+public class PositionServiceImpl implements PositionService {
     private final PositionRepository positionRepository;
     @Autowired
     public PositionServiceImpl(PositionRepository positionRepository){
         this.positionRepository = positionRepository;
     }
-
-    public PositionEntity addAndUpdatePosition(PositionEntity positionEntity){
-        return positionRepository.save(positionEntity);
+    @Override
+    public Position addAndUpdatePosition(Position position){
+        return positionRepository.save(position);
     }
-    public List<PositionEntity> getPositions(){
+    @Override
+    public List<Position> getPositions(){
         return positionRepository.findAll();
     }
-
-    public PositionEntity findPositionById(int id){
+    @Override
+    public Position findPositionById(int id){
 
         return positionRepository.findById(id).orElse(null);
     }
+    @Override
     public void deletePosition(int id){
         positionRepository.deleteById(id);
     }

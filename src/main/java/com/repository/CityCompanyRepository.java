@@ -1,9 +1,9 @@
 package com.repository;
 
-import com.model.CityCompanyEntity;
+import com.model.CityCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CityCompanyRepository extends JpaRepository<CityCompanyEntity,Integer> {
+public interface CityCompanyRepository extends JpaRepository<CityCompany,Integer> {
 }

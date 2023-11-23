@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.MessageEntity;
+import com.model.MessagesOfChat;
 import com.repository.MessageRepository;
+import com.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class MessageServiceImpl {
+public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     @Autowired
     public MessageServiceImpl(MessageRepository messageRepository){
         this.messageRepository = messageRepository;
     }
-
-    public MessageEntity addAndUpdateMessage(MessageEntity messageEntity){
-        return messageRepository.save(messageEntity);
+    @Override
+    public MessagesOfChat addAndUpdateMessage(MessagesOfChat messagesOfChat){
+        return messageRepository.save(messagesOfChat);
     }
-    public List<MessageEntity> getMessages(){
+    @Override
+    public List<MessagesOfChat> getMessages(){
         return messageRepository.findAll();
     }
-
-    public MessageEntity findMessageById(int id){
+    @Override
+    public MessagesOfChat findMessageById(int id){
 
         return messageRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteMessage(int id){
         messageRepository.deleteById(id);
     }

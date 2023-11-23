@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.ImageEntity;
+import com.model.Image;
 import com.repository.ImageRepository;
+import com.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ImageServiceImpl {
+public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     @Autowired
     public ImageServiceImpl(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
     }
-
-    public ImageEntity addAndUpdateImage(ImageEntity imageEntity){
-        return imageRepository.save(imageEntity);
+    @Override
+    public Image addAndUpdateImage(Image image){
+        return imageRepository.save(image);
     }
-    public List<ImageEntity> getImages(){
+    @Override
+    public List<Image> getImages(){
         return imageRepository.findAll();
     }
-
-    public ImageEntity findImageById(int id){
+    @Override
+    public Image findImageById(int id){
 
         return imageRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteImage(int id){
         imageRepository.deleteById(id);
     }

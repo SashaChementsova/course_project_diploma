@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.SkillEntity;
+import com.model.Skill;
 import com.repository.SkillRepository;
+import com.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class SkillServiceImpl {
+public class SkillServiceImpl implements SkillService {
     private final SkillRepository skillRepository;
     @Autowired
     public SkillServiceImpl(SkillRepository skillRepository){
         this.skillRepository = skillRepository;
     }
-
-    public SkillEntity addAndUpdateSkill(SkillEntity skillEntity){
-        return skillRepository.save(skillEntity);
+    @Override
+    public Skill addAndUpdateSkill(Skill skill){
+        return skillRepository.save(skill);
     }
-    public List<SkillEntity> getSkills(){
+    @Override
+    public List<Skill> getSkills(){
         return skillRepository.findAll();
     }
-
-    public SkillEntity findSkillById(int id){
+    @Override
+    public Skill findSkillById(int id){
 
         return skillRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteSkill(int id){
         skillRepository.deleteById(id);
     }

@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.InterviewEntity;
+import com.model.Interview;
 import com.repository.InterviewRepository;
+import com.service.InterviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class InterviewServiceImpl {
+public class InterviewServiceImpl implements InterviewService {
     private final InterviewRepository interviewRepository;
     @Autowired
     public InterviewServiceImpl(InterviewRepository interviewRepository){
         this.interviewRepository = interviewRepository;
     }
-
-    public InterviewEntity addAndUpdateInterview(InterviewEntity interviewEntity){
-        return interviewRepository.save(interviewEntity);
+    @Override
+    public Interview addAndUpdateInterview(Interview interview){
+        return interviewRepository.save(interview);
     }
-    public List<InterviewEntity> getInterviews(){
+    @Override
+    public List<Interview> getInterviews(){
         return interviewRepository.findAll();
     }
-
-    public InterviewEntity findInterviewById(int id){
+    @Override
+    public Interview findInterviewById(int id){
 
         return interviewRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteInterview(int id){
         interviewRepository.deleteById(id);
     }

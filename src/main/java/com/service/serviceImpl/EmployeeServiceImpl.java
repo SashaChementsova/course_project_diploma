@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.EmployeeEntity;
+import com.model.Employee;
 import com.repository.EmployeeRepository;
+import com.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class EmployeeServiceImpl {
+public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository){
         this.employeeRepository = employeeRepository;
     }
-
-    public EmployeeEntity addAndUpdateEmployee(EmployeeEntity employeeEntity){
-        return employeeRepository.save(employeeEntity);
+    @Override
+    public Employee addAndUpdateEmployee(Employee employee){
+        return employeeRepository.save(employee);
     }
-    public List<EmployeeEntity> getEmployees(){
+    @Override
+    public List<Employee> getEmployees(){
         return employeeRepository.findAll();
     }
-
-    public EmployeeEntity findEmployeeById(int id){
+    @Override
+    public Employee findEmployeeById(int id){
 
         return employeeRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteEmployee(int id){
         employeeRepository.deleteById(id);
     }

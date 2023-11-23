@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.PositionTestHasQuestionEntity;
+import com.model.PositionTestHasQuestion;
 import com.repository.PositionTestHasQuestionRepository;
+import com.service.PositionTestHasQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class PositionTestHasQuestionServiceImpl {
+public class PositionTestHasQuestionServiceImpl implements PositionTestHasQuestionService {
     private final PositionTestHasQuestionRepository positionTestHasQuestionRepository;
     @Autowired
     public PositionTestHasQuestionServiceImpl(PositionTestHasQuestionRepository positionTestHasQuestionRepository){
         this.positionTestHasQuestionRepository = positionTestHasQuestionRepository;
     }
-
-    public PositionTestHasQuestionEntity addAndUpdatePositionTestHasQuestion(PositionTestHasQuestionEntity positionTestHasQuestionEntity){
-        return positionTestHasQuestionRepository.save(positionTestHasQuestionEntity);
+    @Override
+    public PositionTestHasQuestion addAndUpdatePositionTestHasQuestion(PositionTestHasQuestion positionTestHasQuestion){
+        return positionTestHasQuestionRepository.save(positionTestHasQuestion);
     }
-    public List<PositionTestHasQuestionEntity> getPositionTestHasQuestions(){
+    @Override
+    public List<PositionTestHasQuestion> getPositionTestHasQuestions(){
         return positionTestHasQuestionRepository.findAll();
     }
-
-    public PositionTestHasQuestionEntity findPositionTestHasQuestionById(int id){
+    @Override
+    public PositionTestHasQuestion findPositionTestHasQuestionById(int id){
 
         return positionTestHasQuestionRepository.findById(id).orElse(null);
     }
+    @Override
     public void deletePositionTestHasQuestion(int id){
         positionTestHasQuestionRepository.deleteById(id);
     }

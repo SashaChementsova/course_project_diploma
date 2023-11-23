@@ -1,7 +1,7 @@
 package com.controller;
 
 import com.dto.UserDto;
-import com.model.UserDetailsEntity;
+import com.model.UserDetail;
 import com.service.serviceImpl.UserDetailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -56,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model)  {
-        UserDetailsEntity existingUser = userDetailServiceImpl.findUserByEmail(userDto.getEmail());
+        UserDetail existingUser = userDetailServiceImpl.findUserByEmail(userDto.getEmail());
 
         if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
             result.rejectValue("email", null,
@@ -76,7 +76,7 @@ public class AuthController {
     @GetMapping("/register/end/{email}/{password}")
     public String continueRegistration(@PathVariable("email") String email,@PathVariable("password") String password, Model model){
         // create model object to store form data
-        UserDetailsEntity user=new UserDetailsEntity();
+        UserDetail user=new UserDetail();
         model.addAttribute("user", user);
         model.addAttribute("email", email);
         model.addAttribute("password", password);
@@ -84,7 +84,7 @@ public class AuthController {
     }
 
     @PostMapping("/register/end")
-    public String endRegistration(String email, String password, UserDetailsEntity user, BindingResult result, Model model) throws IOException {
+    public String endRegistration(String email, String password, UserDetail user, BindingResult result, Model model) throws IOException {
         String dateOfBirth = new SimpleDateFormat("dd-MM-yyyy").format(user.getBirthday());
         //create model object to store form data
         if(user.getName().equals("") || user.getSurname().equals("") ||  dateOfBirth.equals("") || user.getPhone().equals("")){

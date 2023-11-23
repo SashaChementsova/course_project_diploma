@@ -1,31 +1,32 @@
 package com.service.serviceImpl;
 
-import com.model.LanguageEntity;
+import com.model.Language;
 import com.repository.LanguageRepository;
+import com.service.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class LanguageServiceImpl {
+public class LanguageServiceImpl implements LanguageService {
     private final LanguageRepository languageRepository;
     @Autowired
     public LanguageServiceImpl(LanguageRepository languageRepository){
         this.languageRepository = languageRepository;
     }
-
-    public LanguageEntity addAndUpdateLanguage(LanguageEntity languageEntity){
-        return languageRepository.save(languageEntity);
+    @Override
+    public Language addAndUpdateLanguage(Language language){
+        return languageRepository.save(language);
     }
-
-    public List<LanguageEntity> getLanguages(){
+    @Override
+    public List<Language> getLanguages(){
         return languageRepository.findAll();
     }
-
-    public LanguageEntity findLanguageById(int id){
+    @Override
+    public Language findLanguageById(int id){
         return languageRepository.findById(id).orElse(null);
     }
-
+    @Override
     public void deleteLanguage(int id){
         languageRepository.deleteById(id);
     }

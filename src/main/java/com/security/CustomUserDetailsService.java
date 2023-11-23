@@ -1,8 +1,8 @@
 package com.security;
 
-import com.model.RoleEntity;
-import com.model.UserDetailsEntity;
-import com.repository.UserDetailsRepository;
+import com.model.Role;
+import com.model.UserDetail;
+import com.repository.UserDetailRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,15 +15,15 @@ import java.util.stream.Collectors;;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private UserDetailsRepository userDetailsRepository;
+    private UserDetailRepository userDetailRepository;
 
-    public CustomUserDetailsService(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
+    public CustomUserDetailsService(UserDetailRepository userDetailRepository) {
+        this.userDetailRepository = userDetailRepository;
     }
 
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserDetailsEntity user = userDetailsRepository.findByEmail(email);
+        UserDetail user = userDetailRepository.findByEmail(email);
 
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(user.getEmail(),
@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <RoleEntity> roles) {
+    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
         Collection< ? extends GrantedAuthority> mapRoles = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getNameRole()))
                 .collect(Collectors.toList());

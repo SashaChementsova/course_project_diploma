@@ -1,30 +1,34 @@
 package com.service.serviceImpl;
 
-import com.model.ResultEntity;
+import com.model.Result;
 import com.repository.ResultRepository;
+import com.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ResultServiceImpl {
+public class ResultServiceImpl implements ResultService {
     private final ResultRepository resultRepository;
     @Autowired
     public ResultServiceImpl(ResultRepository resultRepository){
         this.resultRepository = resultRepository;
     }
-
-    public ResultEntity addAndUpdateResult(ResultEntity resultEntity){
-        return resultRepository.save(resultEntity);
+    @Override
+    public Result addAndUpdateResult(Result result){
+        return resultRepository.save(result);
     }
-    public List<ResultEntity> getResults(){
+    @Override
+    public List<Result> getResults(){
         return resultRepository.findAll();
     }
 
-    public ResultEntity findResultById(int id){
+    @Override
+    public Result findResultById(int id){
 
         return resultRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteResult(int id){
         resultRepository.deleteById(id);
     }

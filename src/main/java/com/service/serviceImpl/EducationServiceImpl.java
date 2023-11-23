@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.EducationEntity;
+import com.model.Education;
 import com.repository.EducationRepository;
+import com.service.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class EducationServiceImpl {
+public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
     @Autowired
     public EducationServiceImpl(EducationRepository educationRepository){
         this.educationRepository = educationRepository;
     }
-
-    public EducationEntity addAndUpdateEducation(EducationEntity educationEntity){
-        return educationRepository.save(educationEntity);
+    @Override
+    public Education addAndUpdateEducation(Education education){
+        return educationRepository.save(education);
     }
-    public List<EducationEntity> getEducations(){
+    @Override
+    public List<Education> getEducations(){
         return educationRepository.findAll();
     }
-
-    public EducationEntity findEducationById(int id){
+    @Override
+    public Education findEducationById(int id){
 
         return educationRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteEducation(int id){
         educationRepository.deleteById(id);
     }

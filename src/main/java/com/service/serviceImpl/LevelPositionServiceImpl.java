@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.LevelPositionEntity;
+import com.model.LevelPosition;
 import com.repository.LevelPositionRepository;
+import com.service.LevelPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class LevelPositionServiceImpl {
+public class LevelPositionServiceImpl implements LevelPositionService {
     private final LevelPositionRepository levelPositionRepository;
     @Autowired
     public LevelPositionServiceImpl(LevelPositionRepository levelPositionRepository){
         this.levelPositionRepository = levelPositionRepository;
     }
-
-    public LevelPositionEntity addAndUpdateLevelPosition(LevelPositionEntity levelPositionEntity){
-        return levelPositionRepository.save(levelPositionEntity);
+    @Override
+    public LevelPosition addAndUpdateLevelPosition(LevelPosition levelPosition){
+        return levelPositionRepository.save(levelPosition);
     }
-    public List<LevelPositionEntity> getLevelPositions(){
+    @Override
+    public List<LevelPosition> getLevelPositions(){
         return levelPositionRepository.findAll();
     }
-
-    public LevelPositionEntity findLevelPositionById(int id){
+    @Override
+    public LevelPosition findLevelPositionById(int id){
 
         return levelPositionRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteLevelPosition(int id){
         levelPositionRepository.deleteById(id);
     }

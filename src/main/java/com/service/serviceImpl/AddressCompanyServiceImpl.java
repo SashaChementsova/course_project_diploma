@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.AddressCompanyEntity;
+import com.model.AddressCompany;
 import com.repository.AddressCompanyRepository;
+import com.service.AddressCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class AddressCompanyServiceImpl {
+public class AddressCompanyServiceImpl implements AddressCompanyService {
     private final AddressCompanyRepository addressCompanyRepository;
     @Autowired
     public AddressCompanyServiceImpl(AddressCompanyRepository addressCompanyRepository){
         this.addressCompanyRepository = addressCompanyRepository;
     }
-
-    public AddressCompanyEntity addAndUpdateAddressCompany(AddressCompanyEntity addressCompanyEntity){
-        return addressCompanyRepository.save(addressCompanyEntity);
+    @Override
+    public AddressCompany addAndUpdateAddressCompany(AddressCompany addressCompany){
+        return addressCompanyRepository.save(addressCompany);
     }
-    public List<AddressCompanyEntity> getAddressCompanies(){
+    @Override
+    public List<AddressCompany> getAddressCompanies(){
         return addressCompanyRepository.findAll();
     }
-
-    public AddressCompanyEntity findAddressCompanyById(int id){
+    @Override
+    public AddressCompany findAddressCompanyById(int id){
 
         return addressCompanyRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteAddressCompany(int id){
         addressCompanyRepository.deleteById(id);
     }

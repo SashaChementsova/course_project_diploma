@@ -1,10 +1,11 @@
 package com.service.serviceImpl;
 
 import com.dto.UserDto;
-import com.model.RoleEntity;
-import com.model.UserDetailsEntity;
+import com.model.Role;
+import com.model.UserDetail;
 import com.repository.RoleRepository;
-import com.repository.UserDetailsRepository;
+import com.repository.UserDetailRepository;
+import com.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,75 +17,71 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserDetailServiceImpl {
-    private final UserDetailsRepository userDetailsRepository;
+public class UserDetailServiceImpl implements UserDetailService {
+    private final UserDetailRepository userDetailRepository;
     private final RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserDetailServiceImpl(UserDetailsRepository userDetailsRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
-        this.userDetailsRepository=userDetailsRepository;
+    public UserDetailServiceImpl(UserDetailRepository userDetailRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
+        this.userDetailRepository = userDetailRepository;
         this.roleRepository=roleRepository;
         this.passwordEncoder=passwordEncoder;
     }
 
-
-    public void saveUser(UserDetailsEntity userDetails, String roleName){
-//        UserDetailsEntity user = new UserDetailsEntity();
-//        user.setEmail(userDto.getEmail());
-//        // encrypt the password using spring security
-//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        user.setName(userDto.getName());
-//        user.setPatronymic(userDto.getPatronymic());
-//        user.setSurname(userDto.getSurname());
-//        user.setPhone(userDto.getPhone());
-//        user.setEmail(userDto.getEmail());
-//        user.setInfo(userDto.getInfo());
-        RoleEntity role = roleRepository.findByNameRole(roleName);
+    @Override
+    public void saveUser(UserDetail userDetails, String roleName){
+        Role role = roleRepository.findByNameRole(roleName);
         if(role == null){
             role = checkRoleExist(roleName);
         }
         userDetails.setRoles(Arrays.asList(role));
         userDetails.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        userDetailsRepository.save(userDetails);
+        userDetailRepository.save(userDetails);
     }
 
-    public UserDetailsEntity updateUser(UserDetailsEntity user){
-        return userDetailsRepository.save(user);
+    @Override
+    public UserDetail updateUser(UserDetail user){
+        return userDetailRepository.save(user);
     }
 
+    @Override
     public List<UserDto> getUsers(){
-        List<UserDetailsEntity> users = userDetailsRepository.findAll();
+        List<UserDetail> users = userDetailRepository.findAll();
         return users.stream()
                 .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
     }
 
-    public UserDetailsEntity findUserById(int id){
+    @Override
+    public UserDetail findUserById(int id){
 
-        return userDetailsRepository.findById(id).orElse(null);
+        return userDetailRepository.findById(id).orElse(null);
     }
 
+    @Override
     public void deleteUser(int id){
-        userDetailsRepository.deleteById(id);
+        userDetailRepository.deleteById(id);
     }
 
-    private UserDto mapToUserDto(UserDetailsEntity user){
+    private UserDto mapToUserDto(UserDetail user){
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         return userDto;
     }
 
-    private RoleEntity checkRoleExist(String roleName){
-        RoleEntity role = new RoleEntity();
+    private Role checkRoleExist(String roleName){
+        Role role = new Role();
         role.setNameRole(roleName);
         return roleRepository.save(role);
     }
 
 
-    public UserDetailsEntity findUserByEmail(String email) {
-        return userDetailsRepository.findByEmail(email);
+    @Override
+    public UserDetail findUserByEmail(String email) {
+        return userDetailRepository.findByEmail(email);
     }
+    @Override
     public int calculateAge(String dateOfBirth){
         int age=0;
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());

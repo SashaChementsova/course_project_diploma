@@ -1,9 +1,9 @@
 package com.repository;
 
-import com.model.PositionEntity;
+import com.model.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PositionRepository extends JpaRepository<PositionEntity,Integer> {
+public interface PositionRepository extends JpaRepository<Position,Integer> {
 }

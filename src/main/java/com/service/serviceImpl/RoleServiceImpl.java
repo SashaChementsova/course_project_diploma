@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.RoleEntity;
+import com.model.Role;
 import com.repository.RoleRepository;
+import com.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class RoleServiceImpl {
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository){
         this.roleRepository = roleRepository;
     }
-
-    public RoleEntity addAndUpdateRole(RoleEntity role){
+    @Override
+    public Role addAndUpdateRole(Role role){
         return roleRepository.save(role);
     }
-    public List<RoleEntity> getRoles(){
+    @Override
+    public List<Role> getRoles(){
         return roleRepository.findAll();
     }
-
-    public RoleEntity findRoleById(int id){
+    @Override
+    public Role findRoleById(int id){
 
         return roleRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteRole(int id){
         roleRepository.deleteById(id);
     }

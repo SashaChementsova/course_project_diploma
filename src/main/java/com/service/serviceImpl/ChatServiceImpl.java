@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.ChatEntity;
+import com.model.Chat;
 import com.repository.ChatRepository;
+import com.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ChatServiceImpl {
+public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     @Autowired
     public ChatServiceImpl(ChatRepository chatRepository){
         this.chatRepository = chatRepository;
     }
-
-    public ChatEntity addAndUpdateChat(ChatEntity chatEntity){
+    @Override
+    public Chat addAndUpdateChat(Chat chatEntity){
         return chatRepository.save(chatEntity);
     }
-    public List<ChatEntity> getChats(){
+    @Override
+    public List<Chat> getChats(){
         return chatRepository.findAll();
     }
-
-    public ChatEntity findChatById(int id){
+    @Override
+    public Chat findChatById(int id){
 
         return chatRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteChat(int id){
         chatRepository.deleteById(id);
     }

@@ -1,9 +1,9 @@
 package com.repository;
 
-import com.model.EducationTypeEntity;
+import com.model.EducationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EducationTypeRepository extends JpaRepository<EducationTypeEntity,Integer> {
+public interface EducationTypeRepository extends JpaRepository<EducationType,Integer> {
 }

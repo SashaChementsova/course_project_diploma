@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.LanguageTestEntity;
+import com.model.LanguageTest;
 import com.repository.LanguageTestRepository;
+import com.service.LanguageTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class LanguageTestServiceImpl {
+public class LanguageTestServiceImpl implements LanguageTestService {
     private final LanguageTestRepository languageTestRepository;
     @Autowired
     public LanguageTestServiceImpl(LanguageTestRepository languageTestRepository){
         this.languageTestRepository = languageTestRepository;
     }
-
-    public LanguageTestEntity addAndUpdateLanguageTest(LanguageTestEntity languageTestEntity){
-        return languageTestRepository.save(languageTestEntity);
+    @Override
+    public LanguageTest addAndUpdateLanguageTest(LanguageTest languageTest){
+        return languageTestRepository.save(languageTest);
     }
-    public List<LanguageTestEntity> getLanguageTests(){
+    @Override
+    public List<LanguageTest> getLanguageTests(){
         return languageTestRepository.findAll();
     }
-
-    public LanguageTestEntity findLanguageTestById(int id){
+    @Override
+    public LanguageTest findLanguageTestById(int id){
 
         return languageTestRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteLanguageTest(int id){
         languageTestRepository.deleteById(id);
     }

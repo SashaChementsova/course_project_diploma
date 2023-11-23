@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.PositionTestQuestionEntity;
+import com.model.PositionTestQuestion;
 import com.repository.PositionTestQuestionRepository;
+import com.service.PositionTestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class PositionTestQuestionServiceImpl {
+public class PositionTestQuestionServiceImpl implements PositionTestQuestionService {
     private final PositionTestQuestionRepository positionTestQuestionRepository;
     @Autowired
     public PositionTestQuestionServiceImpl(PositionTestQuestionRepository positionTestQuestionRepository){
         this.positionTestQuestionRepository = positionTestQuestionRepository;
     }
-
-    public PositionTestQuestionEntity addAndUpdatePositionTestQuestion(PositionTestQuestionEntity positionTestQuestionEntity){
-        return positionTestQuestionRepository.save(positionTestQuestionEntity);
+    @Override
+    public PositionTestQuestion addAndUpdatePositionTestQuestion(PositionTestQuestion positionTestQuestion){
+        return positionTestQuestionRepository.save(positionTestQuestion);
     }
-    public List<PositionTestQuestionEntity> getPositionTestQuestions(){
+    @Override
+    public List<PositionTestQuestion> getPositionTestQuestions(){
         return positionTestQuestionRepository.findAll();
     }
-
-    public PositionTestQuestionEntity findPositionTestQuestionById(int id){
+    @Override
+    public PositionTestQuestion findPositionTestQuestionById(int id){
 
         return positionTestQuestionRepository.findById(id).orElse(null);
     }
+    @Override
     public void deletePositionTestQuestion(int id){
         positionTestQuestionRepository.deleteById(id);
     }

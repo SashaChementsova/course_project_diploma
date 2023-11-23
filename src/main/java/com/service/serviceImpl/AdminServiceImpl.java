@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.AdminEntity;
+import com.model.Admin;
 import com.repository.AdminRepository;
+import com.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class AdminServiceImpl {
+public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     @Autowired
     public AdminServiceImpl(AdminRepository adminRepository){
         this.adminRepository = adminRepository;
     }
-
-    public AdminEntity addAndUpdateAdmin(AdminEntity adminEntity){
-        return adminRepository.save(adminEntity);
+    @Override
+    public Admin addAndUpdateAdmin(Admin admin){
+        return adminRepository.save(admin);
     }
-    public List<AdminEntity> getAdmins(){
+    @Override
+    public List<Admin> getAdmins(){
         return adminRepository.findAll();
     }
-
-    public AdminEntity findAdminById(int id){
+    @Override
+    public Admin findAdminById(int id){
 
         return adminRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteAdmin(int id){
         adminRepository.deleteById(id);
     }

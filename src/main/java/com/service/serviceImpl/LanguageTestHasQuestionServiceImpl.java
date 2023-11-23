@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.LanguageTestHasQuestionEntity;
+import com.model.LanguageTestHasQuestion;
 import com.repository.LanguageTestHasQuestionRepository;
+import com.service.LanguageTestHasQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class LanguageTestHasQuestionServiceImpl {
+public class LanguageTestHasQuestionServiceImpl implements LanguageTestHasQuestionService {
     private final LanguageTestHasQuestionRepository languageTestHasQuestionRepository;
     @Autowired
     public LanguageTestHasQuestionServiceImpl(LanguageTestHasQuestionRepository languageTestHasQuestionRepository){
         this.languageTestHasQuestionRepository = languageTestHasQuestionRepository;
     }
-
-    public LanguageTestHasQuestionEntity addAndUpdateLanguageTestHasQuestion(LanguageTestHasQuestionEntity languageTestHasQuestionEntity){
-        return languageTestHasQuestionRepository.save(languageTestHasQuestionEntity);
+    @Override
+    public LanguageTestHasQuestion addAndUpdateLanguageTestHasQuestion(LanguageTestHasQuestion languageTestHasQuestion){
+        return languageTestHasQuestionRepository.save(languageTestHasQuestion);
     }
-    public List<LanguageTestHasQuestionEntity> getLanguageTestHasQuestions(){
+    @Override
+    public List<LanguageTestHasQuestion> getLanguageTestHasQuestions(){
         return languageTestHasQuestionRepository.findAll();
     }
-
-    public LanguageTestHasQuestionEntity findLanguageTestHasQuestionById(int id){
+    @Override
+    public LanguageTestHasQuestion findLanguageTestHasQuestionById(int id){
 
         return languageTestHasQuestionRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteLanguageTestHasQuestion(int id){
         languageTestHasQuestionRepository.deleteById(id);
     }

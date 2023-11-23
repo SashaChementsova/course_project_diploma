@@ -1,30 +1,33 @@
 package com.service.serviceImpl;
 
-import com.model.HrEntity;
+import com.model.Hr;
 import com.repository.HrRepository;
+import com.service.HrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class HrServiceImpl {
+public class HrServiceImpl implements HrService {
     private final HrRepository hrRepository;
     @Autowired
     public HrServiceImpl(HrRepository hrRepository){
         this.hrRepository = hrRepository;
     }
-
-    public HrEntity addAndUpdateHr(HrEntity hrEntity){
-        return hrRepository.save(hrEntity);
+    @Override
+    public Hr addAndUpdateHr(Hr hr){
+        return hrRepository.save(hr);
     }
-    public List<HrEntity> getHrs(){
+    @Override
+    public List<Hr> getHrs(){
         return hrRepository.findAll();
     }
-
-    public HrEntity findHrById(int id){
+    @Override
+    public Hr findHrById(int id){
 
         return hrRepository.findById(id).orElse(null);
     }
+    @Override
     public void deleteHr(int id){
         hrRepository.deleteById(id);
     }
