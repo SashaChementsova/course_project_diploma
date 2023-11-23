@@ -3,9 +3,10 @@ package com.service;
 import com.model.ChatEntity;
 import com.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ChatService {
     private final ChatRepository chatRepository;
     @Autowired

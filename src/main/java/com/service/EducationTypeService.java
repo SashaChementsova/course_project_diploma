@@ -3,9 +3,10 @@ package com.service;
 import com.model.EducationTypeEntity;
 import com.repository.EducationTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class EducationTypeService {
     private final EducationTypeRepository educationTypeRepository;
     @Autowired

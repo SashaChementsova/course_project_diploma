@@ -30,10 +30,14 @@ public class SpringSecurity {
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-//                                .requestMatchers("/roles").hasAnyRole("ADMIN","USER")
-//                                .requestMatchers("/user/**").hasRole("USER")
-//                                .requestMatchers("/admin/userControl/**").hasRole("ADMIN")
-//                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/roles").permitAll()
+//                             .requestMatchers("/user/**").hasRole("USER")
+                                .requestMatchers("/hr/**").hasRole("HR")
+                                .requestMatchers("/employee/**").hasRole("EMPLOYEE")
+                                .requestMatchers("/candidate/candidateHome").hasRole("CANDIDATE")
+                                .requestMatchers("/admin/userControl/**").hasRole("ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")//.anyRequest().authenticated()
+
 
 
 

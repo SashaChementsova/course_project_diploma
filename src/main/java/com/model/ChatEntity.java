@@ -19,7 +19,8 @@ public class ChatEntity {
     private Date dateOfCreation;
     @OneToMany(mappedBy = "chatEntity")
     private List<MessageEntity> messageEntities;
-    @ManyToMany(mappedBy="chats")
-    private List<UserDetailsEntity> userDetailsEntities;
+
+    @OneToMany(mappedBy = "chatEntity")
+    private List<UserDetailsHasChatsEntity> userDetailsHasChatsEntities;
 
 }

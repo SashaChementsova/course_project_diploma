@@ -1,4 +1,6 @@
 package com.model;
+
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,14 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class HrEntity {
-
+public class UserDetailsHasChatsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idHr;
-    @OneToOne(fetch = FetchType.LAZY)
+    private int idUserDetailsHasChats;
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
-
-    @OneToMany(mappedBy = "hrEntity")
-    private List<VacancyEntity> vacancyEntities;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ChatEntity chatEntity;
 }

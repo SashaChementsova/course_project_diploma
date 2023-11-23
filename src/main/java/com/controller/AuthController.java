@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -28,6 +31,15 @@ public class AuthController {
     public String getCurrentUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    public String getCurrentUsernameRoles() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role=auth.getAuthorities().toString();
+        role=role.replace('[',' ');
+        role=role.replace(']',' ');
+        role=role.trim();
+        return role;
     }
 
     @GetMapping("/index")
@@ -108,7 +120,7 @@ public class AuthController {
         if(user.getInfo().isEmpty()){user.setInfo("-");}
         user.setEmail(email);
         user.setPassword(password);
-        userDetailService.saveUser(user,"CANDIDATE_ROLE");
+        userDetailService.saveUser(user,"ROLE_CANDIDATE");
 
         return "redirect:/login";
     }
@@ -116,13 +128,44 @@ public class AuthController {
 
     @GetMapping("/roles")
     public String users(Model model){
-        if(getCurrentUsername().equals("rydencar@gmail.com")){
+        System.out.println(getCurrentUsernameRoles());
+        if(getCurrentUsernameRoles().equals("ROLE_CANDIDATE")){
+            System.out.println("BEGIN");
+            return "redirect:/candidate/candidateHome";
+        }
+        else if(getCurrentUsernameRoles().equals("ROLE_ADMIN")){
             return "redirect:/admin/adminHome";
         }
+        else if(getCurrentUsernameRoles().equals("ROLE_EMPLOYEE")){
+            return "redirect:/employee/employeeHome";
+        }
         else{
-            return "redirect:/user/userHome";
+            return "redirect:/hr/hrHome";
         }
     }
+
+
+    @GetMapping("/hr/hrHome")
+    public String hrHome(Model model){
+         return "hr.html";
+    }
+
+    @GetMapping("/candidate/candidateHome")
+    public String candidateHome(Model model){
+        System.out.println("CONTR CAND");
+        return "candidate.html";
+    }
+
+    @GetMapping("/employee/employeeHome")
+    public String employeeHome(Model model){
+        return "employee.html";
+    }
+
+    @GetMapping("/admin/adminHome")
+    public String adminHome(Model model){
+        return "admin.html";
+    }
+
 }
 
 //        String uploadDir="./src/main/resources/photo-user/"+email;

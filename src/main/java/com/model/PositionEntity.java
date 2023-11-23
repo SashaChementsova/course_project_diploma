@@ -15,7 +15,7 @@ public class PositionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPosition;
     @ManyToOne(fetch = FetchType.LAZY)
-    private LevelPositionEntity positionLanguage;
+    private LevelPositionEntity levelPosition;
     @ManyToOne(fetch = FetchType.LAZY)
     private PositionNameEntity positionName;
 

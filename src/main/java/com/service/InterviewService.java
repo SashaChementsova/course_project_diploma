@@ -3,9 +3,10 @@ package com.service;
 import com.model.InterviewEntity;
 import com.repository.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class InterviewService {
     private final InterviewRepository interviewRepository;
     @Autowired

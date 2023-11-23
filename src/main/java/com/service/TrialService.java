@@ -3,9 +3,10 @@ package com.service;
 import com.model.TrialEntity;
 import com.repository.TrialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class TrialService {
     private final TrialRepository trialRepository;
     @Autowired

@@ -43,22 +43,18 @@ public class UserDetailsEntity {
     @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
     private AdminEntity adminEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
     private HrEntity hrEntity;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
     private CandidateEntity candidateEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
     private EmployeeEntity employeeEntity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name="UserDetailsHasChatsEntity",
-            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="idUserDetails")},
-            inverseJoinColumns={@JoinColumn(name="CHAT_ID", referencedColumnName="idChat")})
-    private List<ChatEntity> chats = new ArrayList<>();
+    @OneToMany(mappedBy = "userDetailsEntity")
+    private List<UserDetailsHasChatsEntity> userDetailsHasChatsEntities;
 
     @OneToOne(mappedBy = "userDetailsEntity", fetch = FetchType.LAZY)
     private ImageEntity imageEntity;

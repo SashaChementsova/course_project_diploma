@@ -2,6 +2,8 @@ package com.repository;
 
 import com.model.HrEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface HrRepository extends JpaRepository<HrEntity,Integer> {
 }

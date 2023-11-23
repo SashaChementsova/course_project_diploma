@@ -3,9 +3,10 @@ package com.service;
 import com.model.LevelPositionEntity;
 import com.repository.LevelPositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class LevelPositionService {
     private final LevelPositionRepository levelPositionRepository;
     @Autowired

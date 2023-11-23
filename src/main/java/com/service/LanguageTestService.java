@@ -3,9 +3,10 @@ package com.service;
 import com.model.LanguageTestEntity;
 import com.repository.LanguageTestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class LanguageTestService {
     private final LanguageTestRepository languageTestRepository;
     @Autowired

@@ -24,7 +24,7 @@ public class EmployeeEntity {
     @Column(nullable = false)
     private Date dateContractEnd;
 
-    @OneToOne(mappedBy = "employeeEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
 
     @OneToOne(mappedBy = "employeeEntity", fetch = FetchType.LAZY)

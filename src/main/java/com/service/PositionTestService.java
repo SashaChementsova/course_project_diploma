@@ -3,9 +3,10 @@ package com.service;
 import com.model.PositionTestEntity;
 import com.repository.PositionTestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class PositionTestService {
     private final PositionTestRepository positionTestRepository;
     @Autowired

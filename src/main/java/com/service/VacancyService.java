@@ -3,9 +3,10 @@ package com.service;
 import com.model.VacancyEntity;
 import com.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class VacancyService {
     private final VacancyRepository vacancyRepository;
     @Autowired

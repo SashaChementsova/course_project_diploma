@@ -18,6 +18,6 @@ public class LevelPositionEntity {
 
     @Column(nullable=false, unique=true)
     private String level;
-    @OneToMany(mappedBy = "positionLanguage")
+    @OneToMany(mappedBy = "levelPosition")
     private List<PositionEntity> positionEntities;
 }

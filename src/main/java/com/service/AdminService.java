@@ -3,9 +3,10 @@ package com.service;
 import com.model.AdminEntity;
 import com.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class AdminService {
     private final AdminRepository adminRepository;
     @Autowired

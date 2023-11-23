@@ -3,9 +3,10 @@ package com.service;
 import com.model.SkillEntity;
 import com.repository.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SkillService {
     private final SkillRepository skillRepository;
     @Autowired

@@ -3,9 +3,10 @@ package com.service;
 import com.model.OrganizationalAndLegalFormEntity;
 import com.repository.OrganizationalAndLegalFormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class OrganizationalAndLegalFormService {
     private final OrganizationalAndLegalFormRepository organizationalAndLegalFormRepository;
     @Autowired

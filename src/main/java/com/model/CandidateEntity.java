@@ -18,7 +18,7 @@ public class CandidateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCandidate;
 
-    @OneToOne(mappedBy = "candidateEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private UserDetailsEntity userDetailsEntity;
 
     @OneToOne(mappedBy = "candidateEntity", fetch = FetchType.LAZY)
