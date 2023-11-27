@@ -21,4 +21,8 @@ public class LanguageName {
 
     @OneToMany(mappedBy = "languageName")
     private List<Language> languageEntities;
+
+    public LanguageName(String name) {
+        this.name = name;
+    }
 }

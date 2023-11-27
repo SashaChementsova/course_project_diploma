@@ -56,6 +56,6 @@ public class UserDetail {
     @OneToMany(mappedBy = "userDetail")
     private List<UserDetailsHasChats> userDetailsHasChatsEntities;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image image;
 }

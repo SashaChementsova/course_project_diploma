@@ -10,4 +10,6 @@ public interface LanguageNameService {
 
     public LanguageName findLanguageNameById(int id);
     public void deleteLanguageName(int id);
+
+    public void initializeLanguageName();
 }

@@ -20,4 +20,8 @@ public class PositionName {
 
     @OneToMany(mappedBy = "positionName")
     private List<Position> positionEntities;
+
+    public PositionName(String name) {
+        this.name = name;
+    }
 }

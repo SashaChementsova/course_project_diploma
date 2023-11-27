@@ -18,8 +18,8 @@ public class Image {
     private Long size;
     private String contentType;
     @Lob
+    @Column(name = "bytes", columnDefinition = "longblob")
     private byte[] bytes;
-
     @OneToOne(mappedBy = "image", fetch = FetchType.LAZY)
     private UserDetail userDetail;
 }

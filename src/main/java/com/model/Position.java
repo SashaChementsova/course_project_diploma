@@ -27,4 +27,9 @@ public class Position {
 
     @OneToMany(mappedBy = "position")
     private List<PositionTestQuestion> positionTestQuestionEntities;
+
+    @Override
+    public String toString() {
+        return positionName.getName()+" "+levelPosition.getLevel();
+    }
 }

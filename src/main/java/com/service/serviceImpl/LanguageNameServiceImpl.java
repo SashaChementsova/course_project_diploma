@@ -31,4 +31,18 @@ public class LanguageNameServiceImpl implements LanguageNameService {
     public void deleteLanguageName(int id){
         languageNameRepository.deleteById(id);
     }
+
+    @Override
+    public void initializeLanguageName(){
+        try{
+            languageNameRepository.save(new LanguageName("Английский"));
+            languageNameRepository.save(new LanguageName("Немецкий"));
+            languageNameRepository.save(new LanguageName("Китайский"));
+        }
+        catch (Exception ex){
+            System.out.println("Значения уже есть");
+        }
+
+
+    }
 }

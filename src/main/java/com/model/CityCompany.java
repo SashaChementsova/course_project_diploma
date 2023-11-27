@@ -19,11 +19,12 @@ public class CityCompany {
     private String nameCity;
 
     @OneToMany(mappedBy = "cityCompany")
-    private List<AddressCompany> addressCompanyEntities;
-
-    @OneToMany(mappedBy = "cityCompany")
     private List<Employee> employeeEntities;
 
     @OneToMany(mappedBy = "cityCompany")
     private List<Vacancy> vacancyEntities;
+
+    public CityCompany(String nameCity) {
+        this.nameCity = nameCity;
+    }
 }

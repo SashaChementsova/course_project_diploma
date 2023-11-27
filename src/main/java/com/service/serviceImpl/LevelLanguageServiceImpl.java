@@ -31,4 +31,20 @@ public class LevelLanguageServiceImpl implements LevelLanguageService {
     public void deleteLevelLanguage(int id){
         levelLanguageRepository.deleteById(id);
     }
+
+    @Override
+    public void initializeLevelLanguage(){
+        try{
+            levelLanguageRepository.save(new LevelLanguage("A1"));
+            levelLanguageRepository.save(new LevelLanguage("A2"));
+            levelLanguageRepository.save(new LevelLanguage("B1"));
+            levelLanguageRepository.save(new LevelLanguage("B2"));
+            levelLanguageRepository.save(new LevelLanguage("C1"));
+            levelLanguageRepository.save(new LevelLanguage("C2"));
+        }
+        catch (Exception ex){
+            System.out.println("Значения уже есть");
+        }
+
+    }
 }

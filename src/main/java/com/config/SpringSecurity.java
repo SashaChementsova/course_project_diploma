@@ -25,18 +25,17 @@ public class SpringSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/").permitAll()
-                                .requestMatchers("/visitor/**").permitAll()
-                                // .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers("/styles/**").permitAll()
+                                .requestMatchers("/photos/**").permitAll()
+                                .requestMatchers("/images/**").permitAll()
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/roles").permitAll()
-//                             .requestMatchers("/user/**").hasRole("USER")
                                 .requestMatchers("/hr/**").hasRole("HR")
                                 .requestMatchers("/employee/**").hasRole("EMPLOYEE")
-                                .requestMatchers("/candidate/candidateHome").hasRole("CANDIDATE")
-                                .requestMatchers("/admin/userControl/**").hasRole("ADMIN")
-                                .requestMatchers("/admin/**").hasRole("ADMIN")//.anyRequest().authenticated()
+                                .requestMatchers("/candidate/**").hasRole("CANDIDATE")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
 
 
 

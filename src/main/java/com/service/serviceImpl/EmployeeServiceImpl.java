@@ -6,6 +6,8 @@ import com.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,4 +33,42 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(int id){
         employeeRepository.deleteById(id);
     }
+
+    @Override
+    public int calculateDifferenceDates(Employee employee){
+        int age=0;
+        String date1 = new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateRecruitment());
+        String date2 = new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateContractEnd());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateOne = null;
+        Date dateTwo = null;
+        try {
+            dateOne = format.parse(date1);
+            dateTwo = format.parse(date2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Количество дней между датами в миллисекундах
+        long difference = dateTwo.getTime() - dateOne.getTime();
+        // Перевод количества дней между датами из миллисекунд в дни
+        double days = difference / (24 * 60 * 60 * 1000); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
+        double years=days/365;
+        age= (int) Math.floor(years);
+        return age;
+    }
+
+    @Override
+    public int compareDates(String date1,String date2){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateOne = null;
+        Date dateTwo = null;
+        try {
+            dateOne = format.parse(date1);
+            dateTwo = format.parse(date2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateOne.compareTo(dateTwo);
+    }
+
 }

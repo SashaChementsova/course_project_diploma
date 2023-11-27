@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href ="/styles/main.css">
+    <style>
+        #td1{
+            min-width: 900px;
+            max-width: 900px;
+        }
+        #td2{
+            align-items: center;
+            min-width: 560px;
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <table>
+        <tr>
+            <td id="td1">
+                <img th:src="@{/photos/1.png}" height="65px">
+            </td>
+            <td id="td2"><ul id="navbar">
+
+                <li><a th:href="@{/logout}" style="color:#171717; text-decoration:none">ВЫЙТИ</a></li>
+            </ul></td>
+        </tr>
+    </table>
+</div>
+<div class="container">
+    <img th:src="@{'/images/'+${photo.getIdImage()}}"  height="60px"/><br><br>
+    <p th:text="${user.surname}"></p>
+    <p th:text="${user.name}"></p>
+</div>
+<div class="footer">
+    <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
+</div>
+</body>
+</html>

@@ -17,8 +17,6 @@ public class Admin {
     private String nameCompany;
     @Column(nullable = false,unique = true)
     private String nameDirector;
-    @OneToOne(fetch = FetchType.LAZY)
-    private OrganizationalAndLegalForm organizationalAndLegalForm;
 
     @OneToOne(fetch = FetchType.LAZY)     ///////////////////////////////////////////////////////////////
     private UserDetail userDetail;

@@ -1,6 +1,7 @@
 package com.service.serviceImpl;
 
 import com.model.LevelPosition;
+import com.model.PositionName;
 import com.repository.LevelPositionRepository;
 import com.service.LevelPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,18 @@ public class LevelPositionServiceImpl implements LevelPositionService {
     @Override
     public void deleteLevelPosition(int id){
         levelPositionRepository.deleteById(id);
+    }
+
+    @Override
+    public void initializeLevelPosition(){
+        try{
+            levelPositionRepository.save(new LevelPosition("Junior"));
+            levelPositionRepository.save(new LevelPosition("Middle"));
+            levelPositionRepository.save(new LevelPosition("Senior"));
+        }
+        catch (Exception ex){
+            System.out.println("Значения уже есть");
+        }
+
     }
 }

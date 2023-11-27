@@ -31,4 +31,9 @@ public class CityCompanyServiceImpl implements CityCompanyService {
     public void deleteCityCompany(int id){
         cityCompanyRepository.deleteById(id);
     }
+
+    @Override
+    public void initializeCityCompany(){
+        cityCompanyRepository.save(new CityCompany("Минск"));
+    }
 }

@@ -12,4 +12,6 @@ public interface LevelLanguageService {
     public LevelLanguage findLevelLanguageById(int id);
 
     public void deleteLevelLanguage(int id);
+
+    public void initializeLevelLanguage();
 }

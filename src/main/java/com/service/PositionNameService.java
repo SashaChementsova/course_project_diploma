@@ -10,4 +10,6 @@ public interface PositionNameService {
 
     public PositionName findPositionNameById(int id);
     public void deletePositionName(int id);
+
+    public void initializePositionName();
 }

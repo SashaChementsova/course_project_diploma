@@ -10,4 +10,6 @@ public interface LevelPositionService {
 
     public LevelPosition findLevelPositionById(int id);
     public void deleteLevelPosition(int id);
+
+    public void initializeLevelPosition();
 }

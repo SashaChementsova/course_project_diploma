@@ -3,6 +3,7 @@ package com.service.serviceImpl;
 import com.model.PositionName;
 import com.repository.PositionNameRepository;
 import com.service.PositionNameService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,15 @@ public class PositionNameServiceImpl implements PositionNameService {
     @Override
     public void deletePositionName(int id){
         positionNameRepository.deleteById(id);
+    }
+
+    @Override
+    public void initializePositionName(){
+        try {
+            positionNameRepository.save(new PositionName("HR-менеджер"));
+        }
+        catch (Exception ex){
+            System.out.println("Значения уже есть");
+        }
     }
 }
