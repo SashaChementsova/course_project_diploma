@@ -188,4 +188,13 @@ public class UserDetailServiceImpl implements UserDetailService {
         image.setBytes(result.getBytes());
         return image;
     }
+    @Override
+    public boolean checkPassword(UserDetail user,String password){
+        return passwordEncoder.matches(password,user.getPassword());
+    }
+    @Override
+    public UserDetail savePassword(UserDetail user,String password){
+        user.setPassword(passwordEncoder.encode(password));
+        return userDetailRepository.save(user);
+    }
 }

@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.dto.Password;
 import com.dto.UserDto;
 import com.model.*;
 import com.service.*;
@@ -30,6 +31,8 @@ public class AdminEmployeeController {
     LevelPositionService levelPositionService;
     PositionService positionService;
     CityCompanyService cityCompanyService;
+
+
 
 
     public AdminEmployeeController(RoleService roleService, EmployeeService employeeService, HrService hrService, ImageService imageService, UserDetailService userDetailService, PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService, CityCompanyService cityCompanyService) {
@@ -217,6 +220,33 @@ public class AdminEmployeeController {
     }
 
 
+
+
+
+
+    @GetMapping("/admin/editEmployeePassword/{id}")
+    public String editEmployeePassword(@PathVariable("id") String id, Model model){
+        checkPositions();
+        checkCityAndAddress();
+        Password password=new Password();
+        password.setIdUser(employeeService.findEmployeeById(Integer.parseInt(id)).getUserDetail().getIdUserDetails());
+        model.addAttribute("password",password);
+        model.addAttribute("idPosition", employeeService.findEmployeeById(Integer.parseInt(id)).getPosition().getPositionName().getIdPositionName());
+        return "admin/employeeControl/editEmployeePassword.html";
+    }
+
+    @PostMapping("/admin/editEmployeePassword/end/{id}")
+    public String editEmployeePositionEnd(@PathVariable("id") String id, Password password, Model model, BindingResult result) throws IOException {
+        //System.out.println(user.getIdUserDetails()+" "+positionName.getIdPositionName()+" "+levelPosition.getIdLevelPosition()+" "+cityCompany.getIdCityCompany());
+        checkPositions();
+        checkCityAndAddress();
+        System.out.println();
+        System.out.println(password.getNewPassword()+password.getNewPasswordRepeat());
+        if(checkPasswords(password,id,model)) return "admin/employeeControl/editEmployeePassword.html";
+        userDetailService.savePassword(userDetailService.findUserById(password.getIdUser()),password.getNewPassword());
+        return "redirect:/admin/employees/"+Integer.parseInt(id);
+    }
+
     private void checkPositions(){
         if(positionNameService.getPositionNames().isEmpty()) positionNameService.initializePositionName();
         if(levelPositionService.getLevelPositions().isEmpty()) levelPositionService.initializeLevelPosition();
@@ -390,6 +420,41 @@ public class AdminEmployeeController {
         model.addAttribute("employee",new Employee());
     }
 
+    public boolean checkPasswords(Password password,String id,Model model){
+        final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
+        model.addAttribute("password",password);
+        model.addAttribute("idPosition", id);
+        if(password.getNewPassword().isEmpty()||password.getOldPassword().isEmpty()||password.getNewPasswordRepeat().isEmpty()){
+            model.addAttribute("empty","empty");
+            return true;
+        }
+//        ^                  # start of the string
+//        (?=.*[0-9])        # a digit must occur at least once
+//                (?=.*[a-z])        # a lower case letter must occur at least once
+//        (?=.*[A-Z])        # an upper case letter must occur at least once
+//        (?=.*[@#$%^&+=])   # a special character must occur at least once
+//        (?=\\S+$)          # no whitespace allowed in the entire string
+//                .{8,16}            # 8-16 character password, both inclusive
+//        $                  # end of the string
+        final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+        if (!(PASSWORD_PATTERN.matcher(password.getOldPassword()).matches())){
+            model.addAttribute("wrongOldPassword","wrongOldPassword");
+            return true;
+        }
+        if(!(PASSWORD_PATTERN.matcher(password.getNewPassword()).matches())){
+            model.addAttribute("wrongNewPassword","wrongNewPassword");
+            return true;
+        }
+        if(!(userDetailService.checkPassword(userDetailService.findUserById(password.getIdUser()),password.getOldPassword()))){
+            model.addAttribute("wrongOldUserPassword","wrongOldUserPassword");
+            return true;
+        }
+        if(!(password.getNewPassword().equals(password.getNewPasswordRepeat()))){
+            model.addAttribute("notEqual","notEqual");
+            return true;
+        }
+        return false;
+    }
 
 
     //сделать изменение пароля

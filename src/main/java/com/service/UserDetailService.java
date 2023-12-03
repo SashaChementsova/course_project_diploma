@@ -22,4 +22,8 @@ public interface UserDetailService {
 
     public UserDetail findUserByPhone(String phone) ;
     public int calculateAge(String dateOfBirth);
+
+    public boolean checkPassword(UserDetail user,String password);
+
+    public UserDetail savePassword(UserDetail user,String password);
 }

@@ -121,7 +121,8 @@
                 <td th:text="*{employee.getDateRecruitment()}"></td>
                 <td th:text="*{employee.getDateContractEnd()}"></td>
                 <td th:text="*{employee.getCityCompany().getNameCity()}"></td>
-                <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/editEmployeePassword/{id}(id=${employee.idEmployee})}" ><i class="fa fa-lock" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>
