@@ -49,33 +49,33 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/addPosition/end}"
-                th:object="${position}"
+                th:action="@{/admin/addDepartment/end}"
+                th:object="${department}"
                 enctype="multipart/form-data"
         >
-            <h1>Должность</h1>
+            <h1>Отдел компании</h1>
             <div class="field">
-                <label for="name">Добавление должности</label>
+                <label for="nameDepartment">Название отдела</label>
                 <input
-                        id="name"
-                        name="name"
-                        placeholder="Введите название должности"
-                        th:field="*{name}"
+                        id="nameDepartment"
+                        name="nameDepartment"
+                        placeholder="Введите название отдела"
+                        th:field="*{nameDepartment}"
                         type="text"
 
                 />
-                <p th:errors = "*{name}"
-                   th:if="${#fields.hasErrors('name')}">
+                <p th:errors = "*{nameDepartment}"
+                   th:if="${#fields.hasErrors('nameDepartment')}">
                 </p>
                 <p th:if="${fail}">
-                    Такая должность уже существует!!!
+                    Такой отдел уже существует!!!
                 </p>
             </div>
             <div>
-                <button type="submit">Добавить должность</button>
+                <button type="submit">Добавить отдел</button>
             </div>
         </form>
-        <a th:href="@{/admin/positions}">
+        <a th:href="@{/admin/departments}">
             <button>
                 Отмена
             </button>
@@ -88,34 +88,35 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/editPosition/end}"
-                th:object="${position}"
+                th:action="@{/admin/editDep/end}"
+                th:object="${department1}"
                 enctype="multipart/form-data"
         >
             <h1>Редактирование должности</h1>
-            <input type="hidden" th:field="*{idPosition}">
+            <input type="hidden" th:field="*{idDepartment}">
             <div class="field">
-                <label for="nameEdit">Название должности</label>
+                <label for="nameDepartmentEdit">Название отдела</label>
+
                 <input
-                        id="nameEdit"
-                        name="nameEdit"
-                        placeholder="Введите название должности"
-                        th:field="*{name}"
+                        id="nameDepartmentEdit"
+                        name="nameDepartmentEdit"
+                        placeholder="Введите название отдела"
+                        th:field="*{nameDepartment}"
                         type="text"
 
                 />
-                <p th:errors = "*{name}"
-                   th:if="${#fields.hasErrors('name')}">
+                <p th:errors = "*{nameDepartment}"
+                   th:if="${#fields.hasErrors('nameDepartment')}">
                 </p>
                 <p th:if="${fail1}">
-                    Такая должность уже существует!!!
+                    Такой отдел уже существует!!!
                 </p>
             </div>
             <div>
-                <button type="submit">Отредактировать должность</button>
+                <button type="submit">Отредактировать отдел</button>
             </div>
         </form>
-        <a th:href="@{/admin/positions}">
+        <a th:href="@{/admin/departments}">
             <button>
                 Отмена
             </button>
@@ -136,19 +137,23 @@
         </tr>
     </table>
 </div>
-<a th:href="@{/admin/addPosition}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
+<a th:href="@{/admin/addDep}" ><i class="fa fa-plus" style="color:black"></i></a>
 <div th:switch="${emptiness}">
-    <div th:case="'empty'">Нет зарегистрированных должностей!</div>
+    <div th:case="'empty'">Нет зарегистрированных отделов!</div>
     <div th:case="*">
         <table>
             <tr>
-                <th>Название должности</th>
+                <th>№</th>
+                <th>Название отдела</th>
+                <th>Должности отдела</th>
                 <th></th>
             </tr>
-            <tr th:each="position:${positions}" >
-                <td th:text="*{position.name}">
+            <tr th:each="department, iStat:${departments}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+                <td th:text="${iStat.index+1}"></td>
+                <td th:text="${department.nameDepartment}">
                 </td>
-                <td><a th:href="@{/admin/editPosition/{id}(id=${position.idPositionName})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/positions/{id}(id=${department.idDepartment})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/editDep/{id}(id=${department.idDepartment})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

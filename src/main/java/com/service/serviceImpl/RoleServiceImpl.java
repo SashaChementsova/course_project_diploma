@@ -31,4 +31,16 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(int id){
         roleRepository.deleteById(id);
     }
+
+    @Override
+    public Role checkAndFindHrRole(){
+        Role role=roleRepository.findByNameRole("ROLE_HR");
+        if(role==null){
+            role=new Role();
+            role.setNameRole("ROLE_HR");
+            role= addAndUpdateRole(role);
+        }
+        System.out.println(role.getNameRole()+" service");
+        return role;
+    }
 }

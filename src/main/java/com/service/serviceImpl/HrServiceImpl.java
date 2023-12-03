@@ -1,6 +1,7 @@
 package com.service.serviceImpl;
 
 import com.model.Hr;
+import com.model.UserDetail;
 import com.repository.HrRepository;
 import com.service.HrService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,16 @@ public class HrServiceImpl implements HrService {
 
         return hrRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Hr findHrByUserDetail(UserDetail userDetail){
+
+        return hrRepository.findByUserDetail(userDetail);
+    }
     @Override
     public void deleteHr(int id){
         hrRepository.deleteById(id);
     }
+
+
 }

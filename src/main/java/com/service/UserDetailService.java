@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface UserDetailService {
 
-    public void saveUser(UserDto userDto, String roleName) throws IOException;
-    public void saveUser(UserDetail userDetail, String roleName) throws IOException;
+    public UserDetail saveUser(UserDto userDto, String roleName) throws IOException;
+    public UserDetail saveUser(UserDetail userDetail, String roleName) throws IOException;
     public UserDetail updateUser(UserDetail user);
 
     public List<UserDto> getUsers();

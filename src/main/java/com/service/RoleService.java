@@ -10,4 +10,5 @@ public interface RoleService {
 
     public Role findRoleById(int id);
     public void deleteRole(int id);
+    public Role checkAndFindHrRole();
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>SoftwareSeekers</title>
+    <title>Title</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .modalframe{
@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-<div th:if="${add}">
+<div th:if="${delete}">
     <div class="modalframe">
         <form
                 method="post"
@@ -82,46 +82,6 @@
         </a>
     </div>
 </div>
-
-<div th:if="${edit}">
-    <div class="modalframe">
-        <form
-                method="post"
-                role="form"
-                th:action="@{/admin/editPosition/end}"
-                th:object="${position}"
-                enctype="multipart/form-data"
-        >
-            <h1>Редактирование должности</h1>
-            <input type="hidden" th:field="*{idPosition}">
-            <div class="field">
-                <label for="nameEdit">Название должности</label>
-                <input
-                        id="nameEdit"
-                        name="nameEdit"
-                        placeholder="Введите название должности"
-                        th:field="*{name}"
-                        type="text"
-
-                />
-                <p th:errors = "*{name}"
-                   th:if="${#fields.hasErrors('name')}">
-                </p>
-                <p th:if="${fail1}">
-                    Такая должность уже существует!!!
-                </p>
-            </div>
-            <div>
-                <button type="submit">Отредактировать должность</button>
-            </div>
-        </form>
-        <a th:href="@{/admin/positions}">
-            <button>
-                Отмена
-            </button>
-        </a>
-    </div>
-</div>
 <div>
     <table >
         <tr>
@@ -136,19 +96,32 @@
         </tr>
     </table>
 </div>
-<a th:href="@{/admin/addPosition}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
+<a th:href="@{/admin/addEmployee/start/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
+<h1 th:text="${position.getName()}"></h1>
 <div th:switch="${emptiness}">
-    <div th:case="'empty'">Нет зарегистрированных должностей!</div>
+    <div th:case="'empty'">Нет зарегистрированных сотрудников!</div>
     <div th:case="*">
         <table>
             <tr>
-                <th>Название должности</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Позиция</th>
+                <th>Дата подписания контракта</th>
+                <th>Дата окончания контракта</th>
+                <th>Адрес компании</th>
+                <th></th>
                 <th></th>
             </tr>
-            <tr th:each="position:${positions}" >
-                <td th:text="*{position.name}">
-                </td>
-                <td><a th:href="@{/admin/editPosition/{id}(id=${position.idPositionName})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
+            <tr th:each="employee:${employees}" >
+                <td th:text="*{employee.getUserDetail().getSurname()}"></td>
+                <td th:text="*{employee.getUserDetail().getName()}"></td>
+                <td th:text="*{employee.getUserDetail().getPatronymic()}"></td>
+                <td th:text="*{employee.getPosition().toString()}"></td>
+                <td th:text="*{employee.getDateRecruitment()}"></td>
+                <td th:text="*{employee.getDateContractEnd()}"></td>
+                <td th:text="*{employee.getCityCompany().getNameCity()}"></td>
+                <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

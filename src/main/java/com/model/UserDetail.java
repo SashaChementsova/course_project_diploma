@@ -38,16 +38,16 @@ public class UserDetail {
             name="UserDetailsHasRole",
             joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="idUserDetails")},
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="idRole")})
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
 
-    @OneToOne(mappedBy = "userDetail", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetail", fetch = FetchType.EAGER)
     private Admin admin;
 
-    @OneToOne(mappedBy = "userDetail", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetail", fetch = FetchType.EAGER)
     private Hr hr;
 
 
-    @OneToOne(mappedBy = "userDetail", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userDetail", fetch = FetchType.EAGER)
     private Candidate candidate;
 
     @OneToOne(mappedBy = "userDetail", fetch = FetchType.LAZY)
@@ -58,4 +58,8 @@ public class UserDetail {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image image;
+
+    public void addRole(Role role){
+        roles.add(role);
+    }
 }

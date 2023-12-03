@@ -28,7 +28,7 @@
     <form
             method="post"
             role="form"
-            th:action="@{/admin/addEmployee/end}"
+            th:action="@{/admin/addEmployee/end/{id}(id=${position.getIdPositionName()})}"
             th:object="${user}"
             enctype="multipart/form-data"
     >
@@ -76,7 +76,7 @@
                     placeholder="Введите фамилию"
                     th:field="*{surname}"
                     type="text"
-                    pattern="^[А-Яа-яЁё\s]+$"
+                    pattern="([А-Яёа-я -]+)|([\s]+)"
             />
             <p th:errors = "*{surname}" class="info"
                th:if="${#fields.hasErrors('surname')}"></p>
@@ -90,7 +90,7 @@
                     placeholder="Введите имя"
                     th:field="*{name}"
                     type="text"
-                    pattern="^[А-Яа-яЁё\s]+$"
+                    pattern="([А-Яёа-я -]+)|([\s]+)"
             />
             <p th:errors = "*{name}" class="info"
                th:if="${#fields.hasErrors('name')}"></p>
@@ -103,7 +103,7 @@
                     placeholder="Введите отчество"
                     th:field="*{patronymic}"
                     type="text"
-                    pattern="^[А-Яа-яЁё\s]+$"
+                    pattern="([А-Яёа-я -]+)|([\s]+)"
             />
             <p th:errors = "*{patronymic}" class="info"
                th:if="${#fields.hasErrors('patronymic')}"></p>
@@ -129,7 +129,7 @@
                     placeholder="Введите info"
                     th:field="*{info}"
                     type="text"
-                    pattern="^[А-Яа-яЁё\s]+$"
+                    pattern="([А-Яёа-я -]+)|([\s]+)"
             />
             <p th:errors = "*{info}" class="info"
                th:if="${#fields.hasErrors('info')}"></p>
@@ -204,14 +204,14 @@
                 <div th:each="c : ${cities}"><option th:value="${c.idCityCompany}"><p th:text="${c.nameCity}"></p></option></div>
             </select>
         </div>
+<!--        <div class="field">-->
+<!--            <label>Позиция</label>-->
+<!--            <select th:field="${position.idPositionName}">-->
+<!--                <div th:each="p : ${positions}"><option th:value="${p.idPositionName}"><p th:text="${p.name}"></p></option></div>-->
+<!--            </select>-->
+<!--        </div>-->
         <div class="field">
-            <label>Позиция</label>
-            <select th:field="${position.idPositionName}">
-                <div th:each="p : ${positions}"><option th:value="${p.idPositionName}"><p th:text="${p.name}"></p></option></div>
-            </select>
-        </div>
-        <div class="field">
-            <label>Уровень позиции</label>
+            <label>Уровень должности</label>
             <select th:field="${levelPosition.idLevelPosition}">
                 <div th:each="lp : ${levelPositions}"><option th:value="${lp.idLevelPosition}"><p th:text="${lp.level}"></p></option></div>
             </select>

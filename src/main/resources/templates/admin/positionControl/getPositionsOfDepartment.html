@@ -49,7 +49,7 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/addPosition/end}"
+                th:action="@{/admin/addPosDep/end/{id}(id=${departmentMain.idDepartment})}"
                 th:object="${position}"
                 enctype="multipart/form-data"
         >
@@ -75,7 +75,7 @@
                 <button type="submit">Добавить должность</button>
             </div>
         </form>
-        <a th:href="@{/admin/positions}">
+        <a th:href="@{/admin/positions/{id}(id=${departmentMain.idDepartment})}" >
             <button>
                 Отмена
             </button>
@@ -88,12 +88,12 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/editPosition/end}"
+                th:action="@{/admin/editPosDeb/end/{id}(id=${departmentMain.idDepartment})}"
                 th:object="${position}"
                 enctype="multipart/form-data"
         >
             <h1>Редактирование должности</h1>
-            <input type="hidden" th:field="*{idPosition}">
+            <input type="hidden" th:field="*{idPositionName}">
             <div class="field">
                 <label for="nameEdit">Название должности</label>
                 <input
@@ -115,7 +115,7 @@
                 <button type="submit">Отредактировать должность</button>
             </div>
         </form>
-        <a th:href="@{/admin/positions}">
+        <a th:href="@{/admin/positions/{id}(id=${departmentMain.idDepartment})}" >
             <button>
                 Отмена
             </button>
@@ -136,19 +136,23 @@
         </tr>
     </table>
 </div>
-<a th:href="@{/admin/addPosition}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
+<h1 th:text="${departmentMain.getNameDepartment()}"></h1>
+<a th:href="@{/admin/addPosDep/{id}(id=${departmentMain.getIdDepartment()})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
 <div th:switch="${emptiness}">
     <div th:case="'empty'">Нет зарегистрированных должностей!</div>
     <div th:case="*">
         <table>
             <tr>
+                <th>№</th>
                 <th>Название должности</th>
+                <th>Сотрудники</th>
                 <th></th>
             </tr>
-            <tr th:each="position:${positions}" >
-                <td th:text="*{position.name}">
-                </td>
-                <td><a th:href="@{/admin/editPosition/{id}(id=${position.idPositionName})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
+            <tr th:each="position,iStat:${positions}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+                <td th:text="${iStat.index+1}"></td>
+                <td th:text="*{position.name}"></td>
+                <td><a th:href="@{/admin/employees/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/editPosDep/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

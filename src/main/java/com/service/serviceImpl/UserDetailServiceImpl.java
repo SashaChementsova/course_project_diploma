@@ -40,7 +40,7 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     @Override
-    public void saveUser(UserDto userDto, String roleName) throws IOException {
+    public UserDetail saveUser(UserDto userDto, String roleName) throws IOException {
         System.out.println("photka5432");
         UserDetail userDetails =fromUserDtoToUserDetails(userDto);
         Role role = roleRepository.findByNameRole(roleName);
@@ -50,7 +50,6 @@ public class UserDetailServiceImpl implements UserDetailService {
         Image image=new Image();
         if(userDto.getFile1().getSize()!=0){
             image=toImageEntity(userDto.getFile1());
-
         }
         else{
             image=getDefaultPicture();
@@ -60,11 +59,11 @@ public class UserDetailServiceImpl implements UserDetailService {
         userDetails.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         System.out.println("saved");
         image.setUserDetail(userDetails);
-        userDetailRepository.save(userDetails);
+        return userDetailRepository.save(userDetails);
     }
 
     @Override
-    public void saveUser(UserDetail userDetail, String roleName) throws IOException {
+    public UserDetail saveUser(UserDetail userDetail, String roleName) throws IOException {
         Role role = roleRepository.findByNameRole(roleName);
         if(role == null){
             role = checkRoleExist(roleName);
@@ -75,7 +74,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         userDetail.setPassword(passwordEncoder.encode(userDetail.getPassword()));
         System.out.println("saved");
         //image.setUserDetail(userDetails);
-        userDetailRepository.save(userDetail);
+        return userDetailRepository.save(userDetail);
     }
 
     private Image toImageEntity(MultipartFile file) throws IOException {

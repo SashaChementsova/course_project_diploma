@@ -20,8 +20,13 @@ public class PositionName {
 
     @OneToMany(mappedBy = "positionName")
     private List<Position> positionEntities;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
     public PositionName(String name) {
         this.name = name;
+    }
+    public PositionName(String name,Department department) {
+        this.name = name;
+        this.department=department;
     }
 }

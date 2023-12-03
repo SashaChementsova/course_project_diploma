@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru"
-      xmlns:th="http://www.w3.org/1999/xhtml"
->
+<html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -169,7 +167,7 @@
             <button type="submit">Зарегистрироваться</button>
         </div>
     </form>
-    <a th:href="@{/register}">
+    <a onclick="history.go(-1)">
         <button>
             Назад
         </button>
