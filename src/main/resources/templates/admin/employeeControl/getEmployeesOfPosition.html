@@ -49,33 +49,46 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/addPosition/end}"
-                th:object="${position}"
+                th:action="@{/admin/deleteEmployee/end/{id}(id=${position.idPositionName})}"
+                th:object="${employee}"
                 enctype="multipart/form-data"
         >
-            <h1>Должность</h1>
+            <h1>Подтвердите удаление сотрудника</h1>
+            <input type="hidden" th:field="*{id}">
             <div class="field">
-                <label for="name">Добавление должности</label>
+                <label for="email">Email</label>
                 <input
-                        id="name"
-                        name="name"
-                        placeholder="Введите название должности"
-                        th:field="*{name}"
+                        id="email"
+                        name="email"
+                        placeholder="Введите email"
+                        th:field="*{email}"
                         type="text"
 
                 />
-                <p th:errors = "*{name}"
-                   th:if="${#fields.hasErrors('name')}">
+                <p th:errors = "*{email}"
+                   th:if="${#fields.hasErrors('email')}">
                 </p>
-                <p th:if="${fail}">
-                    Такая должность уже существует!!!
+                <p th:if="${emptyEmail}">
+                    Пожалуйста, введите Email!
+                </p>
+                <p th:if="${wrongEmail}">
+                    Пожалуйста, введите Email в указанном формате!
+                </p>
+                <p th:if="${notEqualEmail}">
+                    Не является Email данного сотрудника!
+                </p>
+                <p th:if="${interviewExist}">
+                    Данный сотрудник не может быть удален, так как закреплен за собеседованием!
+                </p>
+                <p th:if="${vacancyExist}">
+                    Данный сотрудник не может быть удален, так как закреплен за вакансией!
                 </p>
             </div>
             <div>
                 <button type="submit">Добавить должность</button>
             </div>
         </form>
-        <a th:href="@{/admin/positions}">
+        <a th:href="@{/admin/employees/{id}(id=${position.idPositionName})}">
             <button>
                 Отмена
             </button>
@@ -123,6 +136,7 @@
                 <td th:text="*{employee.getCityCompany().getNameCity()}"></td>
                 <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/editEmployeePassword/{id}(id=${employee.idEmployee})}" ><i class="fa fa-lock" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/deleteEmployee/{id}/{idEmployee}(id=${position.idPositionName},idEmployee=${employee.idEmployee})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

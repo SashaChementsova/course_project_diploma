@@ -456,12 +456,70 @@ public class AdminEmployeeController {
         return false;
     }
 
+    @GetMapping("/admin/deleteEmployee/{id}/{idEmployee}")
+    public String getEmployees(@PathVariable("id") String id,@PathVariable("idEmployee") String idEmployee, Model model){
+        checkPositions();
+        checkCityAndAddress();
+        model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+        model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
+        UserDto user=new UserDto();
+        user.setId(Integer.parseInt(idEmployee));
+        model.addAttribute("employee",user);
+        model.addAttribute("delete","delete");
+        return "admin/employeeControl/getEmployeesOfPosition.html";
+    }
 
-    //сделать изменение пароля
+    @PostMapping("/admin/deleteEmployee/end/{id}")
+    public String editDepartmentEnd(@PathVariable("id") String id, UserDto employee,Model model){
+        System.out.println(employee.getId());
+        if(checkEmailDelete(id,employee,model)) return "admin/employeeControl/getEmployeesOfPosition.html";
+        Employee employee1=employeeService.findEmployeeById(employee.getId());
+        UserDetail userDetail=userDetailService.findUserById(employee1.getUserDetail().getIdUserDetails());
+        Hr hr=hrService.findHrByUserDetail(userDetail);
+        if(hr!=null){
+            hrService.deleteHr(hr.getIdHr());
+        }
+        employeeService.deleteEmployee(employee1.getIdEmployee());
+        userDetailService.deleteUser(userDetail.getIdUserDetails());
+        return "redirect:/admin/employees/"+id;
+    }
+
     //удалить сотрудника введя его почту
     //проверить что у него нет никаких собеседований
     //удалить позиция проверяя что нет собес и вакансий, почистить вопросы
     //удалить отдел проверяя что нет собес и ваканс
 
+    public boolean checkEmailDelete(String id,UserDto employee,Model model ){
+        final String PASSWORD_REGEX = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+        model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+        model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
+        model.addAttribute("employee",employee);
+        model.addAttribute("delete","deleteEmployee");
+        if(employee.getEmail().isEmpty()){
+            model.addAttribute("emptyEmail","emptyEmail");
+            return true;
+        }
+        if (!(PASSWORD_PATTERN.matcher(employee.getEmail()).matches())){
+            model.addAttribute("wrongEmail","wrongEmail");
+            return true;
+        }
+        Employee employee1=employeeService.findEmployeeById(employee.getId());
+        if(!(employee1.getUserDetail().getEmail().equals(employee.getEmail()))){
+            model.addAttribute("notEqualEmail","notEqualEmail");
+            return true;
+        }
+        if(!(employee1.getInterviewEntities().isEmpty())){
+            model.addAttribute("interviewExist","interviewExist");
+            return true;
+        }
+        Hr hr=hrService.findHrByUserDetail(employee1.getUserDetail());
+        if(hr!=null&&!(hr.getVacancyEntities().isEmpty())){
+            model.addAttribute("vacancyExist","vacancyExist");
+            return true;
+        }
+        return false;
+    }
 
 }
