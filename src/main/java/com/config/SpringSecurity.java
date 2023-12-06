@@ -32,6 +32,7 @@ public class SpringSecurity {
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/roles").permitAll()
+                                .requestMatchers("/contract/**").hasAnyRole("HR","EMPLOYEE","CANDIDATE","ADMIN")
                                 .requestMatchers("/hr/**").hasRole("HR")
                                 .requestMatchers("/employee/**").hasRole("EMPLOYEE")
                                 .requestMatchers("/candidate/**").hasRole("CANDIDATE")

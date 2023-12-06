@@ -1,5 +1,6 @@
 package com.controller.admin;
 
+import com.dto.DataString;
 import com.dto.Password;
 import com.dto.UserDto;
 import com.model.*;
@@ -31,11 +32,9 @@ public class AdminEmployeeController {
     LevelPositionService levelPositionService;
     PositionService positionService;
     CityCompanyService cityCompanyService;
+    BackgroundService backgroundService;
 
-
-
-
-    public AdminEmployeeController(RoleService roleService, EmployeeService employeeService, HrService hrService, ImageService imageService, UserDetailService userDetailService, PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService, CityCompanyService cityCompanyService) {
+    public AdminEmployeeController(RoleService roleService, EmployeeService employeeService, HrService hrService, ImageService imageService, UserDetailService userDetailService, PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService, CityCompanyService cityCompanyService,BackgroundService backgroundService) {
         this.employeeService = employeeService;
         this.hrService = hrService;
         this.imageService = imageService;
@@ -45,6 +44,7 @@ public class AdminEmployeeController {
         this.positionService = positionService;
         this.cityCompanyService = cityCompanyService;
         this.roleService=roleService;
+        this.backgroundService=backgroundService;
     }
 
     @GetMapping("/admin/employees")
@@ -57,13 +57,31 @@ public class AdminEmployeeController {
     }
 
     @GetMapping("/admin/employees/{id}")
-    public String getEmployees(@PathVariable("id") String id, Model model){
+    public String getEmployees(@PathVariable("id") String id, DataString SNP, Model model){
         checkPositions();
         checkCityAndAddress();
-        model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
         model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
-        if(positionNameService.getEmployees(Integer.parseInt(id)).isEmpty()) model.addAttribute("emptiness","empty");
+        if(SNP.getData()==null){
+            model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+            model.addAttribute("SNP",new DataString());
+            if(positionNameService.getEmployees(Integer.parseInt(id)).isEmpty()) model.addAttribute("emptiness","empty");
+        }
+        else{
+            SNP.setData(SNP.getData().trim());
+            List<Employee>employees=employeeService.findEmployeeBySNP(SNP.getData(),positionNameService.findPositionNameById(Integer.parseInt(id)));
+            model.addAttribute("employees", employees);
+            model.addAttribute("SNP",SNP);
+            if(employees.isEmpty()) model.addAttribute("emptiness","empty");
+        }
         return "admin/employeeControl/getEmployeesOfPosition.html";
+    }
+
+    @GetMapping("/admin/employee/{id}")
+    public String getEmployee(@PathVariable("id") String idEmployee, Model model){
+        checkPositions();
+        checkCityAndAddress();
+        model.addAttribute("employee", employeeService.findEmployeeById(Integer.parseInt(idEmployee)));
+        return "admin/employeeControl/getEmployee.html";
     }
 
 //    @GetMapping("/admin/addEmployee/start")
@@ -110,7 +128,7 @@ public class AdminEmployeeController {
 //        if(position.getPositionName().getName().equals("HR-менеджер")){
 //            Hr hr=new Hr();
 //            hr.setUserDetail(user);
-//            hrService.addAndUpdateHr(hr); ЗДЕСЬ НЕТ ПРОВЕРКИ НА РОЛЬ HR
+//            hrService.addAndUpdateHr(hr); ЗДЕСЬ НЕТ ПРОВЕРКИ НА РОЛЬ HR И BACKGROUND ССЫЛКИ
 //        }
 //        return "redirect:/admin/employees";
 //    }
@@ -153,6 +171,9 @@ public class AdminEmployeeController {
                 userDetailService.updateUser(user);
             }
         }
+        Background background=new Background(); background.setExperience(0);
+        backgroundService.addAndUpdateBackground(background);
+        employee.setBackground(background);
         employee.setCityCompany(cityCompanyService.findCityCompanyById(cityCompany.getIdCityCompany()));
         employee.setPosition(position);
         employee.setUserDetail(user);
@@ -457,7 +478,7 @@ public class AdminEmployeeController {
     }
 
     @GetMapping("/admin/deleteEmployee/{id}/{idEmployee}")
-    public String getEmployees(@PathVariable("id") String id,@PathVariable("idEmployee") String idEmployee, Model model){
+    public String deleteEmployee(@PathVariable("id") String id,@PathVariable("idEmployee") String idEmployee, Model model){
         checkPositions();
         checkCityAndAddress();
         model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
@@ -470,8 +491,7 @@ public class AdminEmployeeController {
     }
 
     @PostMapping("/admin/deleteEmployee/end/{id}")
-    public String editDepartmentEnd(@PathVariable("id") String id, UserDto employee,Model model){
-        System.out.println(employee.getId());
+    public String deleteEmployeeEnd(@PathVariable("id") String id, UserDto employee,Model model){
         if(checkEmailDelete(id,employee,model)) return "admin/employeeControl/getEmployeesOfPosition.html";
         Employee employee1=employeeService.findEmployeeById(employee.getId());
         UserDetail userDetail=userDetailService.findUserById(employee1.getUserDetail().getIdUserDetails());
@@ -479,6 +499,8 @@ public class AdminEmployeeController {
         if(hr!=null){
             hrService.deleteHr(hr.getIdHr());
         }
+        positionService.deletePosition(employee1.getPosition().getIdPosition());
+        backgroundService.deleteBackground(employee1.getBackground().getIdBackground());
         employeeService.deleteEmployee(employee1.getIdEmployee());
         userDetailService.deleteUser(userDetail.getIdUserDetails());
         return "redirect:/admin/employees/"+id;

@@ -29,4 +29,9 @@ public class Language {
     private List<Vacancy> vacancyEntities;
     @OneToMany(mappedBy = "language")
     private List<LanguageTestQuestion> languageTestQuestionEntities;
+
+    @Override
+    public String toString() {
+        return languageName.getName()+" "+levelLanguage.getLevel();
+    }
 }

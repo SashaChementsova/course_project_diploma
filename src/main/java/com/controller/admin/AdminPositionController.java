@@ -35,6 +35,43 @@ public class AdminPositionController {
         return "admin/positionControl/getPositions.html";
     }
 
+    @GetMapping("/admin/deletePosition/{id}")
+    public String deletePosition(@PathVariable("id") String idPosition, Model model){
+        checkPositions();
+        PositionName positionName=new PositionName();
+        positionName.setIdPositionName(Integer.parseInt(idPosition));
+        model.addAttribute("positions",positionNameService.findPositionNameById(Integer.parseInt(idPosition)).getDepartment().getPositionNameEntities());
+        model.addAttribute("departmentMain",positionNameService.findPositionNameById(Integer.parseInt(idPosition)).getDepartment());
+        model.addAttribute("position",positionName);
+        model.addAttribute("delete","delete");
+        return "admin/positionControl/getPositionsOfDepartment.html";
+    }
+    @PostMapping("/admin/deletePosition/end")
+    public String deletePositionEnd(PositionName positionName, Model model){
+        checkPositions();
+        PositionName positionName1=positionNameService.findPositionNameById(positionName.getIdPositionName());
+        if(!(positionName1.getName().equals(positionName.getName())))
+        {
+            model.addAttribute("positions",positionName1.getDepartment().getPositionNameEntities());
+            model.addAttribute("departmentMain",positionName1.getDepartment());
+            model.addAttribute("position",positionName);
+            model.addAttribute("delete","delete");
+            model.addAttribute("fail","fail");
+            return "admin/positionControl/getPositionsOfDepartment.html";
+        }
+        if(!(positionName1.getPositionEntities().isEmpty())){
+            model.addAttribute("positions",positionName1.getDepartment().getPositionNameEntities());
+            model.addAttribute("departmentMain",positionName1.getDepartment());model.addAttribute("positions", positionNameService.getPositionNames());
+            model.addAttribute("position",positionName);
+            model.addAttribute("delete","delete");
+            model.addAttribute("notEmpty","notEmpty");
+            return "admin/positionControl/getPositionsOfDepartment.html";
+        }
+        Department department=positionName1.getDepartment();
+        positionNameService.deletePositionName(positionName.getIdPositionName());
+        return "redirect:/admin/positions/"+department.getIdDepartment();
+    }
+
     @GetMapping("/admin/positions/{id}")
     public String getPositionsOfDepartment(@PathVariable("id") String id,Model model){
         checkPositions();
@@ -58,6 +95,7 @@ public class AdminPositionController {
     @PostMapping("/admin/addPosition/end")
     public String addPositionEnd(PositionName positionName, Model model){
         try{
+
             positionNameService.addAndUpdatePositionName(positionName);
         }
         catch (Exception ex){

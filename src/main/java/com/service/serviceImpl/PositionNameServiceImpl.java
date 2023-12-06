@@ -1,5 +1,6 @@
 package com.service.serviceImpl;
 
+import com.comparators.positionNameComparator;
 import com.model.Department;
 import com.model.Employee;
 import com.model.Position;
@@ -8,6 +9,7 @@ import com.repository.DepartmentRepository;
 import com.repository.EmployeeRepository;
 import com.repository.PositionNameRepository;
 import com.repository.PositionRepository;
+import com.service.EmployeeService;
 import com.service.PositionNameService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,15 @@ import java.util.List;
 public class PositionNameServiceImpl implements PositionNameService {
     private final PositionNameRepository positionNameRepository;
     private final PositionRepository positionRepository;
-    private final EmployeeRepository employeeRepository;
+
+    private final EmployeeService employeeService;
     private final DepartmentRepository departmentRepository;
     @Autowired
-    public PositionNameServiceImpl(PositionNameRepository positionNameRepository,DepartmentRepository departmentRepository,PositionRepository positionRepository,EmployeeRepository employeeRepository){
+    public PositionNameServiceImpl(PositionNameRepository positionNameRepository, DepartmentRepository departmentRepository, PositionRepository positionRepository, EmployeeService employeeService){
         this.positionNameRepository = positionNameRepository;
         this.departmentRepository=departmentRepository;
         this.positionRepository=positionRepository;
-        this.employeeRepository=employeeRepository;
+        this.employeeService=employeeService;
     }
     @Override
     public PositionName addAndUpdatePositionName(PositionName positionName){
@@ -34,7 +37,9 @@ public class PositionNameServiceImpl implements PositionNameService {
     }
     @Override
     public List<PositionName> getPositionNames(){
-        return positionNameRepository.findAll();
+        List<PositionName> positionNames = positionNameRepository.findAll();
+        positionNames.sort(new positionNameComparator());
+        return positionNames;
     }
     @Override
     public PositionName findPositionNameById(int id){
@@ -60,7 +65,7 @@ public class PositionNameServiceImpl implements PositionNameService {
     public List<Employee> getEmployees(int id){
         PositionName positionName=positionNameRepository.findById(id).orElse(null);
         if(positionName==null) return null;
-        List<Employee> allEmployees=employeeRepository.findAll();
+        List<Employee> allEmployees=employeeService.getEmployees();
         List<Employee> employees=new ArrayList<>();
         for(Employee empl:allEmployees){
             if(empl.getPosition().getPositionName().getName().equals(positionName.getName())){

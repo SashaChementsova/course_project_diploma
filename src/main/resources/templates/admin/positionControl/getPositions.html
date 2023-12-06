@@ -82,6 +82,48 @@
         </a>
     </div>
 </div>
+<div th:if="${delete}">
+    <div class="modalframe">
+        <form
+                method="post"
+                role="form"
+                th:action="@{/admin/deletePosition/end}"
+                th:object="${position}"
+                enctype="multipart/form-data"
+        >
+            <input type="hidden" th:field="*{idPositionName}">
+            <h1>Удаление должности</h1>
+            <div class="field">
+                <label for="nameDel">Подтвердите название должности</label>
+                <input
+                        id="nameDel"
+                        name="nameDel"
+                        placeholder="Подтвердите название должности"
+                        th:field="*{name}"
+                        type="text"
+
+                />
+                <p th:errors = "*{name}"
+                   th:if="${#fields.hasErrors('name')}">
+                </p>
+                <p th:if="${fail}">
+                    Название должности не соответствует существующему
+                </p>
+                <p th:if="${notEmpty}">
+                    На данной должности еще числятся сотрудники
+                </p>
+            </div>
+            <div>
+                <button type="submit">Добавить должность</button>
+            </div>
+        </form>
+        <a th:href="@{/admin/positions}">
+            <button>
+                Отмена
+            </button>
+        </a>
+    </div>
+</div>
 
 <div th:if="${edit}">
     <div class="modalframe">
@@ -93,7 +135,7 @@
                 enctype="multipart/form-data"
         >
             <h1>Редактирование должности</h1>
-            <input type="hidden" th:field="*{idPosition}">
+            <input type="hidden" th:field="*{idPositionName}">
             <div class="field">
                 <label for="nameEdit">Название должности</label>
                 <input

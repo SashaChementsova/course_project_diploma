@@ -109,7 +109,12 @@
         </tr>
     </table>
 </div>
-<a th:href="@{/admin/addEmployee/start/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-plus fa-3x" style="color:black"></i></a>
+<form th:action="@{/admin/employees/{id}(id=${position.getIdPositionName()})}"  method="get">
+    <input type="text" th:field="${SNP.data}">
+    <button type="submit" class="btn" >Поиск</button>
+</form>
+<a th:href="@{/admin/employees/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-bars" style="color:black"></i></a>
+<a th:href="@{/admin/addEmployee/start/{id}(id=${position.getIdPositionName()})}" ><i class="fa fa-plus " style="color:black"></i></a>
 <h1 th:text="${position.getName()}"></h1>
 <div th:switch="${emptiness}">
     <div th:case="'empty'">Нет зарегистрированных сотрудников!</div>
@@ -137,6 +142,7 @@
                 <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/editEmployeePassword/{id}(id=${employee.idEmployee})}" ><i class="fa fa-lock" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/deleteEmployee/{id}/{idEmployee}(id=${position.idPositionName},idEmployee=${employee.idEmployee})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/employee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

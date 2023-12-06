@@ -1,11 +1,13 @@
 package com.service.serviceImpl;
 
+import com.comparators.vacancyComparator;
 import com.model.Vacancy;
 import com.repository.VacancyRepository;
 import com.service.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 @Service
 public class VacancyServiceImpl implements VacancyService {
@@ -21,7 +23,9 @@ public class VacancyServiceImpl implements VacancyService {
     }
     @Override
     public List<Vacancy> getVacancies(){
-        return vacancyRepository.findAll();
+        List<Vacancy> vacancies=vacancyRepository.findAll();
+        vacancies.sort(new vacancyComparator());
+        return vacancies;
     }
 
     @Override

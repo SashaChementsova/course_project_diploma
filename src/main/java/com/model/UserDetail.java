@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class UserDetail {
+public class UserDetail implements Comparable<UserDetail>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUserDetails;
@@ -61,5 +61,23 @@ public class UserDetail {
 
     public void addRole(Role role){
         roles.add(role);
+    }
+
+    public String getSNP(){
+        if(patronymic.equals("-")){
+            return surname+" "+name;
+        }
+        return surname+" "+name+" "+patronymic;
+    }
+    public String getShortSNP(){
+        if(patronymic.equals("-")){
+            return surname+" "+name.charAt(0)+".";
+        }
+        return surname+" "+name.charAt(0)+"."+patronymic.charAt(0)+".";
+    }
+
+    @Override
+    public int compareTo(UserDetail u) {
+        return getSNP().compareTo(u.getSNP());
     }
 }

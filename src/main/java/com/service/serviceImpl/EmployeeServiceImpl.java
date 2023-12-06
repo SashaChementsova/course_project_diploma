@@ -1,14 +1,16 @@
 package com.service.serviceImpl;
 
+import com.comparators.employeeComparator;
 import com.model.Employee;
+import com.model.PositionName;
 import com.repository.EmployeeRepository;
 import com.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
@@ -22,7 +24,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+        List<Employee> employees=employeeRepository.findAll();
+        employees.sort(new employeeComparator());
+        return employees;
     }
     @Override
     public Employee findEmployeeById(int id){
@@ -69,6 +73,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             e.printStackTrace();
         }
         return dateOne.compareTo(dateTwo);
+    }
+    @Override
+    public List<Employee> findEmployeeBySNP(String SNP, PositionName positionName){
+        List<Employee> employees=getEmployees();
+        List<Employee> employees1=new ArrayList<>();
+        for (Employee employee:employees) {
+            if(employee.getUserDetail().getSNP().contains(SNP)&&positionName.getIdPositionName()==employee.getPosition().getPositionName().getIdPositionName()){
+                employees1.add(employee);
+            }
+        }
+        return employees1;
     }
 
 }
