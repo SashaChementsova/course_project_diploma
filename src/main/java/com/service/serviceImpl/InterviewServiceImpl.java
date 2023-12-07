@@ -1,5 +1,6 @@
 package com.service.serviceImpl;
 
+import com.model.Employee;
 import com.model.Interview;
 import com.repository.InterviewRepository;
 import com.service.InterviewService;
@@ -24,11 +25,11 @@ public class InterviewServiceImpl implements InterviewService {
     }
     @Override
     public Interview findInterviewById(int id){
-
         return interviewRepository.findById(id).orElse(null);
     }
     @Override
     public void deleteInterview(int id){
         interviewRepository.deleteById(id);
     }
+
 }

@@ -51,10 +51,10 @@
     <tr>
         <td colspan="2">Навыки</td>
     </tr>
-   <div th:switch="${employee.background.skills.isEmpty()}">
-       <tr th:case="true"><td>-</td></tr>
-       <tr th:case="*" th:each="skill:${employee.background.skills}"><td colspan="2" th:text="*{skill.nameSkill}"></td></tr>
-   </div>
+    <div th:switch="${employee.background.skills.isEmpty()}">
+        <tr th:case="true"><td>-</td></tr>
+        <tr th:case="*" th:each="skill:${employee.background.skills}"><td colspan="2" th:text="*{skill.nameSkill}"></td></tr>
+    </div>
     <tr>
         <td colspan="2">Иностранные языки</td>
     </tr>
@@ -64,12 +64,12 @@
     </div>
 
 </table>
-<a th:href="@{/contract/{idPosition}/{idEmployee}(idPosition=${employee.position.positionName.idPositionName},idEmployee=${employee.idEmployee})}">
+<a th:href="@{/contract/{idEmployee}(idEmployee=${employee.idEmployee})}">
     <button>
         Сохранить трудовой договор
     </button>
 </a>
-<a onclick="history.go(-1)">
+<a th:href="@{/admin/employees}">
     <button>
         Назад
     </button>

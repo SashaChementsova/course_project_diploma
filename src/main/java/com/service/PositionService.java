@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.Position;
+import com.model.PositionName;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ public interface PositionService {
 
     public Position findPositionById(int id);
     public void deletePosition(int id);
+
+    public void deletePositionByPositionName(PositionName positionName);
 }

@@ -142,13 +142,13 @@
                 <td><a th:href="@{/admin/editEmployee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/editEmployeePassword/{id}(id=${employee.idEmployee})}" ><i class="fa fa-lock" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/deleteEmployee/{id}/{idEmployee}(id=${position.idPositionName},idEmployee=${employee.idEmployee})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
-                <td><a th:href="@{/admin/employee/{id}(id=${employee.idEmployee})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/employeeOfPosition/{id}(id=${employee.idEmployee})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>
 </div>
 
-<a onclick="history.go(-1)">
+<a th:href="@{/admin/positions/{id}(id=${position.getDepartment().getIdDepartment()})}">
     <button>
         Назад
     </button>

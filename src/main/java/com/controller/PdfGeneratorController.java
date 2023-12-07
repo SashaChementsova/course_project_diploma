@@ -16,6 +16,8 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Controller
 public class PdfGeneratorController {
+
+
     @Autowired
     private DocumentGeneratorServiceImpl documentGenerator;
 
@@ -32,7 +34,22 @@ public class PdfGeneratorController {
 
     @GetMapping(value = "/contract/{idPosition}/{idEmployee}")
     public String generateDocument(@PathVariable("idPosition")String idPosition, @PathVariable("idEmployee")String idEmployee) {
+        checkAdmin();
+        String finalHtml = null;
 
+        Context dataContext = dataMapper.setData(employeeService.findEmployeeById(Integer.parseInt(idEmployee)),adminService.findAdminById(1));
+
+        finalHtml = springTemplateEngine.process("Contract", dataContext);
+
+
+        documentGenerator.htmlToPdf(finalHtml);
+
+        return "redirect:/admin/employeeOfPosition/"+idEmployee;
+    }
+
+    @GetMapping(value = "/contract/{idEmployee}")
+    public String generateDocument(@PathVariable("idEmployee")String idEmployee) {
+        checkAdmin();
         String finalHtml = null;
 
         Context dataContext = dataMapper.setData(employeeService.findEmployeeById(Integer.parseInt(idEmployee)),adminService.findAdminById(1));
@@ -43,5 +60,9 @@ public class PdfGeneratorController {
         documentGenerator.htmlToPdf(finalHtml);
 
         return "redirect:/admin/employee/"+idEmployee;
+    }
+
+    private void checkAdmin(){
+        if(adminService.getAdmins().isEmpty()) adminService.initializeAdmin();
     }
 }

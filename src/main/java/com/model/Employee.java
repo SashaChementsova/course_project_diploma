@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Employee implements Comparable<Employee>{
+public class Employee{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +52,6 @@ public class Employee implements Comparable<Employee>{
     public String getUserSNP(){
         return userDetail.getSNP();
     }
-    @Override
-    public int compareTo(Employee u) {
-        return getUserSNP().compareTo(u.getUserSNP());
-    }
+
+
 }

@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 @Controller
@@ -48,11 +46,21 @@ public class AdminEmployeeController {
     }
 
     @GetMapping("/admin/employees")
-    public String getEmployees(Model model){
+    public String getEmployees(DataString SNP,Model model){
         checkPositions();
         checkCityAndAddress();
-        model.addAttribute("employees", employeeService.getEmployees());
-        if(employeeService.getEmployees().isEmpty())model.addAttribute("emptiness","empty");
+        if(SNP.getData()==null){
+            model.addAttribute("employees",employeeService.getEmployees());
+            model.addAttribute("SNP",new DataString());
+            if(employeeService.getEmployees().isEmpty()) model.addAttribute("emptiness","empty");
+        }
+        else{
+            SNP.setData(SNP.getData().trim());
+            List<Employee>employees=employeeService.findEmployeeBySNP(SNP.getData());
+            model.addAttribute("employees", employees);
+            model.addAttribute("SNP",SNP);
+            if(employees.isEmpty()) model.addAttribute("emptiness","empty");
+        }
         return "admin/employeeControl/getEmployees.html";
     }
 
@@ -62,9 +70,9 @@ public class AdminEmployeeController {
         checkCityAndAddress();
         model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
         if(SNP.getData()==null){
-            model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+            model.addAttribute("employees",employeeService.getEmployeesByPositionName(positionNameService.findPositionNameById(Integer.parseInt(id))));
             model.addAttribute("SNP",new DataString());
-            if(positionNameService.getEmployees(Integer.parseInt(id)).isEmpty()) model.addAttribute("emptiness","empty");
+            if(employeeService.getEmployeesByPositionName(positionNameService.findPositionNameById(Integer.parseInt(id))).isEmpty()) model.addAttribute("emptiness","empty");
         }
         else{
             SNP.setData(SNP.getData().trim());
@@ -75,6 +83,15 @@ public class AdminEmployeeController {
         }
         return "admin/employeeControl/getEmployeesOfPosition.html";
     }
+
+    @GetMapping("/admin/employeeOfPosition/{id}")
+    public String getEmployeeOfPosition(@PathVariable("id") String idEmployee, Model model){
+        checkPositions();
+        checkCityAndAddress();
+        model.addAttribute("employee", employeeService.findEmployeeById(Integer.parseInt(idEmployee)));
+        return "admin/employeeControl/getEmployeeOfPosition.html";
+    }
+
 
     @GetMapping("/admin/employee/{id}")
     public String getEmployee(@PathVariable("id") String idEmployee, Model model){
@@ -97,41 +114,6 @@ public class AdminEmployeeController {
         model.addAttribute("position", positionNameService.findPositionNameById(Integer.parseInt(id)));
         return "admin/employeeControl/addEmployeeOfPosition.html";
     }
-
-//    @PostMapping("/admin/addEmployee/end")
-//    public String addEmployeeEnd(UserDetail user, PositionName positionName, LevelPosition levelPosition,CityCompany cityCompany, Employee employee, Model model, BindingResult result) throws IOException {
-//        checkPositions();
-//        checkCityAndAddress();
-//        if(checkEmptinessUser(user, positionName, levelPosition, cityCompany,employee,model)) return "admin/employeeControl/addEmployee.html";
-//        if(checkEmail(user, positionName, levelPosition, cityCompany,employee,model)) return "admin/employeeControl/addEmployee.html";
-//        if(checkPassword(user, positionName, levelPosition, cityCompany,employee,model)) return "admin/employeeControl/addEmployee.html";
-//        if(checkExistingPhone(user, positionName, levelPosition, cityCompany,employee,model)){return "admin/employeeControl/addEmployee.html";}
-//        UserDetail existingUser = userDetailService.findUserByEmail(user.getEmail());
-//        if(checkUserExisting(user, positionName, levelPosition, cityCompany,employee,existingUser,model)) return "admin/employeeControl/addEmployee.html";
-//        if(checkUserAge(user, positionName, levelPosition, cityCompany,employee,model)) {return "admin/employeeControl/addEmployee.html";}
-//        if(checkEmployeeDates(user, positionName, levelPosition, cityCompany,employee, model)) {return "admin/employeeControl/addEmployee.html";}
-//        if(result.hasErrors()){
-//            model.addAttribute("user", user);
-//            return "admin/employeeControl/addEmployee.html";
-//        }
-//        if(user.getPatronymic().isEmpty()){user.setPatronymic("-");}
-//        if(user.getInfo().isEmpty()){user.setInfo("-");}
-//        userDetailService.saveUser(user,"ROLE_EMPLOYEE");
-//        Position position=new Position();
-//        position.setLevelPosition(levelPositionService.findLevelPositionById(levelPosition.getIdLevelPosition()));
-//        position.setPositionName(positionNameService.findPositionNameById(positionName.getIdPositionName()));
-//        position=positionService.addAndUpdatePosition(position);
-//        employee.setCityCompany(cityCompanyService.findCityCompanyById(cityCompany.getIdCityCompany()));
-//        employee.setPosition(position);
-//        employee.setUserDetail(user);
-//        employeeService.addAndUpdateEmployee(employee);
-//        if(position.getPositionName().getName().equals("HR-менеджер")){
-//            Hr hr=new Hr();
-//            hr.setUserDetail(user);
-//            hrService.addAndUpdateHr(hr); ЗДЕСЬ НЕТ ПРОВЕРКИ НА РОЛЬ HR И BACKGROUND ССЫЛКИ
-//        }
-//        return "redirect:/admin/employees";
-//    }
 
     @PostMapping("/admin/addEmployee/end/{id}")
     public String addEmployeeEnd(@PathVariable("id")String id, UserDetail user, LevelPosition levelPosition,CityCompany cityCompany, Employee employee, Model model, BindingResult result) throws IOException {
@@ -157,6 +139,13 @@ public class AdminEmployeeController {
         Position position=new Position();
         position.setLevelPosition(levelPositionService.findLevelPositionById(levelPosition.getIdLevelPosition()));
         position.setPositionName(positionNameService.findPositionNameById(Integer.parseInt(id)));
+        List<Position> positions=positionService.getPositions();
+        for(Position position1:positions){
+            if(position1.getPositionName().getIdPositionName()==position.getPositionName().getIdPositionName()&&position1.getLevelPosition().getIdLevelPosition()==position.getLevelPosition().getIdLevelPosition()){
+                position.setIdPosition(position1.getIdPosition());
+                break;
+            }
+        }
         position=positionService.addAndUpdatePosition(position);
         if(position.getPositionName().getName().equals("HR-менеджер")){
             Hr hr=hrService.findHrByUserDetail(user);
@@ -216,6 +205,13 @@ public class AdminEmployeeController {
         Position position=employee1.getPosition();
         position.setLevelPosition(levelPositionService.findLevelPositionById(employee.getPosition().getLevelPosition().getIdLevelPosition()));
         position.setPositionName(positionNameService.findPositionNameById(employee.getPosition().getPositionName().getIdPositionName()));
+        List<Position> positions=positionService.getPositions();
+        for(Position position1:positions){
+            if(position1.getPositionName().getIdPositionName()==position.getPositionName().getIdPositionName()&&position1.getLevelPosition().getIdLevelPosition()==position.getLevelPosition().getIdLevelPosition()){
+                position.setIdPosition(position1.getIdPosition());
+                break;
+            }
+        }
         position=positionService.addAndUpdatePosition(position);
         if(position.getPositionName().getName().equals("HR-менеджер")){
             Hr hr=hrService.findHrByUserDetail(user);
@@ -481,12 +477,13 @@ public class AdminEmployeeController {
     public String deleteEmployee(@PathVariable("id") String id,@PathVariable("idEmployee") String idEmployee, Model model){
         checkPositions();
         checkCityAndAddress();
-        model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+        model.addAttribute("employees",employeeService.getEmployeesByPositionName(positionNameService.findPositionNameById(Integer.parseInt(id))));
         model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
         UserDto user=new UserDto();
         user.setId(Integer.parseInt(idEmployee));
         model.addAttribute("employee",user);
         model.addAttribute("delete","delete");
+        model.addAttribute("SNP",new DataString());
         return "admin/employeeControl/getEmployeesOfPosition.html";
     }
 
@@ -499,23 +496,22 @@ public class AdminEmployeeController {
         if(hr!=null){
             hrService.deleteHr(hr.getIdHr());
         }
-        positionService.deletePosition(employee1.getPosition().getIdPosition());
-        backgroundService.deleteBackground(employee1.getBackground().getIdBackground());
-        employeeService.deleteEmployee(employee1.getIdEmployee());
-        userDetailService.deleteUser(userDetail.getIdUserDetails());
+        Position position=positionService.findPositionById(employee1.getPosition().getIdPosition());
+        List<Employee> employees=position.getEmployeeEntities();
+        employees.remove(employee1);
+        position.setEmployeeEntities(employees);
+        positionService.addAndUpdatePosition(position);
+        hrService.deleteHrByUserDetail(employee1.getUserDetail());
+        employeeService.deleteEmployeesByPositionName(employee1.getPosition().getPositionName());
         return "redirect:/admin/employees/"+id;
     }
 
-    //удалить сотрудника введя его почту
-    //проверить что у него нет никаких собеседований
-    //удалить позиция проверяя что нет собес и вакансий, почистить вопросы
-    //удалить отдел проверяя что нет собес и ваканс
 
     public boolean checkEmailDelete(String id,UserDto employee,Model model ){
         final String PASSWORD_REGEX = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
-        model.addAttribute("employees", positionNameService.getEmployees(Integer.parseInt(id)));
+        model.addAttribute("employees", employeeService.getEmployeesByPositionName(positionNameService.findPositionNameById(Integer.parseInt(id))));
         model.addAttribute("position",positionNameService.findPositionNameById(Integer.parseInt(id)));
         model.addAttribute("employee",employee);
         model.addAttribute("delete","deleteEmployee");

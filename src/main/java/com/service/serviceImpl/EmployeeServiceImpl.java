@@ -1,10 +1,11 @@
 package com.service.serviceImpl;
 
 import com.comparators.employeeComparator;
-import com.model.Employee;
-import com.model.PositionName;
+import com.model.*;
+import com.repository.BackgroundRepository;
+import com.repository.EducationRepository;
 import com.repository.EmployeeRepository;
-import com.service.EmployeeService;
+import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,24 @@ import java.util.*;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final PositionNameService positionNameService;
+
+    private final BackgroundRepository backgroundRepository;
+    private final EducationRepository educationRepository;
+
+    private final UserDetailsHasChatService userDetailsHasChatService;
+
+    private final UserDetailService userDetailService;
+
+
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository){
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository,PositionNameService positionNameService,BackgroundRepository backgroundRepository,EducationRepository educationRepository,UserDetailsHasChatService userDetailsHasChatService,UserDetailService userDetailService){
         this.employeeRepository = employeeRepository;
+        this.positionNameService=positionNameService;
+        this.backgroundRepository=backgroundRepository;
+        this.educationRepository=educationRepository;
+        this.userDetailsHasChatService=userDetailsHasChatService;
+        this.userDetailService=userDetailService;
     }
     @Override
     public Employee addAndUpdateEmployee(Employee employee){
@@ -40,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public int calculateDifferenceDates(Employee employee){
-        int age=0;
+        int age;
         String date1 = new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateRecruitment());
         String date2 = new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateContractEnd());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -85,5 +101,54 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employees1;
     }
+    @Override
+    public List<Employee> findEmployeeBySNP(String SNP){
+        List<Employee> employees=getEmployees();
+        List<Employee> employees1=new ArrayList<>();
+        for (Employee employee:employees) {
+            if(employee.getUserDetail().getSNP().contains(SNP)){
+                employees1.add(employee);
+            }
+        }
+        return employees1;
+    }
 
+
+
+
+    @Override
+    public void deleteEmployeesByPositionName(PositionName positionName){
+        List<Employee> employees=getEmployeesByPositionName(positionName);
+        if(employees!=null&&!(employees.isEmpty())){
+            for(Employee employee:employees){
+                Background background=employee.getBackground();
+                List<Education> educations=employee.getEducationEntities();
+                if(educations!=null){
+                    if(!(educations.isEmpty())){
+                        for(Education education:educations){
+                            educationRepository.deleteById(education.getIdEducation());
+                        }
+                    }
+                }
+                int id=employee.getUserDetail().getIdUserDetails();
+                userDetailsHasChatService.deleteChatByUserDetail(employee.getUserDetail());
+                deleteEmployee(employee.getIdEmployee());
+                backgroundRepository.deleteById(background.getIdBackground());
+                userDetailService.deleteUser(id);
+            }
+        }
+    }
+    @Override
+    public List<Employee> getEmployeesByPositionName(PositionName positionName){
+        if(positionName==null) return null;
+        List<Employee> allEmployees=getEmployees();
+        List<Employee> employees=new ArrayList<>();
+        for(Employee employee:allEmployees){
+            if(employee.getPosition().getPositionName().getName().equals(positionName.getName())){
+                employees.add(employee);
+            }
+        }
+        return employees;
+
+    }
 }

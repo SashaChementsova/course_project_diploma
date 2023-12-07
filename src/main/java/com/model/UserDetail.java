@@ -80,4 +80,5 @@ public class UserDetail implements Comparable<UserDetail>{
     public int compareTo(UserDetail u) {
         return getSNP().compareTo(u.getSNP());
     }
+
 }

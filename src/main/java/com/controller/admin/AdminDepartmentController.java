@@ -1,17 +1,21 @@
 package com.controller.admin;
 
-import com.model.Department;
+import com.model.*;
 import com.service.DepartmentService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class AdminDepartmentController {
 
     DepartmentService departmentService;
+
 
     public AdminDepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
@@ -19,7 +23,6 @@ public class AdminDepartmentController {
 
     @GetMapping("/admin/departments")
     public String getDepartments(Model model){
-
         checkDepartments();
         model.addAttribute("departments", departmentService.getDepartments());
         if(departmentService.getDepartments().isEmpty()) model.addAttribute("emptiness","empty");
@@ -78,7 +81,52 @@ public class AdminDepartmentController {
         return "redirect:/admin/departments";
     }
 
+    @GetMapping("/admin/deleteDep/{id}")
+    public String deleteDepartment(@PathVariable("id")String idDepartment, Model model){
+        checkDepartments();
+        Department department=new Department();
+        department.setIdDepartment(Integer.parseInt(idDepartment));
+        model.addAttribute("delete","delete");
+        model.addAttribute("department", department);
+        model.addAttribute("departments", departmentService.getDepartments());
+        return "admin/departmentControl/getDepartments.html";
+    }
+
+    @PostMapping("/admin/deleteDep/end")
+    public String deleteDepartmentEnd(Department department1, Model model){
+        checkDepartments();
+        model.addAttribute("delete","delete");
+        model.addAttribute("department", department1);
+        model.addAttribute("departments", departmentService.getDepartments());
+        Department department=departmentService.findDepartmentById(department1.getIdDepartment());
+        if(!(department.getNameDepartment().equals(departmentService.findDepartmentById(department.getIdDepartment()).getNameDepartment()))){
+            model.addAttribute("notEqual","notEqual");
+            return "admin/departmentControl/getDepartments.html";
+        }
+        if(!(departmentService.checkDepartmentByEmployees(department))){
+            model.addAttribute("notEmptyEmployee","notEmptyEmployee");
+            return "admin/departmentControl/getDepartments.html";
+        }
+        if(!(departmentService.checkDepartmentByVacancies(department))){
+            model.addAttribute("notEmptyVacancy","notEmptyVacancy");
+            return "admin/departmentControl/getDepartments.html";
+        }
+        if(!(departmentService.checkDepartmentByTestQuestions(department))){
+            model.addAttribute("testQuestion","testQuestion");
+            return "admin/departmentControl/getDepartments.html";
+        }
+        departmentService.deleteHrByDepartment(department);
+        departmentService.deleteEmployeesByDepartment(department);
+        departmentService.deleteTestQuestionByDepartment(department);
+        departmentService.deletePositionByDepartment(department);
+        departmentService.deletePositionNameByDepartment(department);
+        departmentService.deleteDepartment(department.getIdDepartment());
+        return "redirect:/admin/departments";
+    }
+
     private void checkDepartments(){
         if(departmentService.getDepartments().isEmpty()) departmentService.initializeDepartment();
     }
+
+
 }

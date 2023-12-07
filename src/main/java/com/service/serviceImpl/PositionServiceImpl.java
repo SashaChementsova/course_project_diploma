@@ -1,6 +1,7 @@
 package com.service.serviceImpl;
 
 import com.model.Position;
+import com.model.PositionName;
 import com.repository.PositionRepository;
 import com.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +32,19 @@ public class PositionServiceImpl implements PositionService {
     public void deletePosition(int id){
         positionRepository.deleteById(id);
     }
+    @Override
+    public void deletePositionByPositionName(PositionName positionName){
+        List<Position> positions=getPositions();
+        if(positions!=null){
+            if (!(positions.isEmpty())){
+                for(Position position:positions){
+                    if(position.getPositionName().getIdPositionName()==positionName.getIdPositionName()){
+                        deletePosition(position.getIdPosition());
+                    }
+                }
+            }
+        }
+    }
+
+
 }

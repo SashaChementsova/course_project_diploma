@@ -10,4 +10,5 @@ public interface AdminService {
     public Admin findAdminById(int id);
 
     public void deleteAdmin(int id);
+    public void initializeAdmin();
 }

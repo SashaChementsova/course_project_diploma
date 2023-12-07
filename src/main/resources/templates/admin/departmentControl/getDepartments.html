@@ -49,7 +49,7 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/addDepartment/end}"
+                th:action="@{/admin/addDep/end}"
                 th:object="${department}"
                 enctype="multipart/form-data"
         >
@@ -73,6 +73,55 @@
             </div>
             <div>
                 <button type="submit">Добавить отдел</button>
+            </div>
+        </form>
+        <a th:href="@{/admin/departments}">
+            <button>
+                Отмена
+            </button>
+        </a>
+    </div>
+</div>
+
+<div th:if="${delete}">
+    <div class="modalframe">
+        <form
+                method="post"
+                role="form"
+                th:action="@{/admin/deleteDep/end}"
+                th:object="${department}"
+                enctype="multipart/form-data"
+        >
+            <h1>Удаление отдела компании</h1>
+            <div class="field">
+                <input type="hidden" th:field="*{idDepartment}">
+                <label for="nameDepartmentDelete">Подтвердите название отдела</label>
+                <input
+                        id="nameDepartmentDelete"
+                        name="nameDepartmentDelete"
+                        placeholder="Подтвердите название отдела"
+                        th:field="*{nameDepartment}"
+                        type="text"
+
+                />
+                <p th:errors = "*{nameDepartment}"
+                   th:if="${#fields.hasErrors('nameDepartment')}">
+                </p>
+                <p th:if="${notEqual}">
+                    Название отдела не совпадает с существующим!
+                </p>
+                <p th:if="${notEmptyEmployee}">
+                    В данном отделе еще числятся сотрудники!
+                </p>
+                <p th:if="${notEmptyVacancy}">
+                    Отдел не может быть удален, так как существует вакансия на позицию данного отдела!
+                </p>
+                <p th:if="${testQuestion}">
+                    Отдел не может быть удален, так как существует действительное тестирование на вакансию данного отдела!
+                </p>
+            </div>
+            <div>
+                <button type="submit">Удалить отдел</button>
             </div>
         </form>
         <a th:href="@{/admin/departments}">
@@ -154,12 +203,13 @@
                 </td>
                 <td><a th:href="@{/admin/positions/{id}(id=${department.idDepartment})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
                 <td><a th:href="@{/admin/editDep/{id}(id=${department.idDepartment})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
+                <td><a th:href="@{/admin/deleteDep/{id}(id=${department.idDepartment})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>
 </div>
 
-<a onclick="history.go(-1)">
+<a th:href="@{/admin/adminPage}">
     <button>
         Назад
     </button>

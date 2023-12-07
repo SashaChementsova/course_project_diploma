@@ -1,6 +1,8 @@
 package com.service.serviceImpl;
 
 import com.model.Admin;
+import com.model.Department;
+import com.model.PositionName;
 import com.repository.AdminRepository;
 import com.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +32,19 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteAdmin(int id){
         adminRepository.deleteById(id);
+    }
+
+    @Override
+    public void initializeAdmin(){
+        try {
+            Admin admin=new Admin();
+            admin.setNameCompany("ОАО \"Software Seekers\"");
+            admin.setNameDirector("Чеменцова Александра Васильевна");
+            adminRepository.save(admin);
+        }
+        catch (Exception ex){
+            System.out.println("Значения уже есть");
+        }
+
     }
 }

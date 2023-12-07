@@ -112,6 +112,12 @@
                 <p th:if="${notEmpty}">
                     На данной должности еще числятся сотрудники
                 </p>
+                <p th:if="${notEmptyVacancy}">
+                    Существует вакансия для данной должности
+                </p>
+                <p th:if="${testQuestion}">
+                    Существует действительное тестирование для данной должности
+                </p>
             </div>
             <div>
                 <button type="submit">Удалить должность</button>
@@ -200,7 +206,7 @@
     </div>
 </div>
 
-<a onclick="history.go(-1)">
+<a th:href="@{/admin/departments}">
     <button>
         Назад
     </button>

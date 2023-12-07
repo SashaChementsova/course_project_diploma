@@ -16,4 +16,8 @@ public interface EmployeeService {
 
     public int compareDates(String date1,String date2);
     public List<Employee> findEmployeeBySNP(String SNP,PositionName positionName);
+    public List<Employee> findEmployeeBySNP(String SNP);
+    public void deleteEmployeesByPositionName(PositionName positionName);
+
+    public List<Employee> getEmployeesByPositionName(PositionName positionName);
 }

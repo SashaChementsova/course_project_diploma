@@ -12,4 +12,6 @@ public interface HrService {
     public Hr findHrById(int id);
     public void deleteHr(int id);
     public Hr findHrByUserDetail(UserDetail userDetail);
+
+    public void deleteHrByUserDetail(UserDetail userDetail);
 }

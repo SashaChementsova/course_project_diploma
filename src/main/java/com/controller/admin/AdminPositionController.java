@@ -1,12 +1,9 @@
 package com.controller.admin;
 
 import com.model.Department;
-import com.model.LevelPosition;
+import com.model.Employee;
 import com.model.PositionName;
-import com.service.DepartmentService;
-import com.service.LevelPositionService;
-import com.service.PositionNameService;
-import com.service.PositionService;
+import com.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +15,19 @@ public class AdminPositionController {
     PositionNameService positionNameService;
     LevelPositionService levelPositionService;
     PositionService positionService;
-
+    PositionTestQuestionService positionTestQuestionService;
     DepartmentService departmentService;
-    public AdminPositionController(PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService,DepartmentService departmentService) {
+
+    EmployeeService employeeService;
+    HrService hrService;
+    public AdminPositionController( HrService hrService,PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService,DepartmentService departmentService,PositionTestQuestionService positionTestQuestionService,EmployeeService employeeService) {
         this.positionNameService = positionNameService;
         this.levelPositionService = levelPositionService;
         this.positionService = positionService;
         this.departmentService=departmentService;
+        this.positionTestQuestionService=positionTestQuestionService;
+        this.employeeService=employeeService;
+        this.hrService=hrService;
     }
 
     @GetMapping("/admin/positions")
@@ -50,30 +53,41 @@ public class AdminPositionController {
     public String deletePositionEnd(PositionName positionName, Model model){
         checkPositions();
         PositionName positionName1=positionNameService.findPositionNameById(positionName.getIdPositionName());
+        model.addAttribute("positions",positionName1.getDepartment().getPositionNameEntities());
+        model.addAttribute("departmentMain",positionName1.getDepartment());model.addAttribute("positions", positionNameService.getPositionNames());
+        model.addAttribute("position",positionName);
+        model.addAttribute("delete","delete");
         if(!(positionName1.getName().equals(positionName.getName())))
         {
-            model.addAttribute("positions",positionName1.getDepartment().getPositionNameEntities());
-            model.addAttribute("departmentMain",positionName1.getDepartment());
-            model.addAttribute("position",positionName);
-            model.addAttribute("delete","delete");
             model.addAttribute("fail","fail");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
         if(!(positionName1.getPositionEntities().isEmpty())){
-            model.addAttribute("positions",positionName1.getDepartment().getPositionNameEntities());
-            model.addAttribute("departmentMain",positionName1.getDepartment());model.addAttribute("positions", positionNameService.getPositionNames());
-            model.addAttribute("position",positionName);
-            model.addAttribute("delete","delete");
             model.addAttribute("notEmpty","notEmpty");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
+        if(!(positionNameService.checkPositionTestByPositionName(positionName1))){
+            model.addAttribute("testQuestion","testQuestion");
+            return "admin/positionControl/getPositionsOfDepartment.html";
+        }
+        if(positionNameService.checkPositionNameByVacancy(positionName1.getIdPositionName())){
+            model.addAttribute("notEmptyVacancy","notEmptyVacancy");
+            return "admin/positionControl/getPositionsOfDepartment.html";
+        }
         Department department=positionName1.getDepartment();
+        for(Employee employee:employeeService.getEmployeesByPositionName(positionName1)){
+            hrService.deleteHrByUserDetail(employee.getUserDetail());
+        }
+        employeeService.deleteEmployeesByPositionName(positionName1);
+        positionTestQuestionService.deleteQuestionsByPositionName(positionName1);
+        positionService.deletePositionByPositionName(positionName1);
         positionNameService.deletePositionName(positionName.getIdPositionName());
         return "redirect:/admin/positions/"+department.getIdDepartment();
     }
 
     @GetMapping("/admin/positions/{id}")
     public String getPositionsOfDepartment(@PathVariable("id") String id,Model model){
+        System.out.println(id);
         checkPositions();
         model.addAttribute("positions",departmentService.findDepartmentById(Integer.parseInt(id)).getPositionNameEntities());
         model.addAttribute("departmentMain",departmentService.findDepartmentById(Integer.parseInt(id)));
@@ -203,5 +217,7 @@ public class AdminPositionController {
         if(positionNameService.getPositionNames().isEmpty()) positionNameService.initializePositionName();
         if(levelPositionService.getLevelPositions().isEmpty()) levelPositionService.initializeLevelPosition();
     }
+
+
 
 }

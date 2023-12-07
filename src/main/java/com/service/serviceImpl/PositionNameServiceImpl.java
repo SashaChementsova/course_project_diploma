@@ -1,17 +1,11 @@
 package com.service.serviceImpl;
 
 import com.comparators.positionNameComparator;
-import com.model.Department;
-import com.model.Employee;
-import com.model.Position;
-import com.model.PositionName;
-import com.repository.DepartmentRepository;
-import com.repository.EmployeeRepository;
-import com.repository.PositionNameRepository;
-import com.repository.PositionRepository;
+import com.model.*;
+import com.repository.*;
 import com.service.EmployeeService;
 import com.service.PositionNameService;
-import lombok.extern.java.Log;
+import com.service.PositionTestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +14,20 @@ import java.util.List;
 @Service
 public class PositionNameServiceImpl implements PositionNameService {
     private final PositionNameRepository positionNameRepository;
-    private final PositionRepository positionRepository;
 
-    private final EmployeeService employeeService;
+
     private final DepartmentRepository departmentRepository;
+
+    private final VacancyRepository vacancyRepository;
+
+    private final PositionTestQuestionService positionTestQuestionService;
+
     @Autowired
-    public PositionNameServiceImpl(PositionNameRepository positionNameRepository, DepartmentRepository departmentRepository, PositionRepository positionRepository, EmployeeService employeeService){
+    public PositionNameServiceImpl(PositionNameRepository positionNameRepository, DepartmentRepository departmentRepository,  VacancyRepository vacancyRepository,PositionTestQuestionService positionTestQuestionService){
         this.positionNameRepository = positionNameRepository;
         this.departmentRepository=departmentRepository;
-        this.positionRepository=positionRepository;
-        this.employeeService=employeeService;
+        this.vacancyRepository=vacancyRepository;
+        this.positionTestQuestionService=positionTestQuestionService;
     }
     @Override
     public PositionName addAndUpdatePositionName(PositionName positionName){
@@ -61,19 +59,40 @@ public class PositionNameServiceImpl implements PositionNameService {
             System.out.println("Значения уже есть");
         }
     }
+
+
     @Override
-    public List<Employee> getEmployees(int id){
+    public List<Vacancy> getVacanciesByPositionName(int id){
         PositionName positionName=positionNameRepository.findById(id).orElse(null);
         if(positionName==null) return null;
-        List<Employee> allEmployees=employeeService.getEmployees();
-        List<Employee> employees=new ArrayList<>();
-        for(Employee empl:allEmployees){
-            if(empl.getPosition().getPositionName().getName().equals(positionName.getName())){
-                employees.add(empl);
+        List<Vacancy> allVacancies=vacancyRepository.findAll();
+        List<Vacancy> vacancies=new ArrayList<>();
+        for(Vacancy vacancy:allVacancies){
+            if(vacancy.getPosition().getPositionName().getName().equals(positionName.getName())){
+                vacancies.add(vacancy);
             }
         }
-        return employees;
-
+        return vacancies;
     }
+
+    @Override
+    public boolean checkPositionNameByVacancy(int id){
+        List<Vacancy> vacancies=getVacanciesByPositionName(id);
+        if(vacancies==null || vacancies.isEmpty()) return false;
+        for(Vacancy vacancy:vacancies){
+            if(vacancy.isStatus()) return true;
+        }
+        return false;
+    }
+    @Override
+    public boolean checkPositionTestByPositionName(PositionName positionName) {
+        List<PositionTestQuestion> positionTestQuestionList = positionTestQuestionService.getPositionTestQuestionsByPositionName(positionName);
+        if (positionTestQuestionList!=null) {
+            if(!(positionTestQuestionList.isEmpty()))
+                return positionTestQuestionService.checkDateOfPositionTestByQuestions(positionTestQuestionList);
+        }
+        return true;
+    }
+
 
 }
