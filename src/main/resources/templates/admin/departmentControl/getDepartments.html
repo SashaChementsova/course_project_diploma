@@ -67,6 +67,9 @@
                 <p th:errors = "*{nameDepartment}"
                    th:if="${#fields.hasErrors('nameDepartment')}">
                 </p>
+                <p th:if="${emptyDepartment}">
+                    Пожалуйста, подтвердите название отдела для удаления!!!
+                </p>
                 <p th:if="${fail}">
                     Такой отдел уже существует!!!
                 </p>
@@ -156,6 +159,9 @@
                 />
                 <p th:errors = "*{nameDepartment}"
                    th:if="${#fields.hasErrors('nameDepartment')}">
+                </p>
+                <p th:if="${emptyDepartment}">
+                    Пожалуйста, подтвердите название отдела для удаления!!!
                 </p>
                 <p th:if="${fail1}">
                     Такой отдел уже существует!!!

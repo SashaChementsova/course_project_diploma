@@ -1,6 +1,6 @@
 package com.service.serviceImpl;
 
-import com.comparators.employeeComparator;
+import com.comparators.EmployeeComparator;
 import com.model.*;
 import com.repository.BackgroundRepository;
 import com.repository.EducationRepository;
@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployees(){
         List<Employee> employees=employeeRepository.findAll();
-        employees.sort(new employeeComparator());
+        employees.sort(new EmployeeComparator());
         return employees;
     }
     @Override

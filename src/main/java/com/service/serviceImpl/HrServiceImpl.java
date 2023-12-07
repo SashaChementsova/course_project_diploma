@@ -1,7 +1,6 @@
 package com.service.serviceImpl;
 
-import com.comparators.hrComparator;
-import com.model.Employee;
+import com.comparators.HrComparator;
 import com.model.Hr;
 import com.model.UserDetail;
 import com.repository.HrRepository;
@@ -30,7 +29,7 @@ public class HrServiceImpl implements HrService {
     @Override
     public List<Hr> getHrs(){
         List<Hr> hrs = hrRepository.findAll();
-        hrs.sort(new hrComparator());
+        hrs.sort(new HrComparator());
         return hrs;
     }
     @Override

@@ -5,7 +5,7 @@ import com.model.Hr;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class hrComparator implements Comparator<Hr> {
+public class HrComparator implements Comparator<Hr> {
     @Override
     public int compare(Hr h1, Hr h2){
         if(Objects.equals(h1.getUserDetail().getSNP(), h2.getUserDetail().getSNP())){

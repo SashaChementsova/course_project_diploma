@@ -1,9 +1,8 @@
 package com.service.serviceImpl;
 
-import com.comparators.positionNameComparator;
+import com.comparators.PositionNameComparator;
 import com.model.*;
 import com.repository.*;
-import com.service.EmployeeService;
 import com.service.PositionNameService;
 import com.service.PositionTestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class PositionNameServiceImpl implements PositionNameService {
     @Override
     public List<PositionName> getPositionNames(){
         List<PositionName> positionNames = positionNameRepository.findAll();
-        positionNames.sort(new positionNameComparator());
+        positionNames.sort(new PositionNameComparator());
         return positionNames;
     }
     @Override

@@ -1,6 +1,6 @@
 package com.service.serviceImpl;
 
-import com.comparators.candidateComparator;
+import com.comparators.CandidateComparator;
 import com.model.Candidate;
 import com.repository.CandidateRepository;
 import com.service.CandidateService;
@@ -22,7 +22,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<Candidate> getCandidates(){
         List<Candidate> candidates = candidateRepository.findAll();
-        candidates.sort(new candidateComparator());
+        candidates.sort(new CandidateComparator());
         return candidates;
     }
     @Override

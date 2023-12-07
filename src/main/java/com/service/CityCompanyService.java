@@ -12,4 +12,6 @@ public interface CityCompanyService {
     public CityCompany findCityCompanyById(int id);
     public void deleteCityCompany(int id);
     public void initializeCityCompany();
+
+    public List<CityCompany> findCityCompaniesByNameCity(String nameCity);
 }

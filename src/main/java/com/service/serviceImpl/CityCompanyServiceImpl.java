@@ -1,11 +1,14 @@
 package com.service.serviceImpl;
 
+import com.comparators.CityCompanyComparator;
 import com.model.CityCompany;
+import com.model.Employee;
 import com.repository.CityCompanyRepository;
 import com.service.CityCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class CityCompanyServiceImpl implements CityCompanyService {
@@ -20,7 +23,9 @@ public class CityCompanyServiceImpl implements CityCompanyService {
     }
     @Override
     public List<CityCompany> getCityCompanies(){
-        return cityCompanyRepository.findAll();
+        List<CityCompany> cityCompanies= cityCompanyRepository.findAll();
+        cityCompanies.sort(new CityCompanyComparator());
+        return cityCompanies;
     }
     @Override
     public CityCompany findCityCompanyById(int id){
@@ -35,5 +40,17 @@ public class CityCompanyServiceImpl implements CityCompanyService {
     @Override
     public void initializeCityCompany(){
         cityCompanyRepository.save(new CityCompany("Минск"));
+    }
+
+    @Override
+    public List<CityCompany> findCityCompaniesByNameCity(String nameCity){
+        List<CityCompany> cityCompanies=getCityCompanies();
+        List<CityCompany> cityCompanies1=new ArrayList<>();
+        for (CityCompany cityCompany:cityCompanies) {
+            if(cityCompany.getNameCity().contains(nameCity)){
+                cityCompanies1.add(cityCompany);
+            }
+        }
+        return cityCompanies1;
     }
 }

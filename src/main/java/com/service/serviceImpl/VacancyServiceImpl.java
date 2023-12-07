@@ -1,6 +1,6 @@
 package com.service.serviceImpl;
 
-import com.comparators.vacancyComparator;
+import com.comparators.VacancyComparator;
 import com.model.Hr;
 import com.model.Position;
 import com.model.PositionName;
@@ -28,7 +28,7 @@ public class VacancyServiceImpl implements VacancyService {
     @Override
     public List<Vacancy> getVacancies(){
         List<Vacancy> vacancies=vacancyRepository.findAll();
-        vacancies.sort(new vacancyComparator());
+        vacancies.sort(new VacancyComparator());
         return vacancies;
     }
 

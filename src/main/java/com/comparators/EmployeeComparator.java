@@ -5,7 +5,7 @@ import com.model.Employee;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class employeeComparator implements Comparator<Employee> {
+public class EmployeeComparator implements Comparator<Employee> {
     @Override
     public int compare(Employee e1, Employee e2){
         if(Objects.equals(e1.getUserDetail().getSNP(), e2.getUserDetail().getSNP())){

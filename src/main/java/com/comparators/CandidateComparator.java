@@ -4,7 +4,7 @@ import com.model.Candidate;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class candidateComparator implements Comparator<Candidate> {
+public class CandidateComparator implements Comparator<Candidate> {
     @Override
     public int compare(Candidate c1, Candidate c2){
         if(Objects.equals(c1.getUserDetail().getSNP(), c2.getUserDetail().getSNP())){

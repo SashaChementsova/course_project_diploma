@@ -5,7 +5,7 @@ import com.model.Vacancy;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class vacancyComparator implements Comparator<Vacancy> {
+public class VacancyComparator implements Comparator<Vacancy> {
     @Override
     public int compare(Vacancy v1, Vacancy v2){
         if(Objects.equals(v1.getPosition().toString(), v2.getPosition().toString())){

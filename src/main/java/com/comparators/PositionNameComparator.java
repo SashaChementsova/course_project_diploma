@@ -5,7 +5,7 @@ import com.model.PositionName;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class positionNameComparator  implements Comparator<PositionName> {
+public class PositionNameComparator implements Comparator<PositionName> {
     @Override
     public int compare(PositionName p1, PositionName p2){
         if(Objects.equals(p1.getName(), p2.getName())){

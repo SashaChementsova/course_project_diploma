@@ -1,6 +1,6 @@
 package com.service.serviceImpl;
 
-import com.comparators.departmentComparator;
+import com.comparators.DepartmentComparator;
 import com.model.*;
 import com.repository.DepartmentRepository;
 import com.service.*;
@@ -36,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<Department> getDepartments(){
         List<Department> departments = departmentRepository.findAll();
-        departments.sort(new departmentComparator());
+        departments.sort(new DepartmentComparator());
         return departments;
     }
     @Override

@@ -41,17 +41,20 @@ public class AdminDepartmentController {
 
     @PostMapping("/admin/addDep/end")
     public String addDepartmentEnd(Department department, Model model){
+        model.addAttribute("department", department);
+        model.addAttribute("add","add");
+        model.addAttribute("departments", departmentService.getDepartments());
+        if(departmentService.getDepartments().isEmpty()) model.addAttribute("emptiness","empty");
+        if(department.getNameDepartment().isEmpty()||department.getNameDepartment().equals("")){
+            model.addAttribute("emptyDepartment","emptyDepartment");
+            return "admin/departmentControl/getDepartments.html";
+        }
         try{
             departmentService.addAndUpdateDepartment(department);
         }
         catch (Exception ex){
-            model.addAttribute("department", department);
-            model.addAttribute("add","add");
             model.addAttribute("fail","fail");
-            model.addAttribute("departments", departmentService.getDepartments());
-            if(departmentService.getDepartments().isEmpty()) model.addAttribute("emptiness","empty");
-
-            return "admin/positionControl/getPositions.html";
+            return "admin/departmentControl/getDepartments.html";
         }
         return "redirect:/admin/departments";
     }
@@ -67,15 +70,18 @@ public class AdminDepartmentController {
 
     @PostMapping("/admin/editDep/end")
     public String editDepartmentEnd(Department department, Model model){
-        System.out.println(department.getIdDepartment());
+        model.addAttribute("department1", department);
+        model.addAttribute("edit","edit");
+        model.addAttribute("departments", departmentService.getDepartments());
+        if(department.getNameDepartment().isEmpty()||department.getNameDepartment().equals("")){
+            model.addAttribute("emptyDepartment","emptyDepartment");
+            return "admin/departmentControl/getDepartments.html";
+        }
         try {
             departmentService.addAndUpdateDepartment(department);
         }
         catch (Exception ex){
-            model.addAttribute("department1", department);
-            model.addAttribute("edit","edit");
             model.addAttribute("fail1","fail1");
-            model.addAttribute("departments", departmentService.getDepartments());
             return "admin/departmentControl/getDepartments.html";
         }
         return "redirect:/admin/departments";

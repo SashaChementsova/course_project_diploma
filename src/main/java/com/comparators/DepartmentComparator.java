@@ -5,7 +5,7 @@ import com.model.Department;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class departmentComparator implements Comparator<Department> {
+public class DepartmentComparator implements Comparator<Department> {
 @Override
 public int compare(Department d1, Department d2){
         if(Objects.equals(d1.getNameDepartment(), d2.getNameDepartment())){
