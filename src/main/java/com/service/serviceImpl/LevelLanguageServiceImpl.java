@@ -1,5 +1,6 @@
 package com.service.serviceImpl;
 
+import com.model.LanguageName;
 import com.model.LevelLanguage;
 import com.repository.LevelLanguageRepository;
 import com.service.LevelLanguageService;

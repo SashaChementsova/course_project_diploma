@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 public class AdminEmployeeController {
     EmployeeService employeeService;
     HrService hrService;
-
     RoleService roleService;
     ImageService imageService;
     UserDetailService userDetailService;
@@ -32,7 +31,10 @@ public class AdminEmployeeController {
     CityCompanyService cityCompanyService;
     BackgroundService backgroundService;
 
-    public AdminEmployeeController(RoleService roleService, EmployeeService employeeService, HrService hrService, ImageService imageService, UserDetailService userDetailService, PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService, CityCompanyService cityCompanyService,BackgroundService backgroundService) {
+    LanguageService languageService;
+    EducationService educationService;
+
+    public AdminEmployeeController(EducationService educationService,LanguageService languageService,RoleService roleService, EmployeeService employeeService, HrService hrService, ImageService imageService, UserDetailService userDetailService, PositionNameService positionNameService, LevelPositionService levelPositionService, PositionService positionService, CityCompanyService cityCompanyService,BackgroundService backgroundService) {
         this.employeeService = employeeService;
         this.hrService = hrService;
         this.imageService = imageService;
@@ -43,6 +45,8 @@ public class AdminEmployeeController {
         this.cityCompanyService = cityCompanyService;
         this.roleService=roleService;
         this.backgroundService=backgroundService;
+        this.languageService=languageService;
+        this.educationService=educationService;
     }
 
     @GetMapping("/admin/employees")
@@ -502,7 +506,14 @@ public class AdminEmployeeController {
         position.setEmployeeEntities(employees);
         positionService.addAndUpdatePosition(position);
         hrService.deleteHrByUserDetail(employee1.getUserDetail());
+        Background background=employee1.getBackground();
+        List<Education> educations=employee1.getEducationEntities();
+        List<Language> languages=employee1.getLanguages();
+        backgroundService.deleteBackground(background.getIdBackground());
+        educationService.deleteEducations(educations);
+        languageService.deleteLanguages(languages);
         employeeService.deleteEmployeesByPositionName(employee1.getPosition().getPositionName());
+        userDetailService.deleteUser(userDetail.getIdUserDetails());
         return "redirect:/admin/employees/"+id;
     }
 

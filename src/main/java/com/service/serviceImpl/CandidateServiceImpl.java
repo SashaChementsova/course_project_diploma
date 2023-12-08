@@ -2,6 +2,7 @@ package com.service.serviceImpl;
 
 import com.comparators.CandidateComparator;
 import com.model.Candidate;
+import com.model.Trial;
 import com.repository.CandidateRepository;
 import com.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,20 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public void deleteCandidate(int id){
         candidateRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean checkActiveTrialOfCandidate(Candidate candidate){
+        List<Trial> trials=candidate.getTrialEntities();
+        if(trials!=null){
+            if(!(trials.isEmpty())){
+                for(Trial trial:trials){
+                    if(trial.isStatus()){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

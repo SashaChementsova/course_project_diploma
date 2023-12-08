@@ -7,8 +7,12 @@ import java.util.List;
 public interface CandidateService {
 
     public Candidate addAndUpdateCandidate(Candidate candidate);
+
     public List<Candidate> getCandidates();
 
     public Candidate findCandidateById(int id);
+
     public void deleteCandidate(int id);
+
+    public boolean checkActiveTrialOfCandidate(Candidate candidate);
 }

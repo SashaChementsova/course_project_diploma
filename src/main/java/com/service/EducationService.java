@@ -11,4 +11,6 @@ public interface EducationService{
 
     public Education findEducationById(int id);
     public void deleteEducation(int id);
+
+    public void deleteEducations(List<Education> educations);
 }

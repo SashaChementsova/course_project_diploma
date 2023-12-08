@@ -1,7 +1,11 @@
 package com.controller;
 
 import com.dto.UserDto;
+import com.model.Background;
+import com.model.Candidate;
 import com.model.UserDetail;
+import com.service.BackgroundService;
+import com.service.CandidateService;
 import com.service.ImageService;
 import com.service.UserDetailService;
 import jakarta.validation.Valid;
@@ -25,10 +29,16 @@ public class AuthController {
     private ImageService imageService;
     private PasswordEncoder passwordEncoder;
 
-    public AuthController(UserDetailService userDetailService,ImageService imageService, PasswordEncoder passwordEncoder) {
+    private CandidateService candidateService;
+
+    private BackgroundService backgroundService;
+
+    public AuthController(BackgroundService backgroundService,CandidateService candidateService,UserDetailService userDetailService,ImageService imageService, PasswordEncoder passwordEncoder) {
         this.userDetailService = userDetailService;
         this.passwordEncoder=passwordEncoder;
         this.imageService=imageService;
+        this.candidateService=candidateService;
+        this.backgroundService=backgroundService;
     }
 
     public String getCurrentUsername() {
@@ -94,7 +104,14 @@ public class AuthController {
         user.setPassword(password);
         user.setFile1(file1);
         user.setEmail(email);
-        userDetailService.saveUser(user,"ROLE_CANDIDATE");
+        UserDetail userDetail=userDetailService.saveUser(user,"ROLE_CANDIDATE");
+        Candidate candidate=new Candidate();
+        Background background=new Background();
+        background.setExperience(0);
+        background=backgroundService.addAndUpdateBackground(background);
+        candidate.setUserDetail(userDetail);
+        candidate.setBackground(background);
+        candidateService.addAndUpdateCandidate(candidate);
         return "redirect:/login";
     }
 

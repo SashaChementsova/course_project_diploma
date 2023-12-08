@@ -11,4 +11,6 @@ public interface LanguageService {
     public Language findLanguageById(int id);
 
     public void deleteLanguage(int id);
+
+    public void deleteLanguages(List<Language> languages);
 }

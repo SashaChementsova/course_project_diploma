@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 
 @Getter
@@ -15,6 +16,10 @@ public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEducation;
+
+    @Column(nullable = false)
+    private String nameEducation;
+
     @Column(nullable = false)
     private Date yearOfGraduation;
 
@@ -25,4 +30,10 @@ public class Education {
     private Candidate candidate;
     @ManyToOne(fetch = FetchType.LAZY)
     private Employee employee;
+
+    public String getStringYearOfGraduation() {
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(yearOfGraduation);
+        String year=date.substring(0,4);
+        return year;
+    }
 }

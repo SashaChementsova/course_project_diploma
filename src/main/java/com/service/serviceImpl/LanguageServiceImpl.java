@@ -30,4 +30,14 @@ public class LanguageServiceImpl implements LanguageService {
     public void deleteLanguage(int id){
         languageRepository.deleteById(id);
     }
+    @Override
+    public void deleteLanguages(List<Language> languages){
+        if(languages!=null){
+            if(!(languages.isEmpty())){
+                for(Language language:languages){
+                    deleteLanguage(language.getIdLanguage());
+                }
+            }
+        }
+    }
 }

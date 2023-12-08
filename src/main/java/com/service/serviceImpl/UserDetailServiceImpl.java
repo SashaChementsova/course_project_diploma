@@ -41,7 +41,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public UserDetail saveUser(UserDto userDto, String roleName) throws IOException {
-        System.out.println("photka5432");
         UserDetail userDetails =fromUserDtoToUserDetails(userDto);
         Role role = roleRepository.findByNameRole(roleName);
         if(role == null){
@@ -57,7 +56,6 @@ public class UserDetailServiceImpl implements UserDetailService {
         userDetails.setImage(image);
         userDetails.setRoles(Arrays.asList(role));
         userDetails.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        System.out.println("saved");
         image.setUserDetail(userDetails);
         return userDetailRepository.save(userDetails);
     }
@@ -72,8 +70,6 @@ public class UserDetailServiceImpl implements UserDetailService {
         userDetail.setImage(image);
         userDetail.setRoles(Arrays.asList(role));
         userDetail.setPassword(passwordEncoder.encode(userDetail.getPassword()));
-        System.out.println("saved");
-        //image.setUserDetail(userDetails);
         return userDetailRepository.save(userDetail);
     }
 

@@ -31,4 +31,14 @@ public class EducationServiceImpl implements EducationService {
     public void deleteEducation(int id){
         educationRepository.deleteById(id);
     }
+    @Override
+    public void deleteEducations(List<Education> educations){
+        if(educations!=null){
+            if(!(educations.isEmpty())){
+                for(Education education:educations){
+                    deleteEducation(education.getIdEducation());
+                }
+            }
+        }
+    }
 }

@@ -12,4 +12,9 @@ public interface LanguageNameService {
     public void deleteLanguageName(int id);
 
     public void initializeLanguageName();
+
+    public boolean checkLevelLanguageByEmployees(LanguageName languageName);
+    public boolean checkLevelLanguageByVacancies(LanguageName languageName);
+    public boolean checkLevelLanguageByCandidate(LanguageName languageName);
+    public boolean checkLevelLanguageByTestQuestions(LanguageName languageName);
 }
