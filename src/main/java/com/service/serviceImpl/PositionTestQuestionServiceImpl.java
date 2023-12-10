@@ -1,9 +1,6 @@
 package com.service.serviceImpl;
 
-import com.model.PositionName;
-import com.model.PositionTest;
-import com.model.PositionTestHasQuestion;
-import com.model.PositionTestQuestion;
+import com.model.*;
 import com.repository.PositionTestHasQuestionRepository;
 import com.repository.PositionTestQuestionRepository;
 import com.service.PositionTestQuestionService;
@@ -71,23 +68,59 @@ public class PositionTestQuestionServiceImpl implements PositionTestQuestionServ
     }
 
     @Override
+    public boolean checkDateOfPositionTestByQuestion(PositionTestQuestion positionTestQuestion){
+        List<PositionTestHasQuestion> positionTestHasQuestions=positionTestQuestion.getPositionTestHasQuestionEntities();
+        if(positionTestHasQuestions!=null){
+            if(!(positionTestHasQuestions.isEmpty())){
+                for(PositionTestHasQuestion positionTestHasQuestion: positionTestHasQuestions){
+                    PositionTest positionTest=positionTestHasQuestion.getPositionTest();
+                    if(positionTest.getDate().compareTo(new java.util.Date())<=0){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public void deleteQuestionsByPositionName(PositionName positionName){
         List<PositionTestQuestion> positionTestQuestions=getPositionTestQuestionsByPositionName(positionName);
         if(positionTestQuestions!=null){
             if(!(positionTestQuestions.isEmpty())) {
                 for(PositionTestQuestion positionTestQuestion:positionTestQuestions){
-                    List<PositionTestHasQuestion> positionTestHasQuestions=positionTestQuestion.getPositionTestHasQuestionEntities();
-                    if(positionTestHasQuestions!=null){
-                        if(!(positionTestHasQuestions.isEmpty())){
-                            for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
-                                positionTestHasQuestion.setPositionTestQuestion(null);
-                                positionTestHasQuestionRepository.save(positionTestHasQuestion);
-                            }
-                        }
-                    }
-                    deletePositionTestQuestion(positionTestQuestion.getIdPositionTestQuestion());
+                    deleteQuestionFromTestHasQuestions(positionTestQuestion);
                 }
             }
         }
+    }
+    @Override
+    public void deleteQuestionFromTestHasQuestions(PositionTestQuestion positionTestQuestion){
+        List<PositionTestHasQuestion> positionTestHasQuestions=positionTestQuestion.getPositionTestHasQuestionEntities();
+        if(positionTestHasQuestions!=null){
+            if(!(positionTestHasQuestions.isEmpty())){
+                for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
+                    positionTestHasQuestion.setPositionTestQuestion(null);
+                    positionTestHasQuestionRepository.save(positionTestHasQuestion);
+                }
+            }
+        }
+        deletePositionTestQuestion(positionTestQuestion.getIdPositionTestQuestion());
+    }
+
+    @Override
+    public List<PositionTestQuestion> findPositionTestQuestionsByPosition(Position position){
+        List<PositionTestQuestion> positionTestQuestions=getPositionTestQuestions();
+        List<PositionTestQuestion> resultPositionTestQuestions=new ArrayList<>();
+        if(positionTestQuestions!=null){
+            if(!(positionTestQuestions.isEmpty())){
+                for(PositionTestQuestion positionTestQuestion:positionTestQuestions){
+                    if(positionTestQuestion.getPosition().getIdPosition()==position.getIdPosition()){
+                        resultPositionTestQuestions.add(positionTestQuestion);
+                    }
+                }
+            }
+        }
+        return resultPositionTestQuestions;
     }
 }

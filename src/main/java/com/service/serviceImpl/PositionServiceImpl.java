@@ -1,6 +1,7 @@
 package com.service.serviceImpl;
 
 import com.model.Position;
+import com.model.Position;
 import com.model.PositionName;
 import com.repository.PositionRepository;
 import com.service.PositionService;
@@ -46,5 +47,18 @@ public class PositionServiceImpl implements PositionService {
         }
     }
 
+    public Position checkDuplicatePosition(Position position){
+        List<Position> positions =getPositions();
+        if(positions!=null){
+            if(!(positions.isEmpty())){
+                for(Position existPosition:positions){
+                    if(existPosition.getPositionName().getIdPositionName()==position.getPositionName().getIdPositionName()&&existPosition.getLevelPosition().getIdLevelPosition()==position.getLevelPosition().getIdLevelPosition()){
+                        return existPosition;
+                    }
+                }
+            }
+        }
+        return position;
+    }
 
 }

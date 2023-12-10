@@ -1,8 +1,11 @@
 package com.service;
 
+import com.model.Position;
+import com.model.PositionTestQuestion;
 import com.model.PositionName;
 import com.model.PositionTestQuestion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface PositionTestQuestionService {
@@ -15,4 +18,10 @@ public interface PositionTestQuestionService {
     public boolean checkDateOfPositionTestByQuestions(List<PositionTestQuestion> positionTestQuestions);
 
     public void deleteQuestionsByPositionName(PositionName positionName);
+
+    public boolean checkDateOfPositionTestByQuestion(PositionTestQuestion positionTestQuestion);
+    public void deleteQuestionFromTestHasQuestions(PositionTestQuestion positionTestQuestion);
+
+    
+    public List<PositionTestQuestion> findPositionTestQuestionsByPosition(Position position);
 }

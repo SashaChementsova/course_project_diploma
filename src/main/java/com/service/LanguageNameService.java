@@ -13,8 +13,8 @@ public interface LanguageNameService {
 
     public void initializeLanguageName();
 
-    public boolean checkLevelLanguageByEmployees(LanguageName languageName);
-    public boolean checkLevelLanguageByVacancies(LanguageName languageName);
-    public boolean checkLevelLanguageByCandidate(LanguageName languageName);
-    public boolean checkLevelLanguageByTestQuestions(LanguageName languageName);
+    public boolean checkLanguageNameByEmployees(LanguageName languageName);
+    public boolean checkLanguageNameByVacancies(LanguageName languageName);
+    public boolean checkLanguageNameByCandidate(LanguageName languageName);
+    public boolean checkLanguageNameByTestQuestions(LanguageName languageName);
 }

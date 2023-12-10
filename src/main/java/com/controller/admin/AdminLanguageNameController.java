@@ -3,6 +3,7 @@ package com.controller.admin;
 import com.model.LanguageName;
 import com.service.LanguageNameService;
 import com.service.LanguageService;
+import com.service.LanguageTestQuestionService;
 import com.service.LevelLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ public class AdminLanguageNameController {
     private final LanguageService languageService;
 
     private final LevelLanguageService levelLanguageService;
+    private final LanguageTestQuestionService languageTestQuestionService;
     @Autowired
-    public AdminLanguageNameController(LanguageNameService languageNameService, LanguageService languageService, LevelLanguageService levelLanguageService) {
+    public AdminLanguageNameController(LanguageTestQuestionService languageTestQuestionService,LanguageNameService languageNameService, LanguageService languageService, LevelLanguageService levelLanguageService) {
         this.languageNameService = languageNameService;
+        this.languageTestQuestionService=languageTestQuestionService;
         this.languageService = languageService;
         this.levelLanguageService = levelLanguageService;
     }
@@ -112,22 +115,24 @@ public class AdminLanguageNameController {
             model.addAttribute("notEqual","notEqual");
             return "admin/languageNameControl/getLanguageNames.html";
         }
-        if(!(languageNameService.checkLevelLanguageByEmployees(languageName))){
+        if(!(languageNameService.checkLanguageNameByEmployees(languageName))){
             model.addAttribute("notEmptyEmployee","notEmptyEmployee");
             return "admin/languageNameControl/getLanguageNames.html";
         }
-        if(!(languageNameService.checkLevelLanguageByVacancies(languageName))){
+        if(!(languageNameService.checkLanguageNameByVacancies(languageName))){
             model.addAttribute("notEmptyVacancy","notEmptyVacancy");
             return "admin/languageNameControl/getLanguageNames.html";
         }
-        if(!(languageNameService.checkLevelLanguageByCandidate(languageName))){
+        if(!(languageNameService.checkLanguageNameByCandidate(languageName))){
             model.addAttribute("notEmptyCandidate","notEmptyCandidate");
             return "admin/languageNameControl/getLanguageNames.html";
         }
-        if(!(languageNameService.checkLevelLanguageByTestQuestions(languageName))){ ////////////////////////////
+        if(!(languageNameService.checkLanguageNameByTestQuestions(languageName))){
             model.addAttribute("notEmptyTestQuestions","notEmptyTestQuestions");
             return "admin/languageNameControl/getLanguageNames.html";
         }
+        languageTestQuestionService.deleteQuestionsByLanguageName(languageName);
+        languageService.deleteLanguageByLanguageName(languageName);
         languageNameService.deleteLanguageName(languageName.getIdLanguageName());
         return "redirect:/admin/languageNames";
     }

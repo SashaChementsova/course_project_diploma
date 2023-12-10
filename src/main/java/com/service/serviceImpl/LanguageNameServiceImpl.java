@@ -4,6 +4,7 @@ import com.comparators.LanguageNameComparator;
 import com.model.*;
 import com.repository.LanguageNameRepository;
 import com.service.LanguageNameService;
+import com.service.LanguageTestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class LanguageNameServiceImpl implements LanguageNameService {
     private final LanguageNameRepository languageNameRepository;
+    private final LanguageTestQuestionService languageTestQuestionService;
     @Autowired
-    public LanguageNameServiceImpl(LanguageNameRepository languageNameRepository){
+    public LanguageNameServiceImpl(LanguageNameRepository languageNameRepository,LanguageTestQuestionService languageTestQuestionService){
         this.languageNameRepository = languageNameRepository;
+        this.languageTestQuestionService = languageTestQuestionService;
     }
     @Override
     public LanguageName addAndUpdateLanguageName(LanguageName languageName){
@@ -48,7 +51,7 @@ public class LanguageNameServiceImpl implements LanguageNameService {
     }
 
     @Override
-    public boolean checkLevelLanguageByEmployees(LanguageName languageName){
+    public boolean checkLanguageNameByEmployees(LanguageName languageName){
         List<Language> languages=languageName.getLanguageEntities();
         if(languages!=null){
             if(!(languages.isEmpty())){
@@ -66,7 +69,7 @@ public class LanguageNameServiceImpl implements LanguageNameService {
     }
 
     @Override
-    public boolean checkLevelLanguageByVacancies(LanguageName languageName){
+    public boolean checkLanguageNameByVacancies(LanguageName languageName){
         List<Language> languages=languageName.getLanguageEntities();
         if(languages!=null){
             if(!(languages.isEmpty())){
@@ -84,7 +87,7 @@ public class LanguageNameServiceImpl implements LanguageNameService {
     }
 
     @Override
-    public boolean checkLevelLanguageByCandidate(LanguageName languageName){
+    public boolean checkLanguageNameByCandidate(LanguageName languageName){
         List<Language> languages=languageName.getLanguageEntities();
         if(languages!=null){
             if(!(languages.isEmpty())){
@@ -102,7 +105,7 @@ public class LanguageNameServiceImpl implements LanguageNameService {
     }
 
     @Override
-    public boolean checkLevelLanguageByTestQuestions(LanguageName languageName){
+    public boolean checkLanguageNameByTestQuestions(LanguageName languageName){
         List<Language> languages=languageName.getLanguageEntities();
         if(languages!=null){
             if(!(languages.isEmpty())){
@@ -110,7 +113,7 @@ public class LanguageNameServiceImpl implements LanguageNameService {
                     List<LanguageTestQuestion> languageTestQuestions=language.getLanguageTestQuestionEntities();
                     if(languageTestQuestions!=null){
                         if(!(languageTestQuestions.isEmpty())){
-                            return false;
+                            return languageTestQuestionService.checkDateOfLanguageTestByQuestions(languageTestQuestions);
                         }
                     }
                 }

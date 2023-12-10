@@ -15,6 +15,7 @@ public interface PositionNameService {
 
     public void initializePositionName();
 
+    public boolean checkPositionNameByEmployee(int id);
 
     public boolean checkPositionNameByVacancy(int id);
     public List<Vacancy> getVacanciesByPositionName(int id);

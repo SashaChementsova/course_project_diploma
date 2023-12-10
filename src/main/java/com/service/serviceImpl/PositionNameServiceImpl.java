@@ -77,11 +77,39 @@ public class PositionNameServiceImpl implements PositionNameService {
     @Override
     public boolean checkPositionNameByVacancy(int id){
         List<Vacancy> vacancies=getVacanciesByPositionName(id);
-        if(vacancies==null || vacancies.isEmpty()) return false;
-        for(Vacancy vacancy:vacancies){
-            if(vacancy.isStatus()) return true;
+        if(vacancies!=null){
+            if(!(vacancies.isEmpty())){
+                for(Vacancy vacancy:vacancies){
+                    if(vacancy.isStatus()) return false;
+                }
+            }
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean checkPositionNameByEmployee(int id){
+        PositionName positionName=findPositionNameById(id);
+        if(positionName!=null){
+            List<Position> positions=positionName.getPositionEntities();
+            if(positions!=null){
+                if(!(positions.isEmpty())){
+                    List<Employee> employees=new ArrayList<>();
+                    for(Position position:positions){
+                        employees=position.getEmployeeEntities();
+                        if(employees!=null){
+                            if(!(employees.isEmpty())){
+                                for(Employee employee:employees){
+                                    if(employee.getPosition().getPositionName().getIdPositionName()==id)
+                                        return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
     @Override
     public boolean checkPositionTestByPositionName(PositionName positionName) {

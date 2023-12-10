@@ -1,5 +1,7 @@
 package com.service;
 
+import com.model.Language;
+import com.model.LanguageName;
 import com.model.LanguageTestQuestion;
 
 import java.util.List;
@@ -9,4 +11,12 @@ public interface LanguageTestQuestionService {
     public List<LanguageTestQuestion> getLanguageTestQuestions();
     public LanguageTestQuestion findLanguageTestQuestionById(int id);
     public void deleteLanguageTestQuestion(int id);
+
+    public List<LanguageTestQuestion> findLanguageTestQuestionsByLanguage(Language language);
+
+    public boolean checkDateOfLanguageTestByQuestions(List<LanguageTestQuestion> languageTestQuestions);
+    public void deleteQuestionsByLanguageName(LanguageName languageName);
+    public List<LanguageTestQuestion> getLanguageTestQuestionsByLanguageName(LanguageName languageName);
+    public boolean checkDateOfLanguageTestByQuestion(LanguageTestQuestion languageTestQuestion);
+    public void deleteQuestionFromTestHasQuestions(LanguageTestQuestion languageTestQuestion);
 }

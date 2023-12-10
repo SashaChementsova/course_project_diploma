@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.Position;
+import com.model.Position;
 import com.model.PositionName;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface PositionService {
     public void deletePosition(int id);
 
     public void deletePositionByPositionName(PositionName positionName);
+    public Position checkDuplicatePosition(Position position);
 }

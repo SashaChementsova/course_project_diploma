@@ -62,7 +62,7 @@ public class AdminPositionController {
             model.addAttribute("fail","fail");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
-        if(!(positionName1.getPositionEntities().isEmpty())){
+        if(!(positionNameService.checkPositionNameByEmployee(positionName1.getIdPositionName()))){
             model.addAttribute("notEmpty","notEmpty");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
@@ -70,15 +70,15 @@ public class AdminPositionController {
             model.addAttribute("testQuestion","testQuestion");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
-        if(positionNameService.checkPositionNameByVacancy(positionName1.getIdPositionName())){
+        if(!(positionNameService.checkPositionNameByVacancy(positionName1.getIdPositionName()))){
             model.addAttribute("notEmptyVacancy","notEmptyVacancy");
             return "admin/positionControl/getPositionsOfDepartment.html";
         }
         Department department=positionName1.getDepartment();
-        for(Employee employee:employeeService.getEmployeesByPositionName(positionName1)){
-            hrService.deleteHrByUserDetail(employee.getUserDetail());
-        }
-        employeeService.deleteEmployeesByPositionName(positionName1);
+//        for(Employee employee:employeeService.getEmployeesByPositionName(positionName1)){
+//            hrService.deleteHrByUserDetail(employee.getUserDetail());
+//        }
+//        employeeService.deleteEmployeesByPositionName(positionName1);
         positionTestQuestionService.deleteQuestionsByPositionName(positionName1);
         positionService.deletePositionByPositionName(positionName1);
         positionNameService.deletePositionName(positionName.getIdPositionName());
