@@ -87,4 +87,19 @@ public class VacancyServiceImpl implements VacancyService {
         }
     }
 
+    public List<Vacancy> findVacanciesByPosition(Position position){
+        List<Vacancy> vacancies=getVacancies();
+        List<Vacancy> resultVacancies=new ArrayList<>();
+        if(vacancies!=null){
+            if(!(vacancies.isEmpty())){
+                for(Vacancy vacancy:vacancies){
+                    if(vacancy.getPosition().getPositionName().getIdPositionName()==position.getPositionName().getIdPositionName()&&vacancy.getPosition().getLevelPosition().getIdLevelPosition()==position.getLevelPosition().getIdLevelPosition()){
+                        resultVacancies.add(vacancy);
+                    }
+                }
+            }
+        }
+        return resultVacancies;
+    }
+
 }

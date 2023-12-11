@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.LevelPosition;
+import com.model.Position;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface LevelPositionService {
     public void deleteLevelPosition(int id);
 
     public void initializeLevelPosition();
+
+    public List<LevelPosition> getLevelPositionsUnderPosition(Position position);
 }

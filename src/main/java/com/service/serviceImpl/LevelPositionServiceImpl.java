@@ -1,12 +1,14 @@
 package com.service.serviceImpl;
 
 import com.model.LevelPosition;
+import com.model.Position;
 import com.model.PositionName;
 import com.repository.LevelPositionRepository;
 import com.service.LevelPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class LevelPositionServiceImpl implements LevelPositionService {
@@ -44,5 +46,20 @@ public class LevelPositionServiceImpl implements LevelPositionService {
             System.out.println("Значения уже есть");
         }
 
+    }
+
+    public List<LevelPosition> getLevelPositionsUnderPosition(Position position){
+        List<LevelPosition> levelPositions=getLevelPositions();
+        List<LevelPosition> resultLevelPositions=new ArrayList<>();
+        if(levelPositions!=null){
+            if(!(levelPositions.isEmpty())){
+                for(LevelPosition levelPosition:levelPositions){
+                    if(levelPosition.getIdLevelPosition()<=position.getLevelPosition().getIdLevelPosition()){
+                        resultLevelPositions.add(levelPosition);
+                    }
+                }
+            }
+        }
+        return resultLevelPositions;
     }
 }

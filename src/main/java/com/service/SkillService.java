@@ -10,4 +10,5 @@ public interface SkillService {
 
     public Skill findSkillById(int id);
     public void deleteSkill(int id);
+    public List<Skill> findSkillsByName(String name);
 }

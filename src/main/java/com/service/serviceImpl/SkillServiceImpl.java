@@ -6,6 +6,7 @@ import com.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class SkillServiceImpl implements SkillService {
@@ -30,5 +31,21 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public void deleteSkill(int id){
         skillRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Skill> findSkillsByName(String name){
+        List<Skill> skills=getSkills();
+        List<Skill> resultSkills=new ArrayList<>();
+        if(skills!=null){
+            if(!(skills.isEmpty())){
+                for(Skill skill:skills){
+                    if(skill.getNameSkill().contains(name)){
+                        resultSkills.add(skill);
+                    }
+                }
+            }
+        }
+        return resultSkills;
     }
 }

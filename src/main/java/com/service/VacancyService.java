@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.Hr;
+import com.model.Position;
 import com.model.PositionName;
 import com.model.Vacancy;
 
@@ -17,4 +18,5 @@ public interface VacancyService {
     public void deleteVacancyByPositionName(PositionName positionName);
 
     public void deleteVacancyByHr(Hr hr);
+    public List<Vacancy> findVacanciesByPosition(Position position);
 }

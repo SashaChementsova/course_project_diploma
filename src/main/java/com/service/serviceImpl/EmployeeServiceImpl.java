@@ -151,4 +151,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees;
 
     }
+
+    @Override
+    public Employee getEmployeeByHr(Hr hr){
+        return hr.getUserDetail().getEmployee();
+    }
 }

@@ -125,4 +125,11 @@ public class LanguageTestQuestionServiceImpl implements LanguageTestQuestionServ
         }
         deleteLanguageTestQuestion(languageTestQuestion.getIdLanguageTestQuestion());
     }
+
+    @Override
+    public boolean checkNumOfQuestionsByLanguage(Language language, int num){
+        List<LanguageTestQuestion> languageTestQuestions=findLanguageTestQuestionsByLanguage(language);
+        if(languageTestQuestions.size()>=num) return true;
+        return false;
+    }
 }

@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.Employee;
+import com.model.Hr;
 import com.model.PositionName;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface EmployeeService {
     public void deleteEmployee(int id);
 
     public int calculateDifferenceDates(Employee employee);
-
+    public Employee getEmployeeByHr(Hr hr);
     public int compareDates(String date1,String date2);
     public List<Employee> findEmployeeBySNP(String SNP,PositionName positionName);
     public List<Employee> findEmployeeBySNP(String SNP);

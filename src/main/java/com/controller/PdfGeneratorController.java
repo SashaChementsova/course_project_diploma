@@ -4,6 +4,7 @@ import com.model.Employee;
 import com.model.UserDetail;
 import com.service.AdminService;
 import com.service.EmployeeService;
+import com.service.HrService;
 import com.service.serviceImpl.DataMapperServiceImpl;
 import com.service.serviceImpl.DocumentGeneratorServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,8 @@ public class PdfGeneratorController {
     private DataMapperServiceImpl dataMapper;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private HrService hrService;
 
     @Autowired
     private AdminService adminService;
@@ -48,7 +51,7 @@ public class PdfGeneratorController {
     }
 
     @GetMapping(value = "/contract/{idEmployee}")
-    public String generateDocument(@PathVariable("idEmployee")String idEmployee) {
+    public String generateDocumentEmployee(@PathVariable("idEmployee")String idEmployee) {
         checkAdmin();
         String finalHtml = null;
 
@@ -60,6 +63,22 @@ public class PdfGeneratorController {
         documentGenerator.htmlToPdf(finalHtml);
 
         return "redirect:/admin/employee/"+idEmployee;
+    }
+
+    @GetMapping(value = "/contractHrVacancy/{idVacancy}/{idHr}")
+    public String generateDocumentHrVacancy(@PathVariable("idVacancy")String idVacancy,@PathVariable("idHr")String idHr) {
+        checkAdmin();
+        String finalHtml = null;
+
+        Employee employee= hrService.findHrById(Integer.parseInt(idHr)).getUserDetail().getEmployee();
+        Context dataContext = dataMapper.setData(employee,adminService.findAdminById(1));
+
+        finalHtml = springTemplateEngine.process("Contract", dataContext);
+
+
+        documentGenerator.htmlToPdf(finalHtml);
+
+        return "redirect:/admin/vacancyHr/"+idVacancy+"/"+idHr;
     }
 
     private void checkAdmin(){

@@ -49,23 +49,11 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/addPositionQuestion/end}"
+                th:action="@{/hr/addPositionQuestion/end}"
                 th:object="${positionTestQuestion}"
                 enctype="multipart/form-data"
         >
-            <h1>Вопрос для технического теста</h1>
-            <div class="field">
-                <label for="positionName">Позиция</label>
-                <select class="select" id="positionName"
-                        name="positionName"
-                        th:field="${positionName.idPositionName}"
-                >
-                    <div th:each="positionNameAdd:${positionNames}">
-                        <option th:value="${positionNameAdd.idPositionName}" th:text="${positionNameAdd.name}"></option>
-
-                    </div>
-                </select>
-            </div>
+            <h1>Вопрос для теста по иностранному языку</h1>
             <div class="field">
                 <label for="levelPosition">Уровень позиции</label>
                 <select class="select" id="levelPosition"
@@ -159,7 +147,7 @@
                 <button type="submit">Добавить вопрос</button>
             </div>
         </form>
-        <a th:href="@{/admin/positionQuestions}">
+        <a th:href="@{/hr/positionQuestions}">
             <button>
                 Отмена
             </button>
@@ -172,7 +160,7 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/deletePositionQuestion/end}"
+                th:action="@{/hr/deletePositionQuestion/end}"
                 th:object="${positionTestQuestion}"
                 enctype="multipart/form-data"
         >
@@ -188,7 +176,7 @@
                 <button type="submit">Удалить вопрос</button>
             </div>
         </form>
-        <a th:href="@{/admin/positionQuestions}">
+        <a th:href="@{/hr/positionQuestions}">
             <button>
                 Отмена
             </button>
@@ -201,24 +189,12 @@
         <form
                 method="post"
                 role="form"
-                th:action="@{/admin/editPositionQuestion/end}"
+                th:action="@{/hr/editPositionQuestion/end}"
                 th:object="${positionTestQuestion}"
                 enctype="multipart/form-data"
         >
             <input type="hidden" th:field="*{idPositionTestQuestion}">
             <h1>Редактирование вопроса для технического теста</h1>
-            <div class="field">
-                <label for="positionNameEdit">Позиция</label>
-                <select class="select" id="positionNameEdit"
-                        name="positionNameEdit"
-                        th:field="${positionName.idPositionName}"
-                >
-                    <div th:each="positionNameAdd:${positionNames}">
-                        <option th:value="${positionNameAdd.idPositionName}" th:text="${positionNameAdd.name}"></option>
-
-                    </div>
-                </select>
-            </div>
             <div class="field">
                 <label for="levelPositionEdit">Уровень позиции</label>
                 <select class="select" id="levelPositionEdit"
@@ -312,7 +288,7 @@
                 <button type="submit">Отредактировать вопрос</button>
             </div>
         </form>
-        <a th:href="@{/admin/positionQuestions}">
+        <a th:href="@{/hr/positionQuestions}">
             <button>
                 Отмена
             </button>
@@ -333,19 +309,7 @@
         </tr>
     </table>
 </div>
-<form th:action="@{/admin/positionQuestions}"  method="get">
-    <div class="field">
-        <label for="positionNameFind">Позиция</label>
-        <select class="select" id="positionNameFind"
-                name="positionNameFind"
-                th:field="${positionNameFind.idPositionName}"
-
-        >
-            <div th:each="positionNameFinding:${positionNames}">
-                <option th:value="${positionNameFinding.idPositionName}" th:text="${positionNameFinding.name}"></option>
-            </div>
-        </select>
-    </div>
+<form th:action="@{/hr/positionQuestions}"  method="get">
     <div class="field">
         <label for="levelPositionFind">Уровень позиции</label>
         <select class="select" id="levelPositionFind"
@@ -360,8 +324,8 @@
     </div>
     <button type="submit" class="btn" >Поиск</button>
 </form>
-<a th:href="@{/admin/positionQuestions}" ><i class="fa fa-bars" style="color:black"></i></a>
-<a th:href="@{/admin/addPositionQuestion}" ><i class="fa fa-plus" style="color:black"></i></a>
+<a th:href="@{/hr/positionQuestions}" ><i class="fa fa-bars" style="color:black"></i></a>
+<a th:href="@{/hr/addPositionQuestion}" ><i class="fa fa-plus" style="color:black"></i></a>
 <div th:switch="${emptiness}">
     <div th:case="'empty'">Список технических вопросов пуст!</div>
     <div th:case="*">
@@ -387,8 +351,8 @@
                 <td th:text="${positionQuestion.answer3}">
                 <td th:text="${positionQuestion.answer4}">
                 <td th:text="${positionQuestion.point}"></td>
-                <td><a th:href="@{/admin/editPositionQuestion/{id}(id=${positionQuestion.idPositionTestQuestion})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
-                <td><a th:href="@{/admin/deletePositionQuestion/{id}(id=${positionQuestion.idPositionTestQuestion})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
+                <td><a th:href="@{/hr/editPositionQuestion/{id}(id=${positionQuestion.idPositionTestQuestion})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
+                <td><a th:href="@{/hr/deletePositionQuestion/{id}(id=${positionQuestion.idPositionTestQuestion})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
             </tr>
         </table>
     </div>

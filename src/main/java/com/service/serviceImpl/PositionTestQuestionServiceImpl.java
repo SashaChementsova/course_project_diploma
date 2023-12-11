@@ -123,4 +123,26 @@ public class PositionTestQuestionServiceImpl implements PositionTestQuestionServ
         }
         return resultPositionTestQuestions;
     }
+    @Override
+    public boolean checkNumOfQuestionsByPosition(Position position,int num){
+        List<PositionTestQuestion> positionTestQuestions=findPositionTestQuestionsByPosition(position);
+        if(positionTestQuestions.size()>=num) return true;
+        return false;
+    }
+
+    @Override
+    public List<PositionTestQuestion> findQuestionsUnderPosition(Position position){
+        List<PositionTestQuestion> questions=getPositionTestQuestionsByPositionName(position.getPositionName());
+        List<PositionTestQuestion> positionTestQuestions=new ArrayList<>();
+        if(questions!=null){
+            if(!(questions.isEmpty())){
+                for(PositionTestQuestion positionTestQuestion:questions){
+                    if(positionTestQuestion.getPosition().getLevelPosition().getIdLevelPosition()<=position.getLevelPosition().getIdLevelPosition()){
+                        positionTestQuestions.add(positionTestQuestion);
+                    }
+                }
+            }
+        }
+        return positionTestQuestions;
+    }
 }

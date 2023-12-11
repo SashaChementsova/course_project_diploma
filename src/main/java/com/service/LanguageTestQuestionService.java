@@ -19,4 +19,6 @@ public interface LanguageTestQuestionService {
     public List<LanguageTestQuestion> getLanguageTestQuestionsByLanguageName(LanguageName languageName);
     public boolean checkDateOfLanguageTestByQuestion(LanguageTestQuestion languageTestQuestion);
     public void deleteQuestionFromTestHasQuestions(LanguageTestQuestion languageTestQuestion);
+
+    public boolean checkNumOfQuestionsByLanguage(Language language, int num);
 }

@@ -46,9 +46,13 @@ public class CityCompanyServiceImpl implements CityCompanyService {
     public List<CityCompany> findCityCompaniesByNameCity(String nameCity){
         List<CityCompany> cityCompanies=getCityCompanies();
         List<CityCompany> cityCompanies1=new ArrayList<>();
-        for (CityCompany cityCompany:cityCompanies) {
-            if(cityCompany.getNameCity().contains(nameCity)){
-                cityCompanies1.add(cityCompany);
+        if (cityCompanies != null) {
+            if(!(cityCompanies.isEmpty())){
+                for (CityCompany cityCompany:cityCompanies) {
+                    if(cityCompany.getNameCity().contains(nameCity)){
+                        cityCompanies1.add(cityCompany);
+                    }
+                }
             }
         }
         return cityCompanies1;

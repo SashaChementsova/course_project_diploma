@@ -1,9 +1,6 @@
 package com.controller.admin;
 
-import com.model.Position;
-import com.model.PositionName;
-import com.model.PositionTestQuestion;
-import com.model.LevelPosition;
+import com.model.*;
 import com.service.PositionNameService;
 import com.service.PositionService;
 import com.service.PositionTestQuestionService;
@@ -79,6 +76,8 @@ public class AdminPositionQuestionsController {
         model.addAttribute("levelPositions", levelPositionService.getLevelPositions());
         model.addAttribute("positionNameFind", new PositionName());
         model.addAttribute("levelPositionFind", new LevelPosition());
+        model.addAttribute("positionName",positionName);
+        model.addAttribute("levelPosition",levelPosition);
         model.addAttribute("positionQuestions", positionTestQuestionService.getPositionTestQuestions());
         if (positionTestQuestionService.getPositionTestQuestions().isEmpty())
             model.addAttribute("emptiness", "empty");
