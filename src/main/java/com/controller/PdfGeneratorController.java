@@ -65,6 +65,37 @@ public class PdfGeneratorController {
         return "redirect:/admin/employee/"+idEmployee;
     }
 
+
+    @GetMapping(value = "/hr/contractHr/{idEmployee}")
+    public String generateDocumentHrEmployee(@PathVariable("idEmployee")String idEmployee) {
+        checkAdmin();
+        String finalHtml = null;
+
+        Context dataContext = dataMapper.setData(employeeService.findEmployeeById(Integer.parseInt(idEmployee)),adminService.findAdminById(1));
+
+        finalHtml = springTemplateEngine.process("Contract", dataContext);
+
+
+        documentGenerator.htmlToPdf(finalHtml);
+
+        return "redirect:/hr/getProfile";
+    }
+
+    @GetMapping(value = "/employee/contractEmployee/{idEmployee}")
+    public String generateDocumentEmployeeProfile(@PathVariable("idEmployee")String idEmployee) {
+        checkAdmin();
+        String finalHtml = null;
+
+        Context dataContext = dataMapper.setData(employeeService.findEmployeeById(Integer.parseInt(idEmployee)),adminService.findAdminById(1));
+
+        finalHtml = springTemplateEngine.process("Contract", dataContext);
+
+
+        documentGenerator.htmlToPdf(finalHtml);
+
+        return "redirect:/employee/getProfile";
+    }
+
     @GetMapping(value = "/contractHrVacancy/{idVacancy}/{idHr}")
     public String generateDocumentHrVacancy(@PathVariable("idVacancy")String idVacancy,@PathVariable("idHr")String idHr) {
         checkAdmin();

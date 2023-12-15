@@ -21,7 +21,7 @@ public class Education {
     private String nameEducation;
 
     @Column(nullable = false)
-    private Date yearOfGraduation;
+    private int yearOfGraduation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private EducationType educationType;
@@ -35,5 +35,10 @@ public class Education {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(yearOfGraduation);
         String year=date.substring(0,4);
         return year;
+    }
+
+    @Override
+    public String toString() {
+        return educationType.getTypeOfEducation()+": "+nameEducation+" ("+yearOfGraduation+")";
     }
 }

@@ -236,7 +236,6 @@ public class AdminEmployeeController {
         employee1.setPosition(position);
         employee1.setUserDetail(user);
         employeeService.addAndUpdateEmployee(employee1);
-        System.out.println("fffff");
         return "redirect:/admin/employees/"+employee.getPosition().getPositionName().getIdPositionName();
     }
 
@@ -261,8 +260,6 @@ public class AdminEmployeeController {
         //System.out.println(user.getIdUserDetails()+" "+positionName.getIdPositionName()+" "+levelPosition.getIdLevelPosition()+" "+cityCompany.getIdCityCompany());
         checkPositions();
         checkCityAndAddress();
-        System.out.println();
-        System.out.println(password.getNewPassword()+password.getNewPasswordRepeat());
         if(checkPasswords(password,id,model)) return "admin/employeeControl/editEmployeePassword.html";
         userDetailService.savePassword(userDetailService.findUserById(password.getIdUser()),password.getNewPassword());
         return "redirect:/admin/employees/"+Integer.parseInt(id);
