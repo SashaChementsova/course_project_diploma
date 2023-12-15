@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class EmployeeMainPageController {
     @GetMapping("/employee/employeePage")
     public String employeeHome(Model model){
-        return "employee.html";
+        return "employee/employee.html";
     }
 }

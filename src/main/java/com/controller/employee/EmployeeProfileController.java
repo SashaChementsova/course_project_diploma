@@ -1,4 +1,4 @@
-package com.controller.hr;
+package com.controller.employee;
 
 import com.dto.Password;
 import com.dto.SkillList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Controller
-public class HrProfileController {
+public class EmployeeProfileController {
     private  final UserDetailService userDetailService;
     private final EmployeeService employeeService;
     private final SkillService skillService;
@@ -29,7 +29,7 @@ public class HrProfileController {
     private final LanguageNameService languageNameService;
     private final LevelLanguageService levelLanguageService;
     @Autowired
-    public HrProfileController(UserDetailService userDetailService, EmployeeService employeeService, SkillService skillService, BackgroundService backgroundService, EducationService educationService, EducationTypeService educationTypeService, LanguageService languageService, LanguageNameService languageNameService, LevelLanguageService levelLanguageService) {
+    public EmployeeProfileController(UserDetailService userDetailService, EmployeeService employeeService, SkillService skillService, BackgroundService backgroundService, EducationService educationService, EducationTypeService educationTypeService, LanguageService languageService, LanguageNameService languageNameService, LevelLanguageService levelLanguageService) {
         this.userDetailService = userDetailService;
         this.employeeService = employeeService;
         this.skillService = skillService;
@@ -46,15 +46,15 @@ public class HrProfileController {
         return auth.getName();
     }
 
-    @GetMapping("/hr/getProfile")
-    public String getProfileHr(Model model){
+    @GetMapping("/employee/getProfile")
+    public String getProfileEmployee(Model model){
         Employee employee=userDetailService.findUserByEmail(getCurrentUsername()).getEmployee();
         model.addAttribute("employee",employee);
-        return "hr/profileControl/getProfile.html";
+        return "employee/profileControl/getProfile.html";
     }
 
-    @GetMapping("/hr/editProfile")
-    public String editProfileHr(Model model){
+    @GetMapping("/employee/editProfile")
+    public String editProfileEmployee(Model model){
         UserDetail userDetail=userDetailService.findUserByEmail(getCurrentUsername());
         model.addAttribute("user",userDetail);
         model.addAttribute("employee",userDetail.getEmployee());
@@ -103,11 +103,11 @@ public class HrProfileController {
         }
         model.addAttribute("skills",skillService.getSkills());
         model.addAttribute("skillL", skillList);
-        return "hr/profileControl/editProfile.html";
+        return "employee/profileControl/editProfile.html";
     }
 
-    @PostMapping("hr/hrEditProfileEnd")
-    public String editProfileHrEnd(UserDetail userDetail, Employee employee, LanguageName languageName, LevelLanguage levelLanguage, Education education, EducationType educationType, Background background, SkillList skillList, Model model){
+    @PostMapping("employee/employeeEditProfileEnd")
+    public String editProfileEmployeeEnd(UserDetail userDetail, Employee employee, LanguageName languageName, LevelLanguage levelLanguage, Education education, EducationType educationType, Background background, SkillList skillList, Model model){
         Employee employee1=employeeService.findEmployeeById(employee.getIdEmployee());
 
         model.addAttribute("user",userDetail);
@@ -122,10 +122,10 @@ public class HrProfileController {
         model.addAttribute("background",background);
         model.addAttribute("skills",skillService.getSkills());
         model.addAttribute("skillL", skillList);
-        if(!(checkUserEmptiness(userDetail,model)))  return "hr/profileControl/editProfile.html";
-        if(!(checkEmail(userDetail,model)))  return "hr/profileControl/editProfile.html";
-        if(!(checkUserExisting(userDetail,model)))  return "hr/profileControl/editProfile.html";
-        if(!(checkUserAge(userDetail,model)))  return "hr/profileControl/editProfile.html";
+        if(!(checkUserEmptiness(userDetail,model)))  return "employee/profileControl/editProfile.html";
+        if(!(checkEmail(userDetail,model)))  return "employee/profileControl/editProfile.html";
+        if(!(checkUserExisting(userDetail,model)))  return "employee/profileControl/editProfile.html";
+        if(!(checkUserAge(userDetail,model)))  return "employee/profileControl/editProfile.html";
         Language language=new Language();
         if(!(employee1.getLanguages().isEmpty()))language=employeeService.findEmployeeById(employee.getIdEmployee()).getLanguages().get(0);
         language.setLevelLanguage(levelLanguage);language.setLanguageName(languageName);
@@ -158,22 +158,22 @@ public class HrProfileController {
         userDetail.setEmployee(employee);
         userDetail.setImage(employee1.getUserDetail().getImage());
         userDetailService.updateUser(userDetail);
-        return "redirect:/hr/getProfile";
+        return "redirect:/employee/getProfile";
     }
 
-    @GetMapping("/hr/changePassword")
-    public String changePasswordHr(Model model){
+    @GetMapping("/employee/changePassword")
+    public String changePasswordEmployee(Model model){
         Password password=new Password();
         password.setIdUser(userDetailService.findUserByEmail(getCurrentUsername()).getIdUserDetails());
         model.addAttribute("password",password);
-        return "hr/profileControl/changePassword.html";
+        return "employee/profileControl/changePassword.html";
     }
 
-    @PostMapping("/hr/changePasswordEnd")
+    @PostMapping("/employee/changePasswordEnd")
     public String changePasswordEnd( Password password,Model model){
-        if(checkPasswords(password,model)) return "hr/profileControl/changePassword.html";
+        if(checkPasswords(password,model)) return "employee/profileControl/changePassword.html";
         userDetailService.savePassword(userDetailService.findUserById(password.getIdUser()),password.getNewPassword());
-        return "redirect:/hr/getProfile";
+        return "redirect:/employee/getProfile";
     }
 
     public boolean checkUserExisting(UserDetail userDetail,Model model){
