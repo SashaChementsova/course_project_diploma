@@ -21,7 +21,7 @@ public class Result {
 
     @OneToOne(mappedBy = "result",fetch = FetchType.LAZY)
     private Interview interview;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "result",fetch = FetchType.LAZY)
     private PositionTest positionTest;
 
     @OneToOne(mappedBy = "result",fetch = FetchType.LAZY)

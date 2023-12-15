@@ -18,4 +18,6 @@ public class ResultTesting {
     private PositionTest positionTest;
     @OneToMany(mappedBy = "resultTesting")
     private List<LanguageTest> languageTestEntities;
+    @OneToOne(mappedBy = "resultTesting", fetch = FetchType.LAZY)
+    private Trial trial;
 }

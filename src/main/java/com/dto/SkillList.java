@@ -10,9 +10,6 @@ public class SkillList {
 
     public SkillList() {
         skillList=new ArrayList<>();
-        for(int i=0;i<15;i++){
-            skillList.add(new Skill());
-        }
     }
     public void addSkill(Skill skill){
         this.skillList.add(skill);

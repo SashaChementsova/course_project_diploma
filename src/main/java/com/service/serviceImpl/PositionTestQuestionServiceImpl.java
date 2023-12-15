@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 @Service
 public class PositionTestQuestionServiceImpl implements PositionTestQuestionService {
     private final PositionTestQuestionRepository positionTestQuestionRepository;
@@ -144,5 +146,20 @@ public class PositionTestQuestionServiceImpl implements PositionTestQuestionServ
             }
         }
         return positionTestQuestions;
+    }
+
+    @Override
+    public List<PositionTestQuestion> generateQuestionsForTest(Position position){
+        Random rand = new Random();
+        List<PositionTestQuestion> positionTestQuestions=findQuestionsUnderPosition(position);
+        List<PositionTestQuestion> resultQuestions=new ArrayList<>();
+        int numberOfElements = 10;
+        for (int i = 0; i < numberOfElements; i++) {
+            int randomIndex = rand.nextInt(positionTestQuestions.size());
+            PositionTestQuestion randomElement = positionTestQuestions.get(randomIndex);
+            resultQuestions.add(randomElement);
+            positionTestQuestions.remove(randomElement);
+        }
+        return resultQuestions;
     }
 }

@@ -18,7 +18,7 @@ public class Vacancy {
     @Column(nullable = false)
     private int freePositions;
     @Column(nullable = false)
-    private boolean status;
+    private String status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

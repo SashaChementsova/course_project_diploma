@@ -6,29 +6,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js">
-    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>SoftwareSeekers</title>
-    <style>
-        .add
-        {
-            width: 75px;
-            height: 75px;
-            line-height: 75px;
-            text-align: center;
-            border: 1px dashed grey;
-            margin: 10px 0;
-        }
-
-        .add:hover
-        {
-            cursor: pointer;
-            background-color: #360581;
-        }
-    </style>
 </head>
 <body>
 
@@ -141,6 +120,18 @@
                 </div>
             </select>
         </div>
+        <div class="field">
+            <label for="skills">Основные навыки</label>
+            <div th:each="skillItem, itemStat : ${skillL.skillList}">
+                <select id="skills" name="skills" th:field="${skillL.skillList[__${itemStat.index}__].idSkill}">
+                    <option th:value="${0}">-</option>
+                    <div th:each="skill: ${skills}">
+                        <option th:value="${skill.idSkill}" th:text="${skill.nameSkill}"></option>
+                    </div>
+                </select>
+            </div>
+        </div>
+
         <p th:if="${failLanguageQuestions}">
             Невозможно сформировать вакансию из-за недостаточного количества вопросов для тестирования по иностранному языку!!!
         </p>
@@ -151,7 +142,7 @@
             <button type="submit">Добавить вакансию</button>
         </div>
     </form>
-    <a th:href="@{/hr/hrHome}">
+    <a th:href="@{/hr/vacancies}">
         <button>
             Назад
         </button>

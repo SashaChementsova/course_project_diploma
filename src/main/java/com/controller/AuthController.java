@@ -118,16 +118,16 @@ public class AuthController {
     @GetMapping("/roles")
     public String users(Model model){
         if(getCurrentUsernameRoles().equals("ROLE_CANDIDATE")){
-            return "redirect:/candidate/candidateHome";
+            return "redirect:/candidate/candidatePage";
         }
         else if(getCurrentUsernameRoles().equals("ROLE_ADMIN")){
             return "redirect:/admin/adminPage";
         }
         else if(getCurrentUsernameRoles().equals("ROLE_EMPLOYEE")){
-            return "redirect:/employee/employeeHome";
+            return "redirect:/employee/employeePage";
         }
         else {
-            return "redirect:/hr/hrHome";
+            return "redirect:/hr/hrPage";
         }
     }
 

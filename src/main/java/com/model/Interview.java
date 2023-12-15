@@ -2,6 +2,7 @@ package com.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 
@@ -16,7 +17,7 @@ public class Interview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idInterview;
     @Column(nullable = false)
-    private Timestamp dateAndTime;
+    private Date dateAndTime;
     @Column(nullable = false)
     private String reference;
 

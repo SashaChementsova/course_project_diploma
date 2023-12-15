@@ -14,7 +14,7 @@ public class HrMainPageController {
         this.hrService = hrService;
     }
 
-    @GetMapping("/hr/hrHome")
+    @GetMapping("/hr/hrPage")
     public String hrHome(Model model){
         return "hr/hr.html";
     }

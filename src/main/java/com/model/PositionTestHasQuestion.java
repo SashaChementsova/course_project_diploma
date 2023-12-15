@@ -13,7 +13,7 @@ public class PositionTestHasQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPositionTestHasQuestion;
-    private boolean status;
+    private String status;
     @ManyToOne(fetch = FetchType.LAZY)
     private PositionTest positionTest;
     @ManyToOne(fetch = FetchType.LAZY)

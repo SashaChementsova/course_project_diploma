@@ -2,6 +2,7 @@ package com.service;
 
 import com.model.Employee;
 import com.model.Hr;
+import com.model.Position;
 import com.model.PositionName;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface EmployeeService {
     public void deleteEmployeesByPositionName(PositionName positionName);
 
     public List<Employee> getEmployeesByPositionName(PositionName positionName);
+
+    public List<Employee> getEmployeesUnderPosition(Position position);
 }

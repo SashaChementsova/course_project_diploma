@@ -1,8 +1,6 @@
 package com.service;
 
-import com.model.Language;
-import com.model.LanguageName;
-import com.model.LanguageTestQuestion;
+import com.model.*;
 
 import java.util.List;
 
@@ -21,4 +19,8 @@ public interface LanguageTestQuestionService {
     public void deleteQuestionFromTestHasQuestions(LanguageTestQuestion languageTestQuestion);
 
     public boolean checkNumOfQuestionsByLanguage(Language language, int num);
+
+    public List<LanguageTestQuestion> findQuestionsUnderLanguage(Language language);
+
+    public List<LanguageTestQuestion> generateQuestionsForTest(Language language);
 }

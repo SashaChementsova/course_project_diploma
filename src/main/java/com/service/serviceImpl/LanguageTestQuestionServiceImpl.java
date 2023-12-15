@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 @Service
 public class LanguageTestQuestionServiceImpl implements LanguageTestQuestionService {
     private final LanguageTestQuestionRepository languageTestQuestionRepository;
@@ -131,5 +133,34 @@ public class LanguageTestQuestionServiceImpl implements LanguageTestQuestionServ
         List<LanguageTestQuestion> languageTestQuestions=findLanguageTestQuestionsByLanguage(language);
         if(languageTestQuestions.size()>=num) return true;
         return false;
+    }
+
+    public List<LanguageTestQuestion> findQuestionsUnderLanguage(Language language){
+        List<LanguageTestQuestion> questions=getLanguageTestQuestionsByLanguageName(language.getLanguageName());
+        List<LanguageTestQuestion> languageTestQuestions=new ArrayList<>();
+        if(questions!=null){
+            if(!(questions.isEmpty())){
+                for(LanguageTestQuestion languageTestQuestion:questions){
+                    if(languageTestQuestion.getLanguage().getLevelLanguage().getIdLevelLanguage()<=language.getLevelLanguage().getIdLevelLanguage()){
+                        languageTestQuestions.add(languageTestQuestion);
+                    }
+                }
+            }
+        }
+        return languageTestQuestions;
+    }
+
+    public List<LanguageTestQuestion> generateQuestionsForTest(Language language){
+        Random rand = new Random();
+        List<LanguageTestQuestion> languageTestQuestions=findQuestionsUnderLanguage(language);
+        List<LanguageTestQuestion> resultQuestions=new ArrayList<>();
+        int numberOfElements = 10;
+        for (int i = 0; i < numberOfElements; i++) {
+            int randomIndex = rand.nextInt(languageTestQuestions.size());
+            LanguageTestQuestion randomElement = languageTestQuestions.get(randomIndex);
+            resultQuestions.add(randomElement);
+            languageTestQuestions.remove(randomElement);
+        }
+        return resultQuestions;
     }
 }

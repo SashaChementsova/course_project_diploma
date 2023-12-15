@@ -1,6 +1,8 @@
 package com.service.serviceImpl;
 
+import com.model.LanguageTest;
 import com.model.LanguageTestHasQuestion;
+import com.model.LanguageTestQuestion;
 import com.repository.LanguageTestHasQuestionRepository;
 import com.service.LanguageTestHasQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +32,20 @@ public class LanguageTestHasQuestionServiceImpl implements LanguageTestHasQuesti
     @Override
     public void deleteLanguageTestHasQuestion(int id){
         languageTestHasQuestionRepository.deleteById(id);
+    }
+
+    @Override
+    public void createTesting(LanguageTest languageTest, List<LanguageTestQuestion> languageTestQuestions){
+        if(languageTestQuestions!=null){
+            if(!(languageTestQuestions.isEmpty())){
+                for(LanguageTestQuestion languageTestQuestion:languageTestQuestions){
+                    LanguageTestHasQuestion languageTestHasQuestion=new LanguageTestHasQuestion();
+                    languageTestHasQuestion.setLanguageTest(languageTest);
+                    languageTestHasQuestion.setLanguageTestQuestion(languageTestQuestion);
+                    languageTestHasQuestion.setStatus("Не начат");
+                    addAndUpdateLanguageTestHasQuestion(languageTestHasQuestion);
+                }
+            }
+        }
     }
 }

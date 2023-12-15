@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class EmployeeMainPageController {
-    @GetMapping("/employee/employeeHome")
+    @GetMapping("/employee/employeePage")
     public String employeeHome(Model model){
         return "employee.html";
     }

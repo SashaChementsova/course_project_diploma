@@ -1,21 +1,41 @@
 package com.service.serviceImpl;
 
 import com.comparators.CandidateComparator;
-import com.model.Candidate;
-import com.model.Trial;
+import com.comparators.CandidateTestComparator;
+import com.model.*;
 import com.repository.CandidateRepository;
-import com.service.CandidateService;
+import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 @Service
 public class CandidateServiceImpl implements CandidateService {
     private final CandidateRepository candidateRepository;
+    private final PositionTestHasQuestionService positionTestHasQuestionService;
+    private final LanguageTestHasQuestionService languageTestHasQuestionService;
+    private final TrialService trialService;
+    private final InterviewService interviewService;
+
+    private final ResultService resultService;
+    private final ResultTestingService resultTestingService;
+    private final PositionTestService positionTestService;
+    private final LanguageTestService languageTestService;
     @Autowired
-    public CandidateServiceImpl(CandidateRepository candidateRepository){
+    public CandidateServiceImpl(CandidateRepository candidateRepository, PositionTestHasQuestionService positionTestHasQuestionService, LanguageTestHasQuestionService languageTestHasQuestionService, TrialService trialService, InterviewService interviewService, ResultService resultService, ResultTestingService resultTestingService, PositionTestService positionTestService, LanguageTestService languageTestService) {
         this.candidateRepository = candidateRepository;
+        this.positionTestHasQuestionService = positionTestHasQuestionService;
+        this.languageTestHasQuestionService = languageTestHasQuestionService;
+        this.trialService = trialService;
+        this.interviewService = interviewService;
+        this.resultService = resultService;
+        this.resultTestingService = resultTestingService;
+        this.positionTestService = positionTestService;
+        this.languageTestService = languageTestService;
     }
+
     @Override
     public Candidate addAndUpdateCandidate(Candidate candidate){
         return candidateRepository.save(candidate);
@@ -24,6 +44,18 @@ public class CandidateServiceImpl implements CandidateService {
     public List<Candidate> getCandidates(){
         List<Candidate> candidates = candidateRepository.findAll();
         candidates.sort(new CandidateComparator());
+        return candidates;
+    }
+    @Override
+    public List<Candidate> getCandidatesByTesting(){
+        List<Candidate> candidates = candidateRepository.findAll();
+        candidates.sort(new CandidateTestComparator());
+        return candidates;
+    }
+
+    @Override
+    public List<Candidate> sortCandidatesByTesting(List<Candidate> candidates){
+        candidates.sort(new CandidateTestComparator());
         return candidates;
     }
     @Override
@@ -42,12 +74,114 @@ public class CandidateServiceImpl implements CandidateService {
         if(trials!=null){
             if(!(trials.isEmpty())){
                 for(Trial trial:trials){
-                    if(trial.isStatus()){
+                    if(trial.getStatus().equals("В процессе")){
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+
+    @Override
+    public void checkCandidatesByTestsAndInterview(){
+        List<Candidate> candidates=getCandidates();
+        if(candidates!=null){
+            if(!(candidates.isEmpty())){
+                for(Candidate candidate:candidates){
+                    List<Trial>trials=candidate.getTrialEntities();
+                    if(trials!=null){
+                        if(!(trials.isEmpty())){
+                            Trial trial=trials.get(0);
+                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getPositionTest().getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                                deletePositionQuestions(trial);
+                                deleteLanguageQuestions(trial);
+                                deleteAllTrial(trial);
+                            }
+                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getLanguageTestEntities().get(0).getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                                deleteLanguageQuestions(trial);
+                                deletePositionQuestions(trial);
+                                deleteAllTrial(trial);
+                            }
+                            if(trial.getInterviewEntities()!=null){
+                                if(!(trial.getInterviewEntities().isEmpty())){
+                                    if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getInterviewEntities().get(0).getDateAndTime()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                                        deleteLanguageQuestions(trial);
+                                        deletePositionQuestions(trial);
+                                        Interview interview=trial.getInterviewEntities().get(0);
+                                        deleteAllTrial(trial);
+                                        interviewService.deleteInterview(interview.getIdInterview());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @Override
+    public void deleteCandidateTrial(Trial trial){
+        deleteLanguageQuestions(trial);
+        deletePositionQuestions(trial);
+        ResultTesting resultTesting=trial.getResultTesting();
+        PositionTest positionTest=trial.getResultTesting().getPositionTest();
+        LanguageTest languageTest=trial.getResultTesting().getLanguageTestEntities().get(0);
+        List<Interview> interviews=trial.getInterviewEntities();
+        trialService.deleteTrial(trial.getIdTrial());
+        if(interviews!=null){
+            if(!(interviews.isEmpty())){
+                Interview interview=trial.getInterviewEntities().get(0);
+                interviewService.deleteInterview(interview.getIdInterview());
+            }
+        }
+        Result result1=positionTest.getResult();Result result2=languageTest.getResult();
+        resultTestingService.deleteResultTesting(resultTesting.getIdResultTesting());
+        positionTestService.deletePositionTest(positionTest.getIdPositionTest());
+        languageTestService.deleteLanguageTest(languageTest.getIdLanguageTest());
+        resultService.deleteResult(result1.getIdResult());
+        resultService.deleteResult(result2.getIdResult());
+
+    }
+
+    private void deletePositionQuestions(Trial trial){
+        List<PositionTestHasQuestion> positionTestHasQuestions=trial.getResultTesting().getPositionTest().getPositionTestHasQuestionEntities();
+        for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
+            positionTestHasQuestionService.deletePositionTestHasQuestion(positionTestHasQuestion.getIdPositionTestHasQuestion());
+        }
+    }
+
+    private void deleteLanguageQuestions(Trial trial){
+        List<LanguageTestHasQuestion> languageTestHasQuestions=trial.getResultTesting().getLanguageTestEntities().get(0).getLanguageTestHasQuestionEntities();
+        for(LanguageTestHasQuestion languageTestHasQuestion:languageTestHasQuestions){
+            languageTestHasQuestionService.deleteLanguageTestHasQuestion(languageTestHasQuestion.getIdLanguageTestHasQuestionEntity());
+        }
+    }
+
+    private void deleteAllTrial(Trial trial){
+        ResultTesting resultTesting=trial.getResultTesting();
+        PositionTest positionTest=trial.getResultTesting().getPositionTest();
+        LanguageTest languageTest=trial.getResultTesting().getLanguageTestEntities().get(0);
+        trialService.deleteTrial(trial.getIdTrial());
+        Result result1=positionTest.getResult();Result result2=languageTest.getResult();
+        resultTestingService.deleteResultTesting(resultTesting.getIdResultTesting());
+        positionTestService.deletePositionTest(positionTest.getIdPositionTest());
+        languageTestService.deleteLanguageTest(languageTest.getIdLanguageTest());
+        resultService.deleteResult(result1.getIdResult());
+        resultService.deleteResult(result2.getIdResult());
+    }
+
+
+    public int compareDates(String date1,String date2){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateOne = null;
+        Date dateTwo = null;
+        try {
+            dateOne = format.parse(date1);
+            dateTwo = format.parse(date2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateOne.compareTo(dateTwo);
     }
 }

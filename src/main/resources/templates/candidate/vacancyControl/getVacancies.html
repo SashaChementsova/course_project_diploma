@@ -48,7 +48,30 @@
     </style>
 </head>
 <body>
-
+<div th:if="${applyForVacancy}">
+    <div class="modalframe">
+        <form
+                method="post"
+                role="form"
+                th:action="@{/candidate/applyForVacancyEnd/{id}(id=${idVacancy})}"
+                enctype="multipart/form-data"
+        >
+            <h1>Подача заявки на прохождение вакансии</h1>
+            <div class="field">
+                <input type="hidden" th:field="${idVacancy}">
+                <p>Вы действительно хотите подать заявку?</p>
+            </div>
+            <div>
+                <button type="submit">Подтвердить</button>
+            </div>
+        </form>
+        <a th:href="@{/candidate/vacancies}">
+            <button>
+                Отмена
+            </button>
+        </a>
+    </div>
+</div>
 <div>
     <table >
         <tr>
@@ -56,35 +79,14 @@
                 <img th:src="@{/photos/1.png}" height="65px">
             </td>
             <td id="td2"><ul id="navbar">
-                <li><a th:href="@{/}" style="color:#171717; text-decoration:none; min-width: 200px">ГЛАВНАЯ СТРАНИЦА</a></li>
-                <li><a th:href="@{/login}" style="color:#171717; text-decoration:none">ВОЙТИ</a></li>
+                <li><a th:candidateef="@{/}" style="color:#171717; text-decoration:none; min-width: 200px">ГЛАВНАЯ СТРАНИЦА</a></li>
+                <li><a th:candidateef="@{/login}" style="color:#171717; text-decoration:none">ВОЙТИ</a></li>
             </ul></td>
         </tr>
     </table>
 </div>
 <div >
-    <div th:if="${endVacancy}">
-        <div class="modalframe">
-            <form
-                    method="post"
-                    role="form"
-                    th:action="@{/hr/endVacancyEnd/{id}(id=${idVacancy})}"
-                    enctype="multipart/form-data"
-            >
-                <h1>Закрытие принятия заявок на вакансию</h1>
-                <p>Вы действительно хотите прекратить принятие заявок на данную вакансию?</p>
-                <div>
-                    <button type="submit">Прекратить</button>
-                </div>
-            </form>
-            <a th:href="@{/hr/vacancies}">
-                <button>
-                    Отмена
-                </button>
-            </a>
-        </div>
-    </div>
-    <form th:action="@{/hr/vacancies}"  method="get">
+    <form th:action="@{/candidate/vacancies}"  method="get">
         <div class="field">
             <label for="positionNameFind">Позиция</label>
             <select class="select" id="positionNameFind"
@@ -111,8 +113,10 @@
         </div>
         <button type="submit" class="btn" >Поиск</button>
     </form>
-    <a th:href="@{/hr/vacancies}" ><i class="fa fa-bars" style="color:black"></i></a>
-    <a th:href="@{/hr/addVacancy}" ><i class="fa fa-plus" style="color:black"></i></a>
+    <a th:href="@{/candidate/vacancies}" ><i class="fa fa-bars" style="color:black"></i></a>
+    <p th:if="${notEmptyTrials}">
+        Невозможно подать заявку на вакансию, так как на данный момент Вы уже проходите другую вакансию!!!
+    </p>
     <div th:switch="${emptiness}">
         <div th:case="'empty'">Список вакансий пуст!</div>
         <div th:case="*">
@@ -132,22 +136,17 @@
                     <td th:text="${vacancy.freePositions}">
                     <td th:text="${vacancy.background.experience}+' лет'">
                     <td th:text="${vacancy.cityCompany.nameCity}">
-                    <td><a th:href="@{/hr/vacancy/{id}(id=${vacancy.idVacancy})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
-                    <div th:if="${vacancy.status.equals('В процессе')}">
-                        <td><a th:href="@{/hr/endVacancy/{id}(id=${vacancy.idVacancy})}" >
-                            <button>Закрыть набор заявок</button>
-                        </a></td>
-                    </div>
-                    <div th:unless="${vacancy.status.equals('В процессе')}">
-                        <td><a th:href="@{/hr/chooseCandidatesOfVacancy/{id}(id=${vacancy.idVacancy})}" >
-                            <button>Принять решение по выбору кандидатов</button>
+                    <td><a th:href="@{/candidate/vacancy/{id}(id=${vacancy.idVacancy})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                    <div th:if="${trialSize}">
+                        <td><a th:href="@{/candidate/applyForVacancy/{id}(id=${vacancy.idVacancy})}" >
+                            <button>Подать заявку</button>
                         </a></td>
                     </div>
                 </tr>
             </table>
         </div>
     </div>
-    <a th:href="@{/hr/hrPage}">
+    <a th:href="@{/candidate/candidatePage}">
         <button>
             Назад
         </button>

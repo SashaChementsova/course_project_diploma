@@ -18,7 +18,7 @@ public class PositionTest {
     private int idPositionTest;
     //@Column(nullable = false)
     private Date date;
-    @OneToOne(mappedBy = "positionTest", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Result result;
 
     @OneToMany(mappedBy = "positionTest")

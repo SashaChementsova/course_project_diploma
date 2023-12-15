@@ -11,6 +11,9 @@ public interface VacancyService {
     public Vacancy addAndUpdateVacancy(Vacancy vacancy);
     public List<Vacancy> getVacancies();
 
+    public List<Vacancy> getActiveVacancies();
+    public List<Vacancy> getActiveVacanciesByPosition(Position position);
+
     public Vacancy findVacancyById(int id);
     public void deleteVacancy(int id);
 
@@ -19,4 +22,5 @@ public interface VacancyService {
 
     public void deleteVacancyByHr(Hr hr);
     public List<Vacancy> findVacanciesByPosition(Position position);
+    public List<Vacancy> findHrVacanciesByPosition(List<Vacancy> vacancies,Position position);
 }

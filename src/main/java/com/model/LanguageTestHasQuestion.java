@@ -13,7 +13,7 @@ public class LanguageTestHasQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idLanguageTestHasQuestionEntity;
-    private boolean status;
+    private String status;
     @ManyToOne(fetch = FetchType.LAZY)
     private LanguageTest languageTest;
     @ManyToOne(fetch = FetchType.LAZY)

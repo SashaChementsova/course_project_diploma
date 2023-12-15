@@ -80,7 +80,7 @@ public class PositionNameServiceImpl implements PositionNameService {
         if(vacancies!=null){
             if(!(vacancies.isEmpty())){
                 for(Vacancy vacancy:vacancies){
-                    if(vacancy.isStatus()) return false;
+                    if(vacancy.getStatus().equals("В процессе")) return false;
                 }
             }
         }

@@ -156,4 +156,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEmployeeByHr(Hr hr){
         return hr.getUserDetail().getEmployee();
     }
+
+    @Override
+    public List<Employee> getEmployeesUnderPosition(Position position){
+        List<Employee> resultEmployees=new ArrayList<>();
+        List<Employee> employees=getEmployeesByPositionName(position.getPositionName());
+        if(employees!=null){
+            if(!(employees.isEmpty())){
+                for(Employee employee:employees){
+                    if(employee.getPosition().getLevelPosition().getIdLevelPosition()>=position.getLevelPosition().getIdLevelPosition()){
+                        resultEmployees.add(employee);
+                    }
+                }
+            }
+        }
+        return resultEmployees;
+    }
 }

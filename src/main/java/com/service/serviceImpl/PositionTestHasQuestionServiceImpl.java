@@ -1,6 +1,6 @@
 package com.service.serviceImpl;
 
-import com.model.PositionTestHasQuestion;
+import com.model.*;
 import com.repository.PositionTestHasQuestionRepository;
 import com.service.PositionTestHasQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,21 @@ public class PositionTestHasQuestionServiceImpl implements PositionTestHasQuesti
     @Override
     public void deletePositionTestHasQuestion(int id){
         positionTestHasQuestionRepository.deleteById(id);
+    }
+
+    @Override
+    public void createTesting(PositionTest positionTest, List<PositionTestQuestion> positionTestQuestions){
+        if(positionTestQuestions!=null){
+            if(!(positionTestQuestions.isEmpty())){
+                for(PositionTestQuestion positionTestQuestion:positionTestQuestions){
+                    PositionTestHasQuestion positionTestHasQuestion=new PositionTestHasQuestion();
+                    positionTestHasQuestion.setPositionTest(positionTest);
+                    positionTestHasQuestion.setPositionTestQuestion(positionTestQuestion);
+                    positionTestHasQuestion.setStatus("Не начат");
+                    addAndUpdatePositionTestHasQuestion(positionTestHasQuestion);
+                }
+            }
+        }
     }
 
 }

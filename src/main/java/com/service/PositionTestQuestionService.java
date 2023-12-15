@@ -27,4 +27,6 @@ public interface PositionTestQuestionService {
 
     public boolean checkNumOfQuestionsByPosition(Position position,int num);
     public List<PositionTestQuestion> findQuestionsUnderPosition(Position position);
+
+    public List<PositionTestQuestion> generateQuestionsForTest(Position position);
 }

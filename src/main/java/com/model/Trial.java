@@ -15,8 +15,8 @@ public class Trial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTrial;
-    @Column(nullable = false)
-    private boolean status;
+    @Column
+    private String status;
     @ManyToOne(fetch = FetchType.LAZY)
     private Candidate candidate;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,5 +25,7 @@ public class Trial {
     @OneToMany(mappedBy = "trial")
     private List<Interview> interviewEntities;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private ResultTesting resultTesting;
 
 }

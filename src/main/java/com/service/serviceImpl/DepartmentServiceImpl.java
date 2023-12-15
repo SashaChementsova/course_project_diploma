@@ -100,7 +100,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     vacancies=positionNameService.getVacanciesByPositionName(positionName.getIdPositionName());
                     if(vacancies==null || vacancies.isEmpty()) continue;
                     for(Vacancy vacancy:vacancies){
-                        if(vacancy.isStatus()) return false;
+                        if(vacancy.getStatus().equals("В процессе")) return false;
                     }
                 }
             }
