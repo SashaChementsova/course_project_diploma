@@ -12,6 +12,7 @@ public interface LanguageTestHasQuestionService {
 
     public LanguageTestHasQuestion findLanguageTestHasQuestionById(int id);
     public void deleteLanguageTestHasQuestion(int id);
-
+    public  List<LanguageTestHasQuestion> getLanguageTestHasQuestionsByLanguageTest(LanguageTest languageTest);
+    public LanguageTestHasQuestion findByQuestion(List<LanguageTestHasQuestion> languageTestHasQuestions,int idQuestion);
     public void createTesting(LanguageTest languageTest, List<LanguageTestQuestion> languageTestQuestions);
 }

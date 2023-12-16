@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>SoftwareSeekers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+<div>
+    <table >
+        <tr>
+            <td>
+                <img th:src="@{/photos/1.png}" >
+            </td>
+            <td id="td2"><ul id="navbar">
+                <li><a th:href="@{/candidate/candidatePage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
+                <li><a th:href="@{/candidate/candidateProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
+                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+            </ul></td>
+        </tr>
+    </table>
+</div>
+<table>
+    <tr><td colspan="2">ИНТЕРВЬЮ</td></tr>
+    <tr>
+        <td>Сотрудник</td>
+        <td th:text="${employee.getUserDetail().getSNP()}"><a th:href="@{/candidate/getEmployeeProfile/{idUser}(idUser=${employee.userDetail.idUserDetails})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+    </tr>
 
+    <tr>
+        <td>Дата</td>
+        <td th:text="${interview.getDateAndTime()}"></td>
+    </tr>
+    <tr>
+        <td>Ссылка на конференцию</td>
+        <td><a th:href="@{interview.getReference()}" ></a></td>
+    </tr>
+    <div th:if="${trueInterview}">
+        <tr><td colspan="2">РЕЗУЛЬТАТ</td></tr>
+        <tr>
+            <td>Балл</td>
+            <td th:text="${interview.getResult().getPoints()}"></td>
+        </tr>
+        <tr>
+            <td>Отзыв</td>
+            <td th:text="${interview.getResult().getFeedback()}"></td>
+        </tr>
+    </div>
+    <div th:unless="${trueInterview}">
+        <tr>
+            <td colspan="2">Собеседование еще не завершено</td>
+        </tr>
+    </div>
+</table>
+<a onclick="history.go(-1)">
+    <button>
+        Назад
+    </button>
+</a>
 </body>
 </html>

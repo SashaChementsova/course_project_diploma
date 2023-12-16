@@ -6,6 +6,7 @@ import com.service.PositionTestHasQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class PositionTestHasQuestionServiceImpl implements PositionTestHasQuestionService {
@@ -45,6 +46,32 @@ public class PositionTestHasQuestionServiceImpl implements PositionTestHasQuesti
                 }
             }
         }
+    }
+    @Override
+    public  List<PositionTestHasQuestion> getPositionTestHasQuestionsByPositionTest(PositionTest positionTest){
+        List<PositionTestHasQuestion> positionTestHasQuestions=getPositionTestHasQuestions();
+        List<PositionTestHasQuestion> result=new ArrayList<>();
+        if(positionTestHasQuestions!=null){
+            if(!(positionTestHasQuestions.isEmpty())){
+                for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
+                    if(positionTestHasQuestion.getPositionTest().getIdPositionTest()==positionTest.getIdPositionTest()){
+                        result.add(positionTestHasQuestion);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public PositionTestHasQuestion findByQuestion(List<PositionTestHasQuestion> positionTestHasQuestions,int idQuestion){
+        for(PositionTestHasQuestion positionTestHasQuestion1:positionTestHasQuestions){
+            if(idQuestion==positionTestHasQuestion1.getPositionTestQuestion().getIdPositionTestQuestion()){
+
+                return positionTestHasQuestion1;
+            }
+        }
+        return null;
     }
 
 }

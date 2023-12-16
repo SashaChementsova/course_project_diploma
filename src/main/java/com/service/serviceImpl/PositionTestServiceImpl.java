@@ -31,4 +31,6 @@ public class PositionTestServiceImpl implements PositionTestService {
     public void deletePositionTest(int id){
         positionTestRepository.deleteById(id);
     }
+
+
 }

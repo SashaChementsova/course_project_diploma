@@ -162,4 +162,18 @@ public class PositionTestQuestionServiceImpl implements PositionTestQuestionServ
         }
         return resultQuestions;
     }
+
+    @Override
+    public List<PositionTestQuestion> getPositionTestQuestionByPositionTest(PositionTest positionTest){
+        List<PositionTestQuestion> result=new ArrayList<>();
+        List<PositionTestHasQuestion> positionTestHasQuestions=positionTest.getPositionTestHasQuestionEntities();
+        if(positionTestHasQuestions!=null){
+            if(!(positionTestHasQuestions.isEmpty())){
+                for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
+                    result.add(positionTestHasQuestion.getPositionTestQuestion());
+                }
+            }
+        }
+        return result;
+    }
 }

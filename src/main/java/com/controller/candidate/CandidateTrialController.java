@@ -1,11 +1,13 @@
 package com.controller.candidate;
 
+import com.model.Trial;
 import com.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CandidateTrialController {
@@ -47,26 +49,33 @@ public class CandidateTrialController {
     @GetMapping("/candidate/trial")
     public String getTrial(Model model ){
         candidateService.checkCandidatesByTestsAndInterview();
-        model.addAttribute("trial",userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0));
+        Trial trial=userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0);
+        model.addAttribute("trial",trial);
+        model.addAttribute("vacancy",trial.getVacancy());
         return "candidate/trialControl/getTrial.html";
     }
 
     @GetMapping("/candidate/positionTest")
     public String getPositionTest(Model model ){
         candidateService.checkCandidatesByTestsAndInterview();
+        Trial trial=userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0);
         model.addAttribute("candidate",userDetailService.findUserByEmail(getCurrentUsername()).getCandidate());
-        model.addAttribute("test",userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0).getResultTesting().getPositionTest());
-        if(userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0).getResultTesting().getPositionTest().getResult().getPoints()!=-1){
+        model.addAttribute("test",trial.getResultTesting().getPositionTest());
+        if(trial.getResultTesting().getPositionTest().getResult().getPoints()!=-1){
             model.addAttribute("trueInterview","trueInterview");
+            model.addAttribute("results",positionTestHasQuestionService.getPositionTestHasQuestionsByPositionTest(trial.getResultTesting().getPositionTest()));
         }
         return "candidate/trialControl/getPositionTest.html";
     }
     @GetMapping("/candidate/languageTest")
     public String getLanguageTest(Model model ){
         candidateService.checkCandidatesByTestsAndInterview();
+        Trial trial=userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0);
         model.addAttribute("candidate",userDetailService.findUserByEmail(getCurrentUsername()).getCandidate());
-        if(userDetailService.findUserByEmail(getCurrentUsername()).getCandidate().getTrialEntities().get(0).getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()!=-1){
+        model.addAttribute("test",trial.getResultTesting().getLanguageTestEntities().get(0));
+        if(trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()!=-1){
             model.addAttribute("trueInterview","trueInterview");
+            model.addAttribute("results",languageTestHasQuestionService.getLanguageTestHasQuestionsByLanguageTest(trial.getResultTesting().getLanguageTestEntities().get(0)));
         }
         return "candidate/trialControl/getLanguageTest.html";
     }
@@ -94,5 +103,10 @@ public class CandidateTrialController {
         return "candidate/trialControl/resultOfLanguageTest.html";
     }
 
-
+    @GetMapping("/candidate/getEmployeeProfile/{idUser}")
+    public String getEmployeeByInterview(@PathVariable("idUser") String idUser, Model model) {
+        candidateService.checkCandidatesByTestsAndInterview();
+        model.addAttribute("employee",userDetailService.findUserById(Integer.parseInt(idUser)).getEmployee());
+        return "candidate/trialControl/getEmployee.html";
+    }
 }

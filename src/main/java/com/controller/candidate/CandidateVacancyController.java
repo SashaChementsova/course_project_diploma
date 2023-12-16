@@ -76,7 +76,7 @@ public class CandidateVacancyController {
             model.addAttribute("positionNameFind", new PositionName());
             model.addAttribute("levelPositionFind", new LevelPosition());
             model.addAttribute("vacancies", vacancyService.getActiveVacancies());
-            if (vacancyService.getVacancies().isEmpty())
+            if (vacancyService.getActiveVacancies().isEmpty())
                 model.addAttribute("emptiness", "empty");
         }
         return "candidate/vacancyControl/getVacancies.html";

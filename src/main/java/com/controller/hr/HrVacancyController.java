@@ -97,6 +97,8 @@ public class HrVacancyController {
         candidateService.checkCandidatesByTestsAndInterview();
         checkPositions();
         model.addAttribute("vacancy",vacancyService.findVacancyById(Integer.parseInt(idVacancy)));
+        model.addAttribute("trials",trialService.getActiveTrial());
+        if(trialService.getActiveTrial().isEmpty()) model.addAttribute("emptiness","empty");
         return "hr/vacancyControl/getVacancy.html";
     }
 
@@ -137,7 +139,8 @@ public class HrVacancyController {
         candidateService.checkCandidatesByTestsAndInterview();
         checkPositions();
         Trial trial =trialService.findTrialById(Integer.parseInt(idTrial));
-        candidateService.deleteCandidateTrial(trial);
+        trial.setStatus("Отклонено");
+        trialService.addAndUpdateTrial(trial);
         return "redirect:/hr/vacancy/"+trial.getVacancy().getIdVacancy();
     }
 

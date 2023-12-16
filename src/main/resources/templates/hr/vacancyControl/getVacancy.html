@@ -118,52 +118,57 @@
         </div>
     </table>
     <h1>КАНДИДАТЫ</h1>
-    <table>
-        <tr>
-            <th>№</th>
-            <th>ФИО</th>
-            <th>Техническое тестирование</th>
-            <th>Тестирование иностранного языка</th>
-            <th>Собеседование</th>
-            <th>Профиль кандидата</th>
-            <th></th>
-        </tr>
-        <div th:each="trial, iStat:${vacancy.trialEntities}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+    <div th:if="${emptiness}">
+        Список прохождений кандидатами вакансии пуст!!!
+    </div>
+    <div th:unless="${emptiness}">
+        <table>
             <tr>
-                <td th:text="${iStat.index+1}"></td>
-                <td th:text="${trial.candidate.userDetail.getSNP()}"></td>
-                <div th:if="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
-                    <td><a th:href="@{/hr/positionTest/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
-                </div>
-                <div th:unless="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
-                    <td  th:text="${trial.getResultTesting().getPositionTest().getResult().getPoints()}"></td>
-                </div>
-                <div th:if="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1}">
-                    <td><a th:href="@{/hr/languageTest/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
-                </div>
-                <div th:unless="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1}">
-                    <td  th:text="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()}"></td>
-                </div>
-                <div th:if="${trial.getInterviewEntities().isEmpty()}">
-                    <td><a th:href="@{/hr/addInterview/{id}(id=${trial.idTrial})}"><button>Назначить собеседование</button></a></td>
-                </div>
-                <div th:unless="${trial.getInterviewEntities().isEmpty()}">
-                    <div th:if="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
-                        <td><a th:href="@{/hr/interview/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
-                    </div>
-                    <div th:unless="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
-                        <td th:text="${trial.getInterviewEntities().get(0).getResult().getPoints()}"></td>
-                    </div>
-                </div>
-                <td><a th:href="@{/hr/getCandidateProfile/{idUser}(idUser=${trial.candidate.userDetail.idUserDetails})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
-                <div th:if="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()!=-1}">
-                    <div th:if="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
-                        <td><a th:href="@{/hr/deleteCandidateFromVacancy/{id}(id=${trial.idTrial})}"><button>Отказать в прохождении собеседования</button></a></td>
-                    </div>
-                </div>
+                <th>№</th>
+                <th>ФИО</th>
+                <th>Техническое тестирование</th>
+                <th>Тестирование иностранного языка</th>
+                <th>Собеседование</th>
+                <th>Профиль кандидата</th>
+                <th></th>
             </tr>
-        </div>
-    </table>
+            <div th:each="trial, iStat:${trials}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+                <tr>
+                    <td th:text="${iStat.index+1}"></td>
+                    <td th:text="${trial.candidate.userDetail.getSNP()}"></td>
+                    <div th:if="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
+                        <td><a th:href="@{/hr/positionTest/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                    </div>
+                    <div th:unless="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
+                        <td  th:text="${trial.getResultTesting().getPositionTest().getResult().getPoints()}"></td>
+                    </div>
+                    <div th:if="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1}">
+                        <td><a th:href="@{/hr/languageTest/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                    </div>
+                    <div th:unless="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1}">
+                        <td  th:text="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()}"></td>
+                    </div>
+                    <div th:if="${trial.getInterviewEntities().isEmpty()}">
+                        <td><a th:href="@{/hr/addInterview/{id}(id=${trial.idTrial})}"><button>Назначить собеседование</button></a></td>
+                    </div>
+                    <div th:unless="${trial.getInterviewEntities().isEmpty()}">
+                        <div th:if="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
+                            <td><a th:href="@{/hr/interview/{idVacancy}/{idTrial}(idVacancy=${vacancy.idVacancy},idTrial=${trial.idTrial})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                        </div>
+                        <div th:unless="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
+                            <td th:text="${trial.getInterviewEntities().get(0).getResult().getPoints()}"></td>
+                        </div>
+                    </div>
+                    <td><a th:href="@{/hr/getCandidateProfile/{idUser}(idUser=${trial.candidate.userDetail.idUserDetails})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+                    <div th:if="${trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()!=-1}">
+                        <div th:if="${trial.getResultTesting().getPositionTest().getResult().getPoints()==-1}">
+                            <td><a th:href="@{/hr/deleteCandidateFromVacancy/{id}(id=${trial.idTrial})}"><button>Отказать в прохождении собеседования</button></a></td>
+                        </div>
+                    </div>
+                </tr>
+            </div>
+        </table>
+    </div>
 </div>
 <a th:href="@{/hr/vacancies}">
     <button>

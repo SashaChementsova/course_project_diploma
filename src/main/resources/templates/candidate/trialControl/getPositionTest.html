@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>SoftwareSeekers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+<div>
+    <table >
+        <tr>
+            <td>
+                <img th:src="@{/photos/1.png}" >
+            </td>
+            <td id="td2"><ul id="navbar">
+                <li><a th:href="@{/candidate/candidatePage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
+                <li><a th:href="@{/candidate/candidateProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
+                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+            </ul></td>
+        </tr>
+    </table>
+</div>
+<table>
+    <tr><td colspan="5">ТЕХНИЧЕСКИЙ ТЕСТ</td></tr>
+    <tr>
+        <td colspan="2">Позиция</td>
+        <td colspan="3" th:text="${test.getPositionTestHasQuestionEntities().get(0).getPositionTestQuestion().getPosition().toString()}"></td>
+    </tr>
+    <tr>
+        <td colspan="2">Дата</td>
+        <td colspan="3" th:text="${test.getDate()}"></td>
+    </tr>
+    <div th:if="${trueInterview}">
+        <tr><td colspan="5">РЕЗУЛЬТАТ</td></tr>
+        <tr>
+            <td colspan="2">Общий балл</td>
+            <td colspan="3" th:text="${test.getResult().getPoints()}"></td>
+        </tr>
+        <tr>
+            <td>№</td>
+            <td>Статус</td>
+            <td>Вопрос</td>
+            <td>Правильный ответ</td>
+            <td>Балл</td>
+        </tr>
+        <tr th:each="result, iStat:${results}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+            <td th:text="${iStat.index+1}"></td>
+            <div th:if="${result.getStatus().equals('Правильно')}">
+                <td style="color: lawngreen;" th:text="${result.getStatus()}"></td>
+            </div>
+            <div th:unless="${result.getStatus().equals('Правильно')}">
+                <td style="color:#ff3232; "  th:text="${result.getStatus()}"></td>
+            </div>
+            <td th:text="${result.getLanguageTestQuestion().getQuestion()}"></td>
+            <td th:text="${result.getLanguageTestQuestion().getRightAnswer()}"></td>
+            <td th:text="${result.getLanguageTestQuestion().getPoint()}"></td>
+        </tr>
+    </div>
+    <div th:unless="${trueInterview}">
+        <tr>
+            <td colspan="5">Тестирование еще не завершено</td>
+        </tr>
+    </div>
+</table>
+<a onclick="history.go(-1)">
+    <button>
+        Назад
+    </button>
+</a>
 </body>
 </html>

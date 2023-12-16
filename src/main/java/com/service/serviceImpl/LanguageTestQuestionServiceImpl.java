@@ -149,7 +149,7 @@ public class LanguageTestQuestionServiceImpl implements LanguageTestQuestionServ
         }
         return languageTestQuestions;
     }
-
+    @Override
     public List<LanguageTestQuestion> generateQuestionsForTest(Language language){
         Random rand = new Random();
         List<LanguageTestQuestion> languageTestQuestions=findQuestionsUnderLanguage(language);
@@ -162,5 +162,18 @@ public class LanguageTestQuestionServiceImpl implements LanguageTestQuestionServ
             languageTestQuestions.remove(randomElement);
         }
         return resultQuestions;
+    }
+    @Override
+    public List<LanguageTestQuestion> getLanguageTestQuestionByLanguageTest(LanguageTest languageTest){
+        List<LanguageTestQuestion> result=new ArrayList<>();
+        List<LanguageTestHasQuestion> languageTestHasQuestions=languageTest.getLanguageTestHasQuestionEntities();
+        if(languageTestHasQuestions!=null){
+            if(!(languageTestHasQuestions.isEmpty())){
+                for(LanguageTestHasQuestion languageTestHasQuestion:languageTestHasQuestions){
+                    result.add(languageTestHasQuestion.getLanguageTestQuestion());
+                }
+            }
+        }
+        return result;
     }
 }

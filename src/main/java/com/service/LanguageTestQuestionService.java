@@ -23,4 +23,6 @@ public interface LanguageTestQuestionService {
     public List<LanguageTestQuestion> findQuestionsUnderLanguage(Language language);
 
     public List<LanguageTestQuestion> generateQuestionsForTest(Language language);
+
+    public List<LanguageTestQuestion> getLanguageTestQuestionByLanguageTest(LanguageTest languageTest);
 }

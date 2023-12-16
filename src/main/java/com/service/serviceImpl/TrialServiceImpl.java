@@ -6,6 +6,7 @@ import com.service.TrialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class TrialServiceImpl implements TrialService {
@@ -30,5 +31,21 @@ public class TrialServiceImpl implements TrialService {
     @Override
     public void deleteTrial(int id){
         trialRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Trial> getActiveTrial(){
+        List<Trial> trials=getTrials();
+        List<Trial> resultTrials=new ArrayList<>();
+        if(trials!=null){
+            if(!(trials.isEmpty())){
+                for(Trial trial:trials){
+                    if(trial.getStatus().equals("В процессе")){
+                        resultTrials.add(trial);
+                    }
+                }
+            }
+        }
+        return resultTrials;
     }
 }

@@ -11,6 +11,7 @@ public interface PositionTestHasQuestionService {
     public List<PositionTestHasQuestion> getPositionTestHasQuestions();
     public PositionTestHasQuestion findPositionTestHasQuestionById(int id);
     public void deletePositionTestHasQuestion(int id);
-
+    public PositionTestHasQuestion findByQuestion(List<PositionTestHasQuestion> positionTestHasQuestions,int idQuestion);
+    public  List<PositionTestHasQuestion> getPositionTestHasQuestionsByPositionTest(PositionTest positionTest);
     public void createTesting(PositionTest positionTest, List<PositionTestQuestion> positionTestQuestions);
 }

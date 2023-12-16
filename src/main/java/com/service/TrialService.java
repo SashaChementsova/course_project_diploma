@@ -10,4 +10,5 @@ public interface TrialService {
 
     public Trial findTrialById(int id);
     public void deleteTrial(int id);
+    public List<Trial> getActiveTrial();
 }

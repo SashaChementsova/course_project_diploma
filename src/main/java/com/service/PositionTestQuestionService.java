@@ -1,8 +1,6 @@
 package com.service;
 
-import com.model.Position;
-import com.model.PositionTestQuestion;
-import com.model.PositionName;
+import com.model.*;
 import com.model.PositionTestQuestion;
 
 import java.util.ArrayList;
@@ -29,4 +27,6 @@ public interface PositionTestQuestionService {
     public List<PositionTestQuestion> findQuestionsUnderPosition(Position position);
 
     public List<PositionTestQuestion> generateQuestionsForTest(Position position);
+
+    public List<PositionTestQuestion> getPositionTestQuestionByPositionTest(PositionTest positionTest);
 }
