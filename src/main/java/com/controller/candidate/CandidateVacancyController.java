@@ -124,6 +124,7 @@ public class CandidateVacancyController {
         positionTest.setDate(convert(getDateInDays(3))); positionTest.setResult(result1);
         languageTest.setDate(convert(getDateInDays(4))); languageTest.setResult(result2);
         positionTest=positionTestService.addAndUpdatePositionTest(positionTest); languageTest=languageTestService.addAndUpdateLanguageTest(languageTest);
+        result1.setPositionTest(positionTest);resultService.addAndUpdateResult(result1);
         positionTestHasQuestionService.createTesting(positionTest,positionTestQuestionList); languageTestHasQuestionService.createTesting(languageTest,languageTestQuestionList);
         ResultTesting resultTesting=new ResultTesting();
         List<LanguageTest> languageTests=new ArrayList<>();languageTests.add(languageTest);
