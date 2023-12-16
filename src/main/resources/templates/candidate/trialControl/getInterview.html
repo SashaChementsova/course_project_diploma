@@ -21,34 +21,37 @@
     </table>
 </div>
 <table>
-    <tr><td colspan="2">ИНТЕРВЬЮ</td></tr>
+    <tr><td colspan="3">ИНТЕРВЬЮ</td></tr>
     <tr>
         <td>Сотрудник</td>
-        <td th:text="${employee.getUserDetail().getSNP()}"><a th:href="@{/candidate/getEmployeeProfile/{idUser}(idUser=${employee.userDetail.idUserDetails})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
+        <td th:text="${employee.getUserDetail().getSNP()}"></td>
+        <td><a th:href="@{/candidate/getEmployeeProfile/{idUser}(idUser=${employee.userDetail.idUserDetails})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
     </tr>
 
     <tr>
         <td>Дата</td>
-        <td th:text="${interview.getDateAndTime()}"></td>
+        <td colspan="2" th:text="${interview.getDateAndTime()}"></td>
     </tr>
     <tr>
         <td>Ссылка на конференцию</td>
-        <td><a th:href="@{interview.getReference()}" ></a></td>
+        <td colspan="2"><a th:href="@{${interview.getReference()}}" target="_blank">
+            <button>Конференция</button>
+        </a></td>
     </tr>
     <div th:if="${trueInterview}">
-        <tr><td colspan="2">РЕЗУЛЬТАТ</td></tr>
+        <tr><td colspan="3">РЕЗУЛЬТАТ</td></tr>
         <tr>
             <td>Балл</td>
-            <td th:text="${interview.getResult().getPoints()}"></td>
+            <td colspan="2" th:text="${interview.getResult().getPoints()}"></td>
         </tr>
         <tr>
             <td>Отзыв</td>
-            <td th:text="${interview.getResult().getFeedback()}"></td>
+            <td colspan="2" th:text="${interview.getResult().getFeedback()}"></td>
         </tr>
     </div>
     <div th:unless="${trueInterview}">
         <tr>
-            <td colspan="2">Собеседование еще не завершено</td>
+            <td colspan="3">Собеседование еще не завершено</td>
         </tr>
     </div>
 </table>

@@ -67,7 +67,7 @@ public class LanguageTestHasQuestionServiceImpl implements LanguageTestHasQuesti
     @Override
     public LanguageTestHasQuestion findByQuestion(List<LanguageTestHasQuestion> languageTestHasQuestions,int idQuestion){
         for(LanguageTestHasQuestion languageTestHasQuestion1:languageTestHasQuestions){
-            if(idQuestion==languageTestHasQuestion1.getIdLanguageTestHasQuestionEntity()){
+            if(idQuestion==languageTestHasQuestion1.getLanguageTestQuestion().getIdLanguageTestQuestion()){
                 return languageTestHasQuestion1;
             }
         }

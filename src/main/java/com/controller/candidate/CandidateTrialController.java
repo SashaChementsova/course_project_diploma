@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.text.SimpleDateFormat;
+
 @Controller
 public class CandidateTrialController {
 
@@ -65,6 +67,10 @@ public class CandidateTrialController {
             model.addAttribute("trueInterview","trueInterview");
             model.addAttribute("results",positionTestHasQuestionService.getPositionTestHasQuestionsByPositionTest(trial.getResultTesting().getPositionTest()));
         }
+        int res2=employeeService.compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getPositionTest().getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()));
+        if(res2==0){
+            model.addAttribute("today","today");
+        }
         return "candidate/trialControl/getPositionTest.html";
     }
     @GetMapping("/candidate/languageTest")
@@ -76,6 +82,12 @@ public class CandidateTrialController {
         if(trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()!=-1){
             model.addAttribute("trueInterview","trueInterview");
             model.addAttribute("results",languageTestHasQuestionService.getLanguageTestHasQuestionsByLanguageTest(trial.getResultTesting().getLanguageTestEntities().get(0)));
+        }
+        else{
+            int res2=employeeService.compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getLanguageTestEntities().get(0).getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()));
+            if(res2==0){
+                model.addAttribute("today","today");
+            }
         }
         return "candidate/trialControl/getLanguageTest.html";
     }

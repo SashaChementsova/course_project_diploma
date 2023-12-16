@@ -34,7 +34,7 @@
         <tr><td colspan="5">РЕЗУЛЬТАТ</td></tr>
         <tr>
             <td colspan="2">Общий балл</td>
-            <td colspan="3" th:text="${test.getResult().getPoints()}"></td>
+            <td colspan="3" th:text="${test.getResult().getPoints()}+'%'"></td>
         </tr>
         <tr>
             <td>№</td>
@@ -57,9 +57,22 @@
         </tr>
     </div>
     <div th:unless="${trueInterview}">
-        <tr>
-            <td colspan="5">Тестирование еще не завершено</td>
-        </tr>
+        <div th:if="${today}">
+            <tr>
+                <td colspan="5">
+                    <a th:href="@{/candidate/startLanguageTest}">
+                        <button>
+                            Пройти тестирование
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </div>
+        <div th:unless="${today}">
+            <tr>
+                <td colspan="5">Тестирование еще не завершено</td>
+            </tr>
+        </div>
     </div>
 </table>
 <a onclick="history.go(-1)">

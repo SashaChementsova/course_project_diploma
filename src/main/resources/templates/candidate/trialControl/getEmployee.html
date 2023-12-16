@@ -55,7 +55,8 @@
     </tr>
     <div th:switch="${employee.educationEntities.isEmpty()}">
         <tr th:case="true"><td>-</td></tr>
-        <tr th:case="*" th:each="education:${employee.educationEntities}"><td colspan="2" th:text="*{education.educationType.typeOfEducation}': '*{education:nameEducation} '('*{education.getStringYearOfGraduation()}')'"></td></tr>
+        <tr th:case="*" th:each="education:${employee.educationEntities}">
+            <td colspan="2" th:text="*{education.educationType.typeOfEducation}+': '+*{education.nameEducation} +'('+*{education.getStringYearOfGraduation()}+')'"></td></tr>
     </div>
     <tr>
         <td colspan="2">Иностранные языки</td>

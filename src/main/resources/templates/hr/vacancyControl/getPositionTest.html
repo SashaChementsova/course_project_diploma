@@ -38,7 +38,7 @@
         <tr><td colspan="2">РЕЗУЛЬТАТ</td></tr>
         <tr>
             <td>Общий балл</td>
-            <td th:text="${test.getResult().getPoints()}"></td>
+            <td th:text="${test.getResult().getPoints()}+'%'"></td>
         </tr>
     </div>
     <div th:unless="${trueInterview}">

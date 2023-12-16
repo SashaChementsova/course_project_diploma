@@ -69,7 +69,6 @@ public class CandidateTestingController {
         List<PositionTestHasQuestion> positionTestHasQuestions=positionTest.getPositionTestHasQuestionEntities();
         List<Answer> answers=mainAnswer.getAnswerList();
         PositionTestHasQuestion positionTestHasQuestion;
-        float res=0;
         for(Answer answer:answers){
             if (answer.getAnswer() == null || answer.getAnswer().isEmpty()) {
                 continue;
@@ -78,11 +77,10 @@ public class CandidateTestingController {
                 positionTestHasQuestion=positionTestHasQuestionService.findByQuestion(positionTestHasQuestions,answer.getIdQuestion());
                 positionTestHasQuestion.setStatus("Правильно");
                 positionTestHasQuestionService.addAndUpdatePositionTestHasQuestion(positionTestHasQuestion);
-                res+=positionTestHasQuestion.getPositionTestQuestion().getPoint();
             }
         }
         Result result=positionTest.getResult();
-        result.setPoints(res);
+        result.setPoints(getPointsOfPositionTest(positionTestHasQuestions,answers));
         resultService.addAndUpdateResult(result);
         return "redirect:/candidate/trial";
     }
@@ -121,7 +119,6 @@ public class CandidateTestingController {
         List<LanguageTestHasQuestion> languageTestHasQuestions=languageTest.getLanguageTestHasQuestionEntities();
         List<Answer> answers=mainAnswer.getAnswerList();
         LanguageTestHasQuestion languageTestHasQuestion;
-        float res=0;
         for(Answer answer:answers){
             if (answer.getAnswer() == null || answer.getAnswer().isEmpty()) {
                 continue;
@@ -130,13 +127,60 @@ public class CandidateTestingController {
                 languageTestHasQuestion=languageTestHasQuestionService.findByQuestion(languageTestHasQuestions,answer.getIdQuestion());
                 languageTestHasQuestion.setStatus("Правильно");
                 languageTestHasQuestionService.addAndUpdateLanguageTestHasQuestion(languageTestHasQuestion);
-                res+=languageTestHasQuestion.getLanguageTestQuestion().getPoint();
             }
         }
         Result result=languageTest.getResult();
-        result.setPoints(res);
+        result.setPoints(getPointsOfLanguageTest(languageTestHasQuestions,answers));
         resultService.addAndUpdateResult(result);
         return "redirect:/candidate/trial";
+    }
+
+    private float getPointsOfLanguageTest(List<LanguageTestHasQuestion> languageTestHasQuestions,List<Answer> answers){
+        float allPoints=getAllPointsFromLanguageTest(languageTestHasQuestions);
+        float points=0;
+        for(Answer answer:answers){
+            if (answer.getAnswer() == null || answer.getAnswer().isEmpty()) {
+                continue;
+            }
+            if(answer.getAnswer().equals(answer.getRightAnswer())){
+                LanguageTestHasQuestion languageTestHasQuestion=languageTestHasQuestionService.findByQuestion(languageTestHasQuestions,answer.getIdQuestion());
+                points+=languageTestHasQuestion.getLanguageTestQuestion().getPoint();
+            }
+        }
+        points=(points*100)/allPoints;
+        return (float) Math.round(points * 100) / 100;
+    }
+
+    private float getAllPointsFromLanguageTest(List<LanguageTestHasQuestion> languageTestHasQuestions){
+        float allPoints=0;
+        for(LanguageTestHasQuestion languageTestHasQuestion:languageTestHasQuestions){
+            allPoints+=languageTestHasQuestion.getLanguageTestQuestion().getPoint();
+        }
+        return allPoints;
+    }
+
+    private float getPointsOfPositionTest(List<PositionTestHasQuestion> positionTestHasQuestions,List<Answer> answers){
+        float allPoints=getAllPointsFromPositionTest(positionTestHasQuestions);
+        float points=0;
+        for(Answer answer:answers){
+            if (answer.getAnswer() == null || answer.getAnswer().isEmpty()) {
+                continue;
+            }
+            if(answer.getAnswer().equals(answer.getRightAnswer())){
+                PositionTestHasQuestion positionTestHasQuestion=positionTestHasQuestionService.findByQuestion(positionTestHasQuestions,answer.getIdQuestion());
+                points+=positionTestHasQuestion.getPositionTestQuestion().getPoint();
+            }
+        }
+        points=(points*100)/allPoints;
+        return  (float) Math.round(points * 100) / 100;
+    }
+
+    private float getAllPointsFromPositionTest(List<PositionTestHasQuestion> positionTestHasQuestions){
+        float allPoints=0;
+        for(PositionTestHasQuestion positionTestHasQuestion:positionTestHasQuestions){
+            allPoints+=positionTestHasQuestion.getPositionTestQuestion().getPoint();
+        }
+        return allPoints;
     }
 
 }
