@@ -151,6 +151,13 @@ public class HrDecisionController {
                 candidateService.deleteCandidateTrial(trial);
             }
         }
+        List<Trial> trials=vacancy.getTrialEntities();
+        if(trials!=null){
+            if(!(trials.isEmpty())){
+                for(Trial trial:trials)
+                    candidateService.deleteCandidateTrial(trial);
+            }
+        }
         vacancyService.deleteVacancy(vacancy.getIdVacancy());
         return "redirect:/hr/vacancies";
     }
