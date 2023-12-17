@@ -32,12 +32,6 @@
         <td>Дата</td>
         <td colspan="2" th:text="${interview.getDateAndTime()}"></td>
     </tr>
-    <tr>
-        <td>Ссылка на конференцию</td>
-        <td colspan="2"><a th:href="@{${interview.getReference()}}" target="_blank">
-            <button>Конференция</button>
-        </a></td>
-    </tr>
     <div th:if="${trueInterview}">
         <tr><td colspan="3">РЕЗУЛЬТАТ</td></tr>
         <tr>
@@ -50,6 +44,12 @@
         </tr>
     </div>
     <div th:unless="${trueInterview}">
+        <tr>
+            <td>Ссылка на конференцию</td>
+            <td colspan="2"><a th:href="@{${interview.getReference()}}" target="_blank">
+                <button>Конференция</button>
+            </a></td>
+        </tr>
         <tr>
             <td colspan="3">Собеседование еще не завершено</td>
         </tr>

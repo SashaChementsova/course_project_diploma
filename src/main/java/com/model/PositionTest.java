@@ -24,6 +24,6 @@ public class PositionTest {
     @OneToMany(mappedBy = "positionTest")
     private List<PositionTestHasQuestion> positionTestHasQuestionEntities;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "positionTest",fetch = FetchType.LAZY)
     private ResultTesting resultTesting;
 }

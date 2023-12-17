@@ -139,9 +139,7 @@
                         </a></td>
                     </div>
                     <div th:unless="${vacancy.status.equals('В процессе')}">
-                        <td><a th:href="@{/hr/chooseCandidatesOfVacancy/{id}(id=${vacancy.idVacancy})}" >
-                            <button>Принять решение по выбору кандидатов</button>
-                        </a></td>
+                        <td>Набор заявок закрыт</td>
                     </div>
                 </tr>
             </table>

@@ -40,10 +40,6 @@
         <td colspan="2" th:text="'Информация: '+${employee.userDetail.info}"></td>
     </tr>
     <tr>
-        <td th:text="'Дата подписания контракта: '+${employee.dateRecruitment}"></td>
-        <td th:text="'Дата окончания контракта: '+${employee.dateContractEnd}"></td>
-    </tr>
-    <tr>
         <td colspan="2">Навыки</td>
     </tr>
     <div th:switch="${employee.background.skills.isEmpty()}">

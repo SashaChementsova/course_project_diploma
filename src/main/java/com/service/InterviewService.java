@@ -10,4 +10,5 @@ public interface InterviewService {
 
     public Interview findInterviewById(int id);
     public void deleteInterview(int id);
+    public List<Interview> getActiveInterviews(List<Interview> interviews);
 }

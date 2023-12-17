@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SoftwareSeekers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div>
+    <table >
+        <tr>
+            <td>
+                <img th:src="@{/photos/1.png}" height="65px">
+            </td>
+            <td id="td2"><ul id="navbar">
+                <li><a th:href="@{/hr/hrPage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
+                <li><a th:href="@{/hr/hrProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
+                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+            </ul></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <form
+            method="post"
+            role="form"
+            th:action="@{/hr/getEmployeesFromCandidateEnd/{id}(id=${idVacancy})}"
+            th:object="${users}"
+            enctype="multipart/form-data"
+    >
+        <h1>Принятие решения по выбору персонала</h1>
+        <div th:text="'Максимальное количество кандидатов: '+${vacancy.freePositions}"></div>
+        <div class="field">
+            <label for="dateEnd">Дата окончания контракта</label>
+            <input
+                    id="dateEnd"
+                    name="dateEnd"
+                    placeholder="Выберите дату окончания контрактов сотрудников"
+                    th:field="${dateOfEndContract.birthday}"
+                    type="date"
+
+            />
+        </div>
+        <div class="field">
+            <label for="candidates">Кандидаты</label>
+            <div id="candidates" th:each="candidate, iStat:${candidates}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+                <div >
+                    <input th:field="*{users[__${iStat.index}__].id}" th:value="${candidate.idUser}" type="checkbox" th:id="${iStat}" checked />
+                    <label th:for="${iStat}" th:text="${candidate.SNP}+' - '+${candidate.points}"></label>
+                </div>
+            </div>
+        </div>
+        <div th:if="${tooMuch}">
+            <p >
+                Слишком много выбрано кандидатов для дальнейшего трудоустройства!
+            </p>
+        </div>
+        <div th:if="${dateFail}">
+            <p >
+                Дата окончания контракта должна быть не меньше, чем через год, и не больше, чем через 5 лет!
+            </p>
+        </div>
+        <div>
+            <button type="submit">Подтвердить</button>
+        </div>
+    </form>
+    <a th:href="@{/hr/languageQuestions}">
+        <button>
+            Отмена
+        </button>
+    </a>
+</div>
+</body>
+</html>

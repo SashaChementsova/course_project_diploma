@@ -41,8 +41,8 @@ public class EmployeeInterviewController {
     public String getInterviews(Model model){
         candidateService.checkCandidatesByTestsAndInterview();
         Employee employee=userDetailService.findUserByEmail(getCurrentUsername()).getEmployee();
-        model.addAttribute("interviews",employee.getInterviewEntities());
-        if(employee.getInterviewEntities().isEmpty()) model.addAttribute("emptiness","empty");
+        model.addAttribute("interviews",interviewService.getActiveInterviews(employee.getInterviewEntities()));
+        if(interviewService.getActiveInterviews(employee.getInterviewEntities()).isEmpty()) model.addAttribute("emptiness","empty");
         return "employee/interviewControl/getInterviews.html";
     }
 
@@ -92,14 +92,14 @@ public class EmployeeInterviewController {
         result1.setPoints(result.getPoints());
         result1.setFeedback(result.getFeedback());
         resultService.addAndUpdateResult(result);
-        return "redirect:/employee/interview/"+idInterview;
+        return "redirect:/employee/interviews";
     }
 
     @GetMapping("/employee/hr/{idInterview}")
     public String getHr(@PathVariable("idInterview") String idInterview,Model model){
         candidateService.checkCandidatesByTestsAndInterview();
         Interview interview=interviewService.findInterviewById(Integer.parseInt(idInterview));
-        model.addAttribute("hr",interview.getTrial().getVacancy().getHr());
+        model.addAttribute("employee",interview.getTrial().getVacancy().getHr().getUserDetail().getEmployee());
         model.addAttribute("idInterview",idInterview);
         return "employee/interviewControl/getHr.html";
     }
@@ -109,6 +109,7 @@ public class EmployeeInterviewController {
         candidateService.checkCandidatesByTestsAndInterview();
         Interview interview=interviewService.findInterviewById(Integer.parseInt(idInterview));
         model.addAttribute("candidate",interview.getTrial().getCandidate());
+        model.addAttribute("test",interview.getTrial().getResultTesting().getPositionTest());
         if(interview.getTrial().getResultTesting().getPositionTest().getResult().getPoints()!=-1){
             model.addAttribute("trueInterview","trueInterview");
             model.addAttribute("results",positionTestHasQuestionService.getPositionTestHasQuestionsByPositionTest(interview.getTrial().getResultTesting().getPositionTest()));

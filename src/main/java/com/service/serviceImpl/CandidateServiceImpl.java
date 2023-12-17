@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -93,24 +94,22 @@ public class CandidateServiceImpl implements CandidateService {
                     if(trials!=null){
                         if(!(trials.isEmpty())){
                             Trial trial=trials.get(0);
-                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getPositionTest().getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getPositionTest().getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0&&trial.getResultTesting().getPositionTest().getResult().getPoints()==-1){
                                 deletePositionQuestions(trial);
                                 deleteLanguageQuestions(trial);
                                 deleteAllTrial(trial);
                             }
-                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getLanguageTestEntities().get(0).getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                            if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getResultTesting().getLanguageTestEntities().get(0).getDate()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0&&trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1){
                                 deleteLanguageQuestions(trial);
                                 deletePositionQuestions(trial);
                                 deleteAllTrial(trial);
                             }
                             if(trial.getInterviewEntities()!=null){
                                 if(!(trial.getInterviewEntities().isEmpty())){
-                                    if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getInterviewEntities().get(0).getDateAndTime()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0){
+                                    if(compareDates(new SimpleDateFormat("yyyy-MM-dd").format(trial.getInterviewEntities().get(0).getDateAndTime()),new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()))<0&&trial.getInterviewEntities().get(0).getResult().getPoints()==-1){
                                         deleteLanguageQuestions(trial);
                                         deletePositionQuestions(trial);
-                                        Interview interview=trial.getInterviewEntities().get(0);
                                         deleteAllTrial(trial);
-                                        interviewService.deleteInterview(interview.getIdInterview());
                                     }
                                 }
                             }
@@ -124,24 +123,7 @@ public class CandidateServiceImpl implements CandidateService {
     public void deleteCandidateTrial(Trial trial){
         deleteLanguageQuestions(trial);
         deletePositionQuestions(trial);
-        ResultTesting resultTesting=trial.getResultTesting();
-        PositionTest positionTest=trial.getResultTesting().getPositionTest();
-        LanguageTest languageTest=trial.getResultTesting().getLanguageTestEntities().get(0);
-        List<Interview> interviews=trial.getInterviewEntities();
-        trialService.deleteTrial(trial.getIdTrial());
-        if(interviews!=null){
-            if(!(interviews.isEmpty())){
-                Interview interview=trial.getInterviewEntities().get(0);
-                interviewService.deleteInterview(interview.getIdInterview());
-            }
-        }
-        Result result1=positionTest.getResult();Result result2=languageTest.getResult();
-        resultTestingService.deleteResultTesting(resultTesting.getIdResultTesting());
-        positionTestService.deletePositionTest(positionTest.getIdPositionTest());
-        languageTestService.deleteLanguageTest(languageTest.getIdLanguageTest());
-        resultService.deleteResult(result1.getIdResult());
-        resultService.deleteResult(result2.getIdResult());
-
+        deleteAllTrial(trial);
     }
 
     private void deletePositionQuestions(Trial trial){
@@ -162,11 +144,21 @@ public class CandidateServiceImpl implements CandidateService {
         ResultTesting resultTesting=trial.getResultTesting();
         PositionTest positionTest=trial.getResultTesting().getPositionTest();
         LanguageTest languageTest=trial.getResultTesting().getLanguageTestEntities().get(0);
+        if(!(trial.getInterviewEntities().isEmpty())){
+            Result result=trial.getInterviewEntities().get(0).getResult();
+            interviewService.deleteInterview(trial.getInterviewEntities().get(0).getIdInterview());
+            resultService.deleteResult(result.getIdResult());
+        }
+        trial.setResultTesting(null);
+        trial.setInterviewEntities(null);
+        trialService.addAndUpdateTrial(trial);
         trialService.deleteTrial(trial.getIdTrial());
         Result result1=positionTest.getResult();Result result2=languageTest.getResult();
+
+        languageTestService.deleteLanguageTest(languageTest.getIdLanguageTest());
         resultTestingService.deleteResultTesting(resultTesting.getIdResultTesting());
         positionTestService.deletePositionTest(positionTest.getIdPositionTest());
-        languageTestService.deleteLanguageTest(languageTest.getIdLanguageTest());
+
         resultService.deleteResult(result1.getIdResult());
         resultService.deleteResult(result2.getIdResult());
     }

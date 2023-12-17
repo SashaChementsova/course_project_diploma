@@ -7,6 +7,7 @@ import com.service.InterviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class InterviewServiceImpl implements InterviewService {
@@ -32,4 +33,18 @@ public class InterviewServiceImpl implements InterviewService {
         interviewRepository.deleteById(id);
     }
 
+    @Override
+    public List<Interview> getActiveInterviews(List<Interview> interviews){
+        List<Interview> result=new ArrayList<>();
+        if(interviews!=null){
+            if(!(interviews.isEmpty())){
+                for(Interview interview:interviews){
+                    if(interview.getResult().getPoints()==-1){
+                        result.add(interview);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }

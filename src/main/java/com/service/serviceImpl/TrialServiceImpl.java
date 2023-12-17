@@ -1,6 +1,7 @@
 package com.service.serviceImpl;
 
 import com.model.Trial;
+import com.model.Vacancy;
 import com.repository.TrialRepository;
 import com.service.TrialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,8 @@ public class TrialServiceImpl implements TrialService {
     }
 
     @Override
-    public List<Trial> getActiveTrial(){
-        List<Trial> trials=getTrials();
+    public List<Trial> getActiveTrial(Vacancy vacancy){
+        List<Trial> trials=vacancy.getTrialEntities();
         List<Trial> resultTrials=new ArrayList<>();
         if(trials!=null){
             if(!(trials.isEmpty())){

@@ -76,6 +76,11 @@
                 <th></th>
             </div>
             <th>Собеседование</th>
+            <div th:unless="${trial.getInterviewEntities().isEmpty()}">
+                <div th:unless="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
+                    <th></th>
+                </div>
+            </div>
         </tr>
         <tr>
             <td th:text="${trial.getStatus()}"></td>
@@ -102,6 +107,7 @@
                 </div>
                 <div th:unless="${trial.getInterviewEntities().get(0).getResult().getPoints()==-1}">
                     <td th:text="${trial.getInterviewEntities().get(0).getResult().getPoints()}"></td>
+                    <td><a th:href="@{/candidate/interview}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
                 </div>
             </div>
         </tr>

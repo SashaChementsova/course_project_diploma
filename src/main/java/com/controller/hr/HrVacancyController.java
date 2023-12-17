@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 @Controller
 public class HrVacancyController {
@@ -97,8 +96,11 @@ public class HrVacancyController {
         candidateService.checkCandidatesByTestsAndInterview();
         checkPositions();
         model.addAttribute("vacancy",vacancyService.findVacancyById(Integer.parseInt(idVacancy)));
-        model.addAttribute("trials",trialService.getActiveTrial());
-        if(trialService.getActiveTrial().isEmpty()) model.addAttribute("emptiness","empty");
+        model.addAttribute("trials",trialService.getActiveTrial(vacancyService.findVacancyById(Integer.parseInt(idVacancy))));
+        if(checkReady(vacancyService.findVacancyById(Integer.parseInt(idVacancy)))){
+            model.addAttribute("finish","finish");
+        }
+        if(trialService.getActiveTrial(vacancyService.findVacancyById(Integer.parseInt(idVacancy))).isEmpty()) model.addAttribute("emptiness","empty");
         return "hr/vacancyControl/getVacancy.html";
     }
 
@@ -124,7 +126,7 @@ public class HrVacancyController {
 
     @GetMapping("/hr/deleteCandidateFromVacancy/{id}")
     public String deleteCandidate(@PathVariable("id") String idTrial,Model model){
-        candidateService.checkCandidatesByTestsAndInterview();
+        //candidateService.checkCandidatesByTestsAndInterview();
         checkPositions();
         Trial trial =trialService.findTrialById(Integer.parseInt(idTrial));
         model.addAttribute("deleteTrial","deleteTrial");
@@ -136,7 +138,7 @@ public class HrVacancyController {
 
     @PostMapping("/hr/deleteCandidateFromVacancyEnd/{id}")
     public String deleteCandidateEnd(@PathVariable("id") String idTrial,Model model){
-        candidateService.checkCandidatesByTestsAndInterview();
+//        candidateService.checkCandidatesByTestsAndInterview();
         checkPositions();
         Trial trial =trialService.findTrialById(Integer.parseInt(idTrial));
         trial.setStatus("Отклонено");
@@ -238,7 +240,7 @@ public class HrVacancyController {
 
 
 
-    @GetMapping("/hr/vacancyAdd")
+    @GetMapping("/hr/addVacancy")
     public String addVacancy(Model model){
         candidateService.checkCandidatesByTestsAndInterview();
         model.addAttribute("vacancy",new Vacancy());
@@ -354,4 +356,24 @@ public class HrVacancyController {
         if(levelPositionService.getLevelPositions().isEmpty()) levelPositionService.initializeLevelPosition();
     }
 
+    private boolean checkReady(Vacancy vacancy){
+        List<Trial> trials=vacancy.getTrialEntities();
+        if(!(vacancy.getStatus().equals("Завершено"))) return false;
+        if(trials!=null){
+            if(!(trials.isEmpty())){
+                for(Trial trial:trials){
+                    if(trial.getResultTesting().getPositionTest().getResult().getPoints()==-1||trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()==-1){
+                        return false;
+                    }
+                    if(trial.getInterviewEntities().isEmpty()) return false;
+                    if(trial.getInterviewEntities().get(0).getResult().getPoints()==-1){
+                        return false;
+                    }
+                }
+            }
+            else return false;
+        }
+        else return false;
+        return true;
+    }
 }
