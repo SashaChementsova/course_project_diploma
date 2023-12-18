@@ -2,6 +2,8 @@ body {
     margin: 0 0 0 0;
     font-family: "Tahoma";
     font-weight: bold;
+    min-width: 1468px;
+    max-width: 1468px;
 }
 .header{
     font-size:large;

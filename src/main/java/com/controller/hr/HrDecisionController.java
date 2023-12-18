@@ -24,36 +24,20 @@ public class HrDecisionController {
     private final HrService hrService;
     private final VacancyService vacancyService;
     private final TrialService trialService;
-    private final InterviewService interviewService;
-    private final ResultService resultService;
 
     private final LanguageService languageService;
-    private final ResultTestingService resultTestingService;
-    private final PositionTestHasQuestionService positionTestHasQuestionService;
-    private final LanguageTestHasQuestionService languageTestHasQuestionService;
-    private final PositionTestService positionTestService;
-    private final LanguageTestService languageTestService;
     private final EducationService educationService;
-    private final BackgroundService backgroundService;
 
     private final CandidateService candidateService;
     @Autowired
-    public HrDecisionController(LanguageService languageService,EducationService educationService,CandidateService candidateService, BackgroundService backgroundService,EmployeeService employeeService, UserDetailService userDetailService, RoleService roleService, HrService hrService, VacancyService vacancyService, TrialService trialService, InterviewService interviewService, ResultService resultService, ResultTestingService resultTestingService, PositionTestHasQuestionService positionTestHasQuestionService, LanguageTestHasQuestionService languageTestHasQuestionService, PositionTestService positionTestService, LanguageTestService languageTestService) {
+    public HrDecisionController(LanguageService languageService,EducationService educationService,CandidateService candidateService, EmployeeService employeeService, UserDetailService userDetailService, RoleService roleService, HrService hrService, VacancyService vacancyService, TrialService trialService) {
         this.languageService=languageService;
         this.employeeService = employeeService;
         this.userDetailService = userDetailService;
         this.roleService = roleService;
-        this.backgroundService=backgroundService;
         this.hrService = hrService;
         this.vacancyService = vacancyService;
         this.trialService = trialService;
-        this.interviewService = interviewService;
-        this.resultService = resultService;
-        this.resultTestingService = resultTestingService;
-        this.positionTestHasQuestionService = positionTestHasQuestionService;
-        this.languageTestHasQuestionService = languageTestHasQuestionService;
-        this.positionTestService = positionTestService;
-        this.languageTestService = languageTestService;
         this.candidateService=candidateService;
         this.educationService=educationService;
     }
@@ -127,7 +111,7 @@ public class HrDecisionController {
                 employee=employeeService.addAndUpdateEmployee(employee);
                 userDetail.setCandidate(null); userDetail.setEmployee(employee);
                 List<Role> roles=new ArrayList<>();roles.add(roleService.findRoleById(3));
-                if(employee.getPosition().getPositionName().equals("HR-менеджер")){
+                if(employee.getPosition().getPositionName().getName().equals("HR-менеджер")){
                     Hr hr=new Hr();
                     hr.setUserDetail(userDetail);
                     roles.add(roleService.findRoleById(4));
@@ -196,18 +180,9 @@ public class HrDecisionController {
         return age;
     }
     private java.sql.Date convert(java.util.Date uDate) {
-        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-        return sDate;
+        return new java.sql.Date(uDate.getTime());
     }
 
-    private java.util.Date getDateInDays(int day){
-        Date date = new Date (); // Получаем время
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.add (calendar.DATE, day); //увеличиваем дату на day
-        date = calendar.getTime();
-        return date;
-    }
 
     private List<CandidatesFinals> setCandidatesFinals(List<CandidatesFinals> candidatesFinals,List<Trial> trials){
         for(Trial trial:trials){
@@ -215,7 +190,7 @@ public class HrDecisionController {
             candidatesFinal.setIdUser(trial.getCandidate().getUserDetail().getIdUserDetails());
             candidatesFinal.setSNP(trial.getCandidate().getUserDetail().getShortSNP());
             float res=(trial.getInterviewEntities().get(0).getResult().getPoints()+trial.getResultTesting().getLanguageTestEntities().get(0).getResult().getPoints()+trial.getResultTesting().getPositionTest().getResult().getPoints())/3;
-            candidatesFinal.setPoints(res);
+            candidatesFinal.setPoints(Math.round(res));
             candidatesFinals.add(candidatesFinal);
         }
         candidatesFinals.sort(new CandidateFinalComparator());

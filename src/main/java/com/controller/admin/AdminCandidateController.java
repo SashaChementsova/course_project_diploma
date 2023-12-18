@@ -20,7 +20,6 @@ public class AdminCandidateController {
 
     @GetMapping("/admin/candidates")
     public String getCandidates(Model model){
-        System.out.println(candidateService.getCandidates().get(0).getUserDetail().getSNP());
         model.addAttribute("candidates", candidateService.getCandidates());
         model.addAttribute("candidateService",candidateService);
         if(candidateService.getCandidates().isEmpty()) model.addAttribute("emptiness","empty");

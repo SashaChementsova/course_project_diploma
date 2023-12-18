@@ -26,6 +26,7 @@ public class SpringSecurity {
         http.authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/").permitAll()
                                 .requestMatchers("/styles/**").permitAll()
+                                .requestMatchers("/visitor/**").permitAll()
                                 .requestMatchers("/photos/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
                                 .requestMatchers("/register").permitAll()

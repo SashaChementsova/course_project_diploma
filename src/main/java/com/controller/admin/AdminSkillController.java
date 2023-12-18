@@ -33,7 +33,7 @@ public class AdminSkillController {
         else{
             skillName.setData(skillName.getData().trim());
             List<Skill> skills=skillService.findSkillsByName(skillName.getData());
-            model.addAttribute("skills",skillService.getSkills());
+            model.addAttribute("skills",skills);
             model.addAttribute("nameSkill",skillName);
             if(skills.isEmpty()) model.addAttribute("emptiness","empty");
         }

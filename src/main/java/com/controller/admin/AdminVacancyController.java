@@ -39,14 +39,14 @@ public class AdminVacancyController {
             Position position=new Position();
             position.setLevelPosition(levelPosition); position.setPositionName(positionName);
             position=positionService.addAndUpdatePosition(positionService.checkDuplicatePosition(position));
-            model.addAttribute("vacancies", vacancyService.findVacanciesByPosition(position));
+            model.addAttribute("vacancies", vacancyService.getActiveVacanciesByPosition(position));
             if ( vacancyService.findVacanciesByPosition(position).isEmpty())
                 model.addAttribute("emptiness", "empty");
         } else {
             model.addAttribute("positionNameFind", new PositionName());
             model.addAttribute("levelPositionFind", new LevelPosition());
-            model.addAttribute("vacancies", vacancyService.getVacancies());
-            if (vacancyService.getVacancies().isEmpty())
+            model.addAttribute("vacancies", vacancyService.getActiveVacancies());
+            if (vacancyService.getActiveVacancies().isEmpty())
                 model.addAttribute("emptiness", "empty");
         }
         return "admin/vacancyControl/getVacancies.html";

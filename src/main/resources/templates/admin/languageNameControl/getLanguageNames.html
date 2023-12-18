@@ -4,44 +4,8 @@
     <meta charset="UTF-8">
     <title>SoftwareSeekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .modalframe{
-            top: -100%;
-            right: 0;
-            left: 50%;
-            font-size: 14px;
-            z-index: 20;
-            margin: 0;
-            width: 85%;
-            min-width: 320px;
-            max-width: 600px;
-            /* фиксированное позиционирование, окно стабильно при прокрутке */
-            position: fixed;
-            padding: 15px;
-            border: 1px solid #383838;
-            background: #fefefe;
-            /* скругление углов */
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -ms-border-radius: 4px;
-            border-radius: 4px;
-            font: 14px/18px 'Tahoma', Arial, sans-serif;
-            /* внешняя тень */
-            -webkit-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -moz-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -ms-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -webkit-transform: translate(-50%, 0);
-            -ms-transform: translate(-50%, 0);
-            -o-transform: translate(-50%, 0);
-            transform: translate(-50%, 0);
-            top: 20%;
-            -webkit-transition: -webkit-transform 0.6s ease-out;
-            -moz-transition: -moz-transform 0.6s ease-out;
-            -o-transition: -o-transform 0.6s ease-out;
-            transition: transform 0.6s ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/getDepartments.css">
 </head>
 <body>
 <div th:if="${add}">
@@ -181,46 +145,53 @@
         </a>
     </div>
 </div>
-<div>
+<div class="header">
     <table >
         <tr>
-            <td>
+            <td id="td1">
                 <img th:src="@{/photos/1.png}" height="65px">
             </td>
             <td id="td2"><ul id="navbar">
                 <li><a th:href="@{/admin/adminPage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
-                <li><a th:href="@{/admin/adminProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
-                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+                <li><a th:href="@{/logout}" style="color:#171717; text-decoration:none">ВЫЙТИ</a></li>
             </ul></td>
         </tr>
     </table>
 </div>
-<a th:href="@{/admin/addLanguageName}" ><i class="fa fa-plus" style="color:black"></i></a>
-<div th:switch="${emptiness}">
-    <div th:case="'empty'">Список иностранных языков пуст!</div>
-    <div th:case="*">
-        <table>
-            <tr>
-                <th>№</th>
-                <th>Иностранный язык</th>
-                <th>Редактирование</th>
-                <th>Удаление</th>
-            </tr>
-            <tr th:each="languageName, iStat:${languageNames}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
-                <td th:text="${iStat.index+1}"></td>
-                <td th:text="${languageName.name}">
-                </td>
-                <td><a th:href="@{/admin/editLanguageName/{id}(id=${languageName.idLanguageName})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
-                <td><a th:href="@{/admin/deleteLanguageName/{id}(id=${languageName.idLanguageName})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
-            </tr>
-        </table>
+<div class="container">
+    <a th:href="@{/admin/addLanguageName}" ><i class="fa fa-plus" style="color:black"></i></a>
+    <div th:switch="${emptiness}">
+        <div th:case="'empty'">
+            <h3>Список иностранных языков пуст!</h3>
+            <img th:src="@{/photos/14-transformed.png}">
+        </div>
+        <div th:case="*">
+            <table class="table">
+                <thead>
+                    <th>№</th>
+                    <th>Иностранный язык</th>
+                    <th>Редактирование</th>
+                    <th>Удаление</th>
+                </thead>
+                <tr th:each="languageName, iStat:${languageNames}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
+                    <td th:text="${iStat.index+1}"></td>
+                    <td th:text="${languageName.name}">
+                    </td>
+                    <td><a th:href="@{/admin/editLanguageName/{id}(id=${languageName.idLanguageName})}" ><i class="fa fa-pencil" style="color:black"></i></a></td>
+                    <td><a th:href="@{/admin/deleteLanguageName/{id}(id=${languageName.idLanguageName})}" ><i class="fa fa-trash" style="color:black"></i></a></td>
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
 
-<a th:href="@{/admin/adminPage}">
-    <button>
-        Назад
-    </button>
-</a>
+    <a th:href="@{/admin/adminPage}">
+        <button>
+            Назад
+        </button>
+    </a>
+</div>
+<div class="footer">
+    <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
+</div>
 </body>
 </html>
