@@ -100,14 +100,16 @@ public class HrDecisionController {
                     educationService.addAndUpdateEducation(education);
                 }
                 List<Language> languages=candidate.getLanguages();
-                Language language=languages.get(0);
-                List<Candidate> candidates=language.getCandidateEntities();
-                candidates.remove(candidate);
-                language.setCandidateEntities(candidates);
-                List<Employee> employees=language.getEmployeeEntities();
-                employees.add(employee);
-                language.setEmployeeEntities(employees);
-                languageService.addAndUpdateLanguage(language);
+                if(languages!=null&&!(languages.isEmpty())){
+                    Language language=languages.get(0);
+                    List<Candidate> candidates=language.getCandidateEntities();
+                    candidates.remove(candidate);
+                    language.setCandidateEntities(candidates);
+                    List<Employee> employees=language.getEmployeeEntities();
+                    employees.add(employee);
+                    language.setEmployeeEntities(employees);
+                    languageService.addAndUpdateLanguage(language);
+                }
                 employee=employeeService.addAndUpdateEmployee(employee);
                 userDetail.setCandidate(null); userDetail.setEmployee(employee);
                 List<Role> roles=new ArrayList<>();roles.add(roleService.findRoleById(3));
@@ -135,13 +137,13 @@ public class HrDecisionController {
                 candidateService.deleteCandidateTrial(trial);
             }
         }
-        List<Trial> trials=vacancy.getTrialEntities();
-        if(trials!=null){
-            if(!(trials.isEmpty())){
-                for(Trial trial:trials)
-                    candidateService.deleteCandidateTrial(trial);
-            }
-        }
+//        List<Trial> trials=vacancy.getTrialEntities();
+//        if(trials!=null){
+//            if(!(trials.isEmpty())){
+//                for(Trial trial:trials)
+//                    candidateService.deleteCandidateTrial(trial);
+//            }
+//        }
         vacancyService.deleteVacancy(vacancy.getIdVacancy());
         return "redirect:/hr/vacancies";
     }

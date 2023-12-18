@@ -14,7 +14,7 @@
     margin: 10px 0 10px 0;
 }
 .container{
-    min-height: 618px;
+    min-height: 605px;
     display: flex;
     flex-direction: column;
     color: rgb(84,84,84);
@@ -34,6 +34,7 @@
     color: rgb(84,84,84);
     background: white;
     border:1px solid rgba(225, 253, 91,0.9);
+    min-width: 290px;
 }
 select{
     width:140px;
@@ -126,7 +127,7 @@ select{
     align-items: center;
     text-align: start;
     min-height: 460px;
-    min-width:750px;
+    min-width:950px;
     border-radius:36px;
     border:1px solid rgba(225, 253, 91,0.9);
     background-color: #d7d7d7;
@@ -165,6 +166,9 @@ input:focus{
     margin-bottom: 20px;
     margin-top: 20px;
 }
+.table tr{
+    margin: 7px 3px 7px 3px;
+}
 .table thead th {
     font-weight: bold;
     text-align: center;
@@ -198,7 +202,7 @@ button{
     font-family: "Tahoma";
     margin: 5px 10px 5px 10px;
     width: 140px;
-    height: 42px;
+    height: 50px;
     border-radius:36px;
     background-color: white;
     border:1px solid rgba(225, 253, 91,0.9);

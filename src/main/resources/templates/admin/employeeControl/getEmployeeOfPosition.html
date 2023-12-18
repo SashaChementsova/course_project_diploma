@@ -57,21 +57,21 @@
                 <td style="text-align: center"  colspan="2">Навыки</td>
             </tr>
             <div th:switch="${employee.background.skills.isEmpty()}">
-                <tr th:case="true"><td>-</td></tr>
+                <tr th:case="true"><td  style="text-align: center" >-</td></tr>
                 <tr th:case="*" th:each="skill:${employee.background.skills}"><td colspan="2" th:text="*{skill.nameSkill}"></td></tr>
             </div>
             <tr>
                 <td style="text-align: center"  colspan="2">Образование</td>
             </tr>
             <div th:switch="${employee.educationEntities.isEmpty()}">
-                <tr th:case="true"><td>-</td></tr>
+                <tr th:case="true"><td  style="text-align: center" >-</td></tr>
                 <tr th:case="*" th:each="education:${employee.educationEntities}"><td colspan="2" th:text="*{education.educationType.typeOfEducation}+': '+*{education.nameEducation}+'('+*{education.getStringYearOfGraduation()}+')'"></td></tr>
             </div>
             <tr>
                 <td style="text-align: center"  colspan="2">Иностранные языки</td>
             </tr>
             <div th:switch="${employee.languages.isEmpty()}">
-                <tr th:case="true"><td>-</td></tr>
+                <tr th:case="true"><td  style="text-align: center" >-</td></tr>
                 <tr th:case="*" th:each="language:${employee.languages}"><td colspan="2" th:text="*{language.toString()}"></td></tr>
             </div>
 

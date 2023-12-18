@@ -4,111 +4,74 @@
     <meta charset="UTF-8">
     <title>SoftwareSeekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .modalframe{
-            top: -100%;
-            right: 0;
-            left: 50%;
-            font-size: 14px;
-            z-index: 20;
-            margin: 0;
-            width: 85%;
-            min-width: 320px;
-            max-width: 600px;
-            /* фиксированное позиционирование, окно стабильно при прокрутке */
-            position: fixed;
-            padding: 15px;
-            border: 1px solid #383838;
-            background: #fefefe;
-            /* скругление углов */
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -ms-border-radius: 4px;
-            border-radius: 4px;
-            font: 14px/18px 'Tahoma', Arial, sans-serif;
-            /* внешняя тень */
-            -webkit-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -moz-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -ms-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -webkit-transform: translate(-50%, 0);
-            -ms-transform: translate(-50%, 0);
-            -o-transform: translate(-50%, 0);
-            transform: translate(-50%, 0);
-            top: 20%;
-            -webkit-transition: -webkit-transform 0.6s ease-out;
-            -moz-transition: -moz-transform 0.6s ease-out;
-            -o-transition: -o-transform 0.6s ease-out;
-            transition: transform 0.6s ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/getVacancy.css">
 </head>
 <body>
-<div>
+<div th:if="${finishInterview}">
+    <div class="modalframe">
+        <form
+                method="post"
+                role="form"
+                th:object="${result}"
+                th:action="@{/employee/finishInterview/end/{idInterview}(idInterview=${interview.idInterview})}"
+                enctype="multipart/form-data"
+        >
+            <h1>Отзыв о кандидате после собеседования</h1>
+            <div class="field">
+                <label for="feedback">Отзыв</label>
+                <input
+                        id="feedback"
+                        name="feedback"
+                        placeholder="Напишите отзыы"
+                        th:field="*{feedback}"
+                        type="text"
+                />
+                <p th:errors = "*{feedback}" class="info"
+                   th:if="${#fields.hasErrors('feedback')}"></p>
+            </div>
+            <div class="field">
+                <label for="points">Оценка</label>
+                <input
+                        id="points"
+                        name="points"
+                        th:field="*{points}"
+                        type="number" min="0" max="10" step="1"
+                />
+                <p th:errors = "*{points}" class="info"
+                   th:if="${#fields.hasErrors('points')}"></p>
+            </div>
+            <div th:if="${empty}">
+                <div class="info">
+                    Пожалуйста, заполните все поля!
+                </div>
+            </div>
+            <div>
+                <button type="submit">Подтвердить</button>
+            </div>
+        </form>
+        <a th:href="@{/employee/interview/{idInterview}(idInterview=${interview.idInterview})}">
+            <button>
+                Отмена
+            </button>
+        </a>
+    </div>
+</div>
+<div class="header">
     <table >
         <tr>
-            <td>
+            <td id="td1">
                 <img th:src="@{/photos/1.png}" >
             </td>
             <td id="td2"><ul id="navbar">
                 <li><a th:href="@{/hr/hrPage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
-                <li><a th:href="@{/hr/hrProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
-                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+                <li><a th:href="@{/logout}" style="color:#171717; text-decoration:none">ВЫЙТИ</a></li>
             </ul></td>
         </tr>
     </table>
 </div>
 
-<div>
-    <div th:if="${finishInterview}">
-        <div class="modalframe">
-            <form
-                    method="post"
-                    role="form"
-                    th:object="${result}"
-                    th:action="@{/employee/finishInterview/end/{idInterview}(idInterview=${interview.idInterview})}"
-                    enctype="multipart/form-data"
-            >
-                <h1>Отзыв о кандидате после собеседования</h1>
-                <div class="field">
-                    <label for="feedback">Отзыв</label>
-                    <input
-                            id="feedback"
-                            name="feedback"
-                            placeholder="Напишите отзыы"
-                            th:field="*{feedback}"
-                            type="text"
-                    />
-                    <p th:errors = "*{feedback}" class="info"
-                       th:if="${#fields.hasErrors('feedback')}"></p>
-                </div>
-                <div class="field">
-                    <label for="points">Оценка</label>
-                    <input
-                            id="points"
-                            name="points"
-                            th:field="*{points}"
-                            type="number" min="0" max="10" step="1"
-                    />
-                    <p th:errors = "*{points}" class="info"
-                       th:if="${#fields.hasErrors('points')}"></p>
-                </div>
-                <div th:if="${empty}">
-                    <div class="info">
-                        Пожалуйста, заполните все поля!
-                    </div>
-                </div>
-                <div>
-                    <button type="submit">Подтвердить</button>
-                </div>
-            </form>
-            <a th:href="@{/employee/interview/{idInterview}(idInterview=${interview.idInterview})}">
-                <button>
-                    Отмена
-                </button>
-            </a>
-        </div>
-    </div>
+<div class="container">
     <table>
         <tr><td colspan="2" th:text="'Позиция: '+${interview.trial.vacancy.getPosition().toString()}"></td></tr>
         <tr>
@@ -131,19 +94,23 @@
             <td  th:text="'HR-специалист: '+${hr.userDetail.getSNP()}"></td>
             <td><a th:href="@{/employee/hr/{idInterview}(idInterview=${interview.idInterview})}" ><i class="fa fa-angle-right" style="color:black"></i></a></td>
         </tr>
-        <div th:if="${today}">
-            <a th:href="@{/employee/finishInterview/{idInterview}(idInterview=${interview.idInterview})}">
-                <button>
-                    Оставить отзыв после собеседования
-                </button>
-            </a>
-        </div>
+
     </table>
+    <div th:if="${today}">
+        <a th:href="@{/employee/finishInterview/{idInterview}(idInterview=${interview.idInterview})}">
+            <button>
+                Оставить отзыв после собеседования
+            </button>
+        </a>
+    </div>
+    <a th:href="@{/employee/interviews}">
+        <button>
+            Назад
+        </button>
+    </a>
 </div>
-<a th:href="@{/employee/interviews}">
-    <button>
-        Назад
-    </button>
-</a>
+<div class="footer">
+    <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
+</div>
 </body>
 </html>

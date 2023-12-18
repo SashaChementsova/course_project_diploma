@@ -2,8 +2,8 @@ body {
     margin: 0 0 0 0;
     font-family: "Tahoma";
     font-weight: bold;
-    min-width: 1468px;
-    max-width: 1468px;
+    min-width: 1470px;
+    max-width: 1470px;
 }
 .header{
     font-size:large;
@@ -22,7 +22,7 @@ body {
     align-items: center;
     background-color: rgb(185, 185, 185);
     min-height: 618px;
-    min-width: 1460px;
+    min-width: 1470px;
 }
 .footer{
     font-size: medium;

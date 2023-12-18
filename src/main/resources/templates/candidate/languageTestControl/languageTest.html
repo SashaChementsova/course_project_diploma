@@ -7,6 +7,10 @@
     <title>SoftwareSeekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+        *{
+            font-family: "Tahoma";
+            font-weight: bold;
+        }
         progress {
             border-radius: 7px;
             width: 50%;
@@ -21,12 +25,38 @@
             background-color: #E1FD5B;
             border-radius: 7px;
         }
-
+        .result{
+            min-width: 1460px;
+            min-height: 748px;
+            display: flex;
+            flex-direction: row;
+        }
+        .image{
+            min-height: 748px;
+            min-width: 230px;
+            background-image: url("/photos/фон (1).png");
+        }
+        #test{
+            min-height: 748px;
+            min-width: 1000px;
+        }
+        .footer{
+            font-size: medium;
+            display: flex;
+            color: #171717;
+            flex-direction: row;
+            align-items: center;
+            background-color: white;
+            min-height:50px;
+            min-width: 1460px;
+        }
     </style>
 </head>
 <body>
-<div>
+<div class="result">
+    <div class="image"></div>
     <div id="test">
+        <img th:src="@{/photos/2.png}" width="100px" height="100px">
         <progress id="user-progress" value="0" max="100"></progress>
         <form method="post"
               role="form"
@@ -64,9 +94,10 @@
 
             }
 
-            userProgress(60);
+            userProgress(320);
         </script>
     </div>
+    <div class="image"></div>
 </div>
 <div class="footer">
     <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
