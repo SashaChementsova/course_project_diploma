@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <title>SoftwareSeekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/attribute.css">
+    <link rel="stylesheet" href="/styles/getHr.css">
+
 </head>
 <body>
-<div>
+<div class="header">
     <table >
         <tr>
-            <td>
+            <td id="td1">
                 <img th:src="@{/photos/1.png}" >
             </td>
             <td id="td2"><ul id="navbar">
                 <li><a th:href="@{/hr/hrPage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
-                <li><a th:href="@{/hr/hrProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
-                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+                <li><a th:href="@{/logout}" style="color:#171717;text-decoration:none">ВЫЙТИ</a></li>
             </ul></td>
         </tr>
     </table>
 </div>
-<div>
+<div class="container">
         <form
                 method="post"
                 role="form"
@@ -150,39 +153,43 @@
                         step="1"
                 />
             </div>
-            <div class="field">
-                <label for="languageName">Иностранный язык</label>
-                <select class="select" id="languageName"
-                        name="languageName"
-                        th:field="${languageNameEdit.idLanguageName}"
-                >
-                    <div th:each="languageName:${languageNames}">
-                        <option th:value="${languageName.idLanguageName}" th:text="${languageName.name}"></option>
+            <div class="finding">
+                <div>
+                    <label for="languageName">Иностранный язык</label>
+                    <select class="select" id="languageName"
+                            name="languageName"
+                            th:field="${languageNameEdit.idLanguageName}"
+                    >
+                        <div th:each="languageName:${languageNames}">
+                            <option th:value="${languageName.idLanguageName}" th:text="${languageName.name}"></option>
 
-                    </div>
-                </select>
-            </div>
-            <div class="field">
-                <label for="levelLanguage">Уровень языка</label>
-                <select class="select" id="levelLanguage"
-                        name="levelLanguage"
-                        th:field="${levelLanguageEdit.idLevelLanguage}"
-                >
-                    <div th:each="levelLanguage:${levelLanguages}">
-                        <option th:value="${levelLanguage.idLevelLanguage}" th:text="${levelLanguage.level}"></option>
-
-                    </div>
-                </select>
-            </div>
-            <div class="field">
-                <label for="skills">Основные навыки</label>
-                <div th:each="skillItem, itemStat : ${skillL.skillList}">
-                    <select id="skills" name="skills" th:field="${skillL.skillList[__${itemStat.index}__].idSkill}">
-                        <option th:value="${0}">-</option>
-                        <div th:each="skill: ${skills}">
-                            <option th:value="${skill.idSkill}" th:text="${skill.nameSkill}"></option>
                         </div>
                     </select>
+                </div>
+                <div>
+                    <label for="levelLanguage">Уровень языка</label>
+                    <select class="select" id="levelLanguage"
+                            name="levelLanguage"
+                            th:field="${levelLanguageEdit.idLevelLanguage}"
+                    >
+                        <div th:each="levelLanguage:${levelLanguages}">
+                            <option th:value="${levelLanguage.idLevelLanguage}" th:text="${levelLanguage.level}"></option>
+
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="finding">
+                <div class="field">
+                    <label for="skills">Основные навыки</label>
+                    <div th:each="skillItem, itemStat : ${skillL.skillList}">
+                        <select class="select" id="skills" name="skills" th:field="${skillL.skillList[__${itemStat.index}__].idSkill}">
+                            <option th:value="${0}">-</option>
+                            <div th:each="skill: ${skills}">
+                                <option th:value="${skill.idSkill}" th:text="${skill.nameSkill}"></option>
+                            </div>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="field">
@@ -245,11 +252,15 @@
                 <button type="submit">Отредактировать</button>
             </div>
         </form>
-        <a onclick="history.go(-1)">
+        <a style="margin-right: 40px" onclick="history.go(-1)">
             <button>
                 Назад
             </button>
         </a>
+</div>
+
+<div class="footer">
+    <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
 </div>
 </body>
 </html>

@@ -6,6 +6,12 @@
     min-width: 560px;
     max-width: 560px;
 }
+.finding, .form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
 .field{
     display: flex;
     flex-direction: row;
@@ -16,6 +22,8 @@
 .container{
     min-height: 600px;
     color: #343434;
+    display: flex;
+    flex-direction: column;
 }
 
 h1,h3{
@@ -25,12 +33,10 @@ h1,h3{
 tr{
     margin: 3px 0 3px 0;
 }
-a{
-    width: 140px;
-}
+
 button{
     font-family: "Tahoma";
-    margin: 10px 10px 10px 10px;
+    margin: 5px 10px 5px 10px;
     width: 160px;
     height: 42px;
     border-radius:36px;

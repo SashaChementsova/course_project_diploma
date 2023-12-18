@@ -4,85 +4,47 @@
     <meta charset="UTF-8">
     <title>SoftwareSeekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .modalframe{
-            top: -100%;
-            right: 0;
-            left: 50%;
-            font-size: 14px;
-            z-index: 20;
-            margin: 0;
-            width: 85%;
-            min-width: 320px;
-            max-width: 600px;
-            /* фиксированное позиционирование, окно стабильно при прокрутке */
-            position: fixed;
-            padding: 15px;
-            border: 1px solid #383838;
-            background: #fefefe;
-            /* скругление углов */
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -ms-border-radius: 4px;
-            border-radius: 4px;
-            font: 14px/18px 'Tahoma', Arial, sans-serif;
-            /* внешняя тень */
-            -webkit-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -moz-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -ms-box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
-            -webkit-transform: translate(-50%, 0);
-            -ms-transform: translate(-50%, 0);
-            -o-transform: translate(-50%, 0);
-            transform: translate(-50%, 0);
-            top: 20%;
-            -webkit-transition: -webkit-transform 0.6s ease-out;
-            -moz-transition: -moz-transform 0.6s ease-out;
-            -o-transition: -o-transform 0.6s ease-out;
-            transition: transform 0.6s ease-out;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/getVacancy.css">
 </head>
 <body>
-<div>
+<div class="header">
     <table >
         <tr>
-            <td>
+            <td id="td1">
                 <img th:src="@{/photos/1.png}" >
             </td>
             <td id="td2"><ul id="navbar">
                 <li><a th:href="@{/hr/hrPage}" style="color:#171717; text-decoration:none">ГЛАВНАЯ СТРАНИЦА</a></li>
-                <li><a th:href="@{/hr/hrProfile}" style="color:#171717; text-decoration:none">ПРОФИЛЬ</a></li>
-                <li><a th:href="@{/logout}" style="color:white; text-decoration:none">ВЫЙТИ</a></li>
+                <li><a th:href="@{/logout}" style="color:#171717; text-decoration:none">ВЫЙТИ</a></li>
             </ul></td>
         </tr>
     </table>
 </div>
-
-<div>
-    <div th:if="${deleteTrial}">
-        <div class="modalframe">
-            <form
-                    method="post"
-                    role="form"
-                    th:action="@{/hr/deleteCandidateFromVacancyEnd/{id}(id=${idTrial})}"
-                    enctype="multipart/form-data"
-            >
-                <h1>Прекращение прохождения собеседования</h1>
-                <div class="field">
-                    <div th:text="${'Вы действительно хотите прекратить прохождение собеседования для '+person+'?'}"></div>
-                </div>
-                <div>
-                    <button type="submit">Прекратить</button>
-                </div>
-            </form>
-            <a th:href="@{/hr/vacancy/{id}(id=${vacancy.idVacancy})}">
-                <button>
-                    Отмена
-                </button>
-            </a>
-        </div>
+<div th:if="${deleteTrial}">
+    <div class="modalframe">
+        <form
+                method="post"
+                role="form"
+                th:action="@{/hr/deleteCandidateFromVacancyEnd/{id}(id=${idTrial})}"
+                enctype="multipart/form-data"
+        >
+            <h1>Прекращение прохождения собеседования</h1>
+            <div class="field">
+                <div th:text="${'Вы действительно хотите прекратить прохождение собеседования для '+person+'?'}"></div>
+            </div>
+            <div>
+                <button type="submit">Прекратить</button>
+            </div>
+        </form>
+        <a th:href="@{/hr/vacancy/{id}(id=${vacancy.idVacancy})}">
+            <button>
+                Отмена
+            </button>
+        </a>
     </div>
+</div>
+<div class="container">
     <table>
         <tr><td th:text="'Позиция: '+${vacancy.getPosition().toString()}"></td></tr>
         <tr><td th:text="'Количество свободных мест: '+${vacancy.freePositions}"></td></tr>
@@ -129,8 +91,8 @@
         Список прохождений кандидатами вакансии пуст!!!
     </div>
     <div th:unless="${emptiness}">
-        <table>
-            <tr>
+        <table class="table">
+            <thead>
                 <th>№</th>
                 <th>ФИО</th>
                 <th>Техническое тестирование</th>
@@ -138,7 +100,7 @@
                 <th>Собеседование</th>
                 <th>Профиль кандидата</th>
                 <th></th>
-            </tr>
+            </thead>
             <div th:each="trial, iStat:${trials}" th:class="${iStat.even}? 'even_css_class':'odd_css_class'">
                 <tr>
                     <td th:text="${iStat.index+1}"></td>
@@ -178,11 +140,14 @@
             </div>
         </table>
     </div>
+    <a th:href="@{/hr/vacancies}">
+        <button>
+            Назад
+        </button>
+    </a>
 </div>
-<a th:href="@{/hr/vacancies}">
-    <button>
-        Назад
-    </button>
-</a>
+<div class="footer">
+    <p style="margin: 0 0 0 15px">Chementsova Sasha, 2023</p>
+</div>
 </body>
 </html>
